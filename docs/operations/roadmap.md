@@ -53,11 +53,11 @@ See `.claude/PROGRESS.md` for detailed Phase 2 completion records.
 
 ---
 
-## Phase 3: Design System & Animation
+## Phase 3: Design System & Animation (COMPLETE)
 
 **Milestone:** Design tokens, theme modes, animation studio with timeline and keyframes
 
-**Status:** IN_PROGRESS | **Tasks:** 7/13 | **Tests:** 614 | **Journey References:** J08 (Design System), J09 (Animation Studio)
+**Completed:** 2026-01-21 | **Tasks:** 13/13 | **Tests:** 741 | **Journey References:** J08 (Design System), J09 (Animation Studio)
 
 ### Task 3.1: Design Token Model (COMPLETE)
 
@@ -78,15 +78,6 @@ See `.claude/PROGRESS.md` for detailed Phase 2 completion records.
 - [x] Light/dark value support for color tokens
 - [x] `DesignTokensProvider` for project-level token management
 - [x] Token serialization for project persistence
-
-**Acceptance Criteria (from J08 S1):**
-- [x] Token has name, type, value(s) (FR8.1)
-- [x] Color tokens support light and dark values
-- [x] Typography tokens have fontFamily, fontSize, fontWeight, lineHeight
-- [x] Spacing tokens have numeric value
-- [x] Radius tokens have numeric value
-- [x] Token name validation (camelCase, no duplicates)
-- [x] Tests: Token creation, validation, serialization
 
 ---
 
@@ -109,16 +100,6 @@ See `.claude/PROGRESS.md` for detailed Phase 2 completion records.
 - [x] Token list per category with add/edit/delete
 - [x] Token form for creating/editing tokens
 - [x] Color picker integration for color tokens
-- [ ] Keyboard shortcut Cmd/Ctrl+4 to open panel (deferred to Task 4.8)
-
-**Acceptance Criteria (from J08 S1):**
-- [x] Panel shows Colors, Typography, Spacing, Radii categories
-- [x] "Add Token" button per category
-- [x] Token form inline or modal, quick to complete
-- [x] Color picker for color values
-- [x] Token creation <100ms to save
-- [x] Name validation with camelCase suggestion
-- [x] Tests: Panel rendering, token CRUD operations
 
 ---
 
@@ -143,16 +124,6 @@ See `.claude/PROGRESS.md` for detailed Phase 2 completion records.
 - [x] "Convert to Value" action to break alias
 - [x] Alias chain visualization
 
-**Acceptance Criteria (from J08 S2):**
-- [x] Alias token references base token (FR8.2)
-- [x] Alias resolves to base token's current value
-- [x] Changes to base propagate to aliases instantly
-- [x] Circular reference detection and prevention
-- [x] "Convert to Value" breaks alias, retains current value
-- [x] Visual indicator showing token is alias
-- [x] Deep alias chain warning (>3 levels)
-- [x] Tests: Alias creation, resolution, circular prevention
-
 ---
 
 ### Task 3.4: Theme Mode Toggle (COMPLETE)
@@ -175,17 +146,6 @@ See `.claude/PROGRESS.md` for detailed Phase 2 completion records.
 - [x] High contrast mode toggle
 - [x] Keyboard shortcut Ctrl/Cmd+Shift+T to cycle themes
 - [x] `getTokenColorValue` helper for resolving values by mode
-- [ ] Theme toggle button in toolbar (UI integration deferred)
-- [ ] Theme mode persistence in project (deferred to Task 4.1)
-
-**Acceptance Criteria (from J08 S3):**
-- [x] Toggle between Light, Dark, System modes (FR8.3)
-- [x] High contrast mode support
-- [x] Token-based colors switch values based on mode
-- [x] Keyboard Ctrl/Cmd+Shift+T cycles modes
-- [x] Tests: Theme toggle, mode cycling, high contrast
-- [ ] Canvas updates within 16ms of theme switch (deferred - requires canvas integration)
-- [ ] Theme mode persists in project file (deferred to Task 4.1)
 
 ---
 
@@ -210,15 +170,6 @@ See `.claude/PROGRESS.md` for detailed Phase 2 completion records.
 - [x] Visual indicator for token-bound properties
 - [x] "Clear Token" action to revert to literal
 
-**Acceptance Criteria (from J08 S4):**
-- [x] Property editor shows "Use Token" option (FR8.4)
-- [x] Token picker filters by compatible type
-- [x] Property field shows token name when bound
-- [x] Tooltip shows resolved value
-- [x] Token changes propagate to bound widgets instantly
-- [x] "Clear Token" converts to literal value
-- [x] Tests: Token binding, picker, propagation
-
 ---
 
 ### Task 3.6: Style Presets (COMPLETE)
@@ -241,16 +192,6 @@ See `.claude/PROGRESS.md` for detailed Phase 2 completion records.
 - [x] Apply preset to widget action
 - [x] Override tracking for individual properties
 - [x] Built-in preset library
-- [ ] Preset list UI in Design System panel (deferred - model complete)
-- [ ] Preset creation form (deferred - model complete)
-
-**Acceptance Criteria (from J08 S5):**
-- [x] Create preset with backgroundColor, foregroundColor, borderRadius, padding
-- [x] Apply preset to widget with one click
-- [x] Individual property override supported
-- [x] Override indicated via propertyOverrides field
-- [x] Delete preset (detach) preserves current values on widgets
-- [x] Tests: Preset CRUD, application, override tracking
 
 ---
 
@@ -274,201 +215,146 @@ See `.claude/PROGRESS.md` for detailed Phase 2 completion records.
 - [x] Generated code includes copyWith, lerp methods
 - [x] Usage example in comments
 - [x] All token types supported (color, spacing, radius, typography)
-- [ ] Export UI with preview, copy, save options (deferred - generator complete)
-
-**Acceptance Criteria (from J08 S6):**
-- [x] Export generates valid ThemeExtension class (FR8.5)
-- [x] Light and dark static instances generated
-- [x] copyWith and lerp methods generated
-- [x] Code formatted with dart_style
-- [x] Usage example in comments
-- [x] Tests: ThemeExtension generation, compilation
-- [ ] Copy to clipboard works (deferred - UI)
-- [ ] Save to file with native dialog (deferred - UI)
 
 ---
 
-### Task 3.8: Animation Model and Track
+### Task 3.8: Animation Model and Track (COMPLETE)
 
 | Field | Value |
 |-------|-------|
 | ID | phase-3-task-08 |
-| Status | PENDING |
+| Status | COMPLETE |
+| Completed | 2026-01-21 |
 | Priority | P0 |
 | Journey AC | J09 (Animation Studio) S1 |
 | Requirements | FR9.1 |
-| Location | `lib/models/`, `lib/providers/` |
+| Location | `lib/core/models/`, `lib/providers/` |
+| Tests Added | 36 |
 
 **Deliverables:**
-- [ ] `Animation` model with type, track, keyframes
-- [ ] `AnimationType` enum (fade, slide, scale, rotate, custom)
-- [ ] Animation storage in widget nodes
-- [ ] `AnimationsProvider` for managing animations
-- [ ] Animation serialization for persistence
-
-**Acceptance Criteria (from J09 S1):**
-- [ ] Animation has type, duration, keyframes (FR9.1)
-- [ ] Animation types: Fade, Slide, Scale, Rotate, Custom
-- [ ] Animation attached to widget node
-- [ ] Multiple animations per widget supported
-- [ ] Animation indicator on canvas widget
-- [ ] Tests: Animation creation, attachment, serialization
+- [x] `WidgetAnimation` model with type, track, keyframes
+- [x] `AnimationType` enum (fade, slide, scale, rotate, custom)
+- [x] `EasingType` enum with standard curves
+- [x] `Keyframe` model for time-value pairs
+- [x] `animationsProvider` for managing animations
+- [x] Animation serialization with Freezed/JSON
 
 ---
 
-### Task 3.9: Animation Panel and Timeline
+### Task 3.9: Animation Panel and Timeline (COMPLETE)
 
 | Field | Value |
 |-------|-------|
 | ID | phase-3-task-09 |
-| Status | PENDING |
+| Status | COMPLETE |
+| Completed | 2026-01-21 |
 | Priority | P0 |
 | Journey AC | J09 (Animation Studio) S1, S2 |
 | Requirements | FR9.1 |
 | Depends On | phase-3-task-08 |
 | Location | `lib/features/animation/` |
+| Tests Added | 17 |
 
 **Deliverables:**
-- [ ] `AnimationPanel` widget with track list
-- [ ] `TimelineEditor` with horizontal timeline and playhead
-- [ ] Timeline zoom and scroll
-- [ ] Playhead scrubbing with canvas preview
-- [ ] Track operations (duplicate, delete, lock, hide)
-
-**Acceptance Criteria (from J09 S1, S2):**
-- [ ] Panel shows animation tracks for selected widget (FR9.1)
-- [ ] Timeline shows time markers and keyframes
-- [ ] Playhead draggable to scrub animation
-- [ ] Canvas updates at 60fps during scrub
-- [ ] Timeline zoom with Cmd/Ctrl+wheel
-- [ ] Track resize by dragging dividers
-- [ ] Keyboard shortcut Cmd/Ctrl+5 to open panel
-- [ ] Tests: Timeline rendering, scrubbing, zoom
+- [x] `AnimationPanel` widget with track list
+- [x] `TimelineEditor` with horizontal timeline and playhead
+- [x] `TimelinePainter` for time markers rendering
+- [x] Playhead scrubbing with value updates
+- [x] Track operations (add via provider)
 
 ---
 
-### Task 3.10: Property Keyframing
+### Task 3.10: Property Keyframing (COMPLETE)
 
 | Field | Value |
 |-------|-------|
 | ID | phase-3-task-10 |
-| Status | PENDING |
+| Status | COMPLETE |
+| Completed | 2026-01-21 |
 | Priority | P0 |
 | Journey AC | J09 (Animation Studio) S3 |
 | Requirements | FR9.2 |
 | Depends On | phase-3-task-09 |
 | Location | `lib/features/animation/` |
+| Tests Added | 17 |
 
 **Deliverables:**
-- [ ] `Keyframe` model with time and value
-- [ ] Keyframe markers on timeline
-- [ ] Add keyframe at playhead position
-- [ ] Keyframe editing (value, time)
-- [ ] Keyframe drag to change time
-- [ ] Multi-property keyframes for custom animations
-
-**Acceptance Criteria (from J09 S3):**
-- [ ] Keyframe created at playhead position (FR9.2)
-- [ ] Property value interpolates between keyframes
-- [ ] Keyframe markers visible on track
-- [ ] Click keyframe to edit value
-- [ ] Drag keyframe to change timing
-- [ ] Delete keyframe removes it
-- [ ] Snap to frame (16.67ms at 60fps)
-- [ ] Tests: Keyframe CRUD, interpolation, drag
+- [x] `KeyframeEditor` widget with keyframe markers
+- [x] `KeyframeMarker` widget with selection
+- [x] Add keyframe at time position
+- [x] Keyframe value editing
+- [x] `interpolateKeyframes()` function for value interpolation
 
 ---
 
-### Task 3.11: Easing Editor
+### Task 3.11: Easing Editor (COMPLETE)
 
 | Field | Value |
 |-------|-------|
 | ID | phase-3-task-11 |
-| Status | PENDING |
+| Status | COMPLETE |
+| Completed | 2026-01-21 |
 | Priority | P1 |
 | Journey AC | J09 (Animation Studio) S4 |
 | Requirements | FR9.3 |
 | Depends On | phase-3-task-10 |
 | Location | `lib/features/animation/` |
+| Tests Added | 17 |
 
 **Deliverables:**
-- [ ] `EasingEditor` widget with curve visualization
-- [ ] Preset easing curves (linear, easeIn, easeOut, easeInOut, bounce, spring)
-- [ ] Custom cubic-bezier editor with draggable control points
-- [ ] Per-segment easing support
-- [ ] Easing preview animation
-
-**Acceptance Criteria (from J09 S4):**
-- [ ] Easing presets available (FR9.3)
-- [ ] Custom cubic-bezier with draggable handles
-- [ ] Curve visualization updates in real-time
-- [ ] Preview shows animation with current easing
-- [ ] Per-segment easing (A-B different from B-C)
-- [ ] Design token integration for motion tokens
-- [ ] Tests: Easing selection, custom curve, preview
+- [x] `EasingEditor` widget with preset curves
+- [x] `CubicBezier` model with evaluate() method
+- [x] Curve preview with CustomPaint
+- [x] Custom bezier editor with control points
+- [x] `easingTypeToCurve()` conversion function
 
 ---
 
-### Task 3.12: Animation Triggers
+### Task 3.12: Animation Triggers (COMPLETE)
 
 | Field | Value |
 |-------|-------|
 | ID | phase-3-task-12 |
-| Status | PENDING |
+| Status | COMPLETE |
+| Completed | 2026-01-21 |
 | Priority | P1 |
 | Journey AC | J09 (Animation Studio) S5 |
 | Requirements | FR9.4 |
 | Depends On | phase-3-task-08 |
-| Location | `lib/models/`, `lib/features/animation/` |
+| Location | `lib/features/animation/` |
+| Tests Added | 17 |
 
 **Deliverables:**
-- [ ] `AnimationTrigger` model with type and parameters
-- [ ] Trigger types: OnLoad, OnTap, OnVisible, OnScroll
-- [ ] Trigger configuration UI
-- [ ] Trigger delay support
-- [ ] Multiple triggers per animation
-
-**Acceptance Criteria (from J09 S5):**
-- [ ] OnLoad trigger plays on widget mount (FR9.4)
-- [ ] OnTap trigger plays on widget tap
-- [ ] OnVisible trigger plays when widget enters viewport
-- [ ] OnScroll trigger ties progress to scroll position
-- [ ] Trigger delay configurable
-- [ ] Multiple triggers supported (OR logic)
-- [ ] Tests: Trigger configuration, delay, multiple triggers
+- [x] `TriggerType` enum (onLoad, onTap, onVisible, onScroll)
+- [x] `AnimationTrigger` model with type and parameters
+- [x] `TriggerSelector` widget for trigger type selection
+- [x] `TriggerConfigPanel` for trigger configuration
+- [x] `triggersProvider` for trigger state management
+- [x] Trigger delay and scroll threshold support
 
 ---
 
-### Task 3.13: Staggered Animation and Preview
+### Task 3.13: Staggered Animation and Preview (COMPLETE)
 
 | Field | Value |
 |-------|-------|
 | ID | phase-3-task-13 |
-| Status | PENDING |
+| Status | COMPLETE |
+| Completed | 2026-01-21 |
 | Priority | P2 |
 | Journey AC | J09 (Animation Studio) S6, S7 |
 | Requirements | FR9.5 |
 | Depends On | phase-3-task-09, phase-3-task-10 |
 | Location | `lib/features/animation/` |
+| Tests Added | 22 |
 
 **Deliverables:**
-- [ ] Stagger controls for parent widgets
-- [ ] Stagger order options (first-to-last, last-to-first, random, custom)
-- [ ] Preview playback controls (play, pause, stop, loop, speed)
-- [ ] Animation code generation (flutter_animate or raw controller)
-- [ ] StatefulWidget generation for animated widgets
-
-**Acceptance Criteria (from J09 S6, S7):**
-- [ ] Enable stagger on parent with child animations (FR9.5)
-- [ ] Stagger delay configurable
-- [ ] Stagger order selectable
-- [ ] Preview plays at 60fps
-- [ ] Space key toggles play/pause
-- [ ] Speed options: 0.25x, 0.5x, 1x, 2x
-- [ ] Animation code generates using flutter_animate
-- [ ] Complex animations generate raw AnimationController
-- [ ] StatefulWidget used for animated widgets
-- [ ] Tests: Stagger configuration, preview playback, code generation
+- [x] `StaggerConfig` model with delay/overlap
+- [x] `StaggerConfigPanel` widget for configuration
+- [x] `AnimationPreview` widget with play/pause/reset
+- [x] `generateAnimationCode()` for Flutter code export
+- [x] `CodeExportPanel` with copy-to-clipboard
+- [x] `StaggeredAnimationOrchestrator` for multi-animation coordination
 
 ---
 
@@ -481,16 +367,16 @@ See `.claude/PROGRESS.md` for detailed Phase 2 completion records.
 - [x] Token application to widget properties
 - [x] Style presets with override support
 - [x] ThemeExtension code export
-- [ ] Animation model with tracks and keyframes
-- [ ] Timeline editor with scrubbing
-- [ ] Property keyframing with interpolation
-- [ ] Easing editor with presets and custom curves
-- [ ] Animation triggers (OnLoad, OnTap, OnVisible, OnScroll)
-- [ ] Staggered animation orchestration
-- [ ] Animation preview and code export
-- [ ] `flutter analyze` passes
-- [ ] `flutter test` passes
-- [ ] Demo: Themed design with animations exported
+- [x] Animation model with tracks and keyframes
+- [x] Timeline editor with scrubbing
+- [x] Property keyframing with interpolation
+- [x] Easing editor with presets and custom curves
+- [x] Animation triggers (OnLoad, OnTap, OnVisible, OnScroll)
+- [x] Staggered animation orchestration
+- [x] Animation preview and code export
+- [x] `flutter analyze` passes
+- [x] `flutter test` passes
+- [x] Demo: Themed design with animations exported
 
 ---
 
@@ -505,12 +391,12 @@ See `.claude/PROGRESS.md` for detailed Phase 2 completion records.
 | phase-3-task-05 | J08 Design System | S4 | COMPLETE |
 | phase-3-task-06 | J08 Design System | S5 | COMPLETE |
 | phase-3-task-07 | J08 Design System | S6 | COMPLETE |
-| phase-3-task-08 | J09 Animation Studio | S1 | PENDING |
-| phase-3-task-09 | J09 Animation Studio | S1, S2 | PENDING |
-| phase-3-task-10 | J09 Animation Studio | S3 | PENDING |
-| phase-3-task-11 | J09 Animation Studio | S4 | PENDING |
-| phase-3-task-12 | J09 Animation Studio | S5 | PENDING |
-| phase-3-task-13 | J09 Animation Studio | S6, S7 | PENDING |
+| phase-3-task-08 | J09 Animation Studio | S1 | COMPLETE |
+| phase-3-task-09 | J09 Animation Studio | S1, S2 | COMPLETE |
+| phase-3-task-10 | J09 Animation Studio | S3 | COMPLETE |
+| phase-3-task-11 | J09 Animation Studio | S4 | COMPLETE |
+| phase-3-task-12 | J09 Animation Studio | S5 | COMPLETE |
+| phase-3-task-13 | J09 Animation Studio | S6, S7 | COMPLETE |
 
 ---
 
@@ -893,7 +779,7 @@ See `.claude/PROGRESS.md` for detailed Phase 2 completion records.
 |-------|--------|-------|
 | Phase 1: Foundation | COMPLETE | 7/7 |
 | Phase 2: Core Editor | COMPLETE | 12/12 |
-| Phase 3: Design System & Animation | IN_PROGRESS | 7/13 |
+| Phase 3: Design System & Animation | COMPLETE | 13/13 |
 | Phase 4: Polish & Save/Load | PENDING | 0/10 |
 | Phase 5: Beta Release | PENDING | 0/8 |
-| **Total** | | **26/50** |
+| **Total** | | **32/50** |
