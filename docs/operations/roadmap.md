@@ -28,11 +28,11 @@ See `.claude/PROGRESS.md` for detailed Phase 1 completion records.
 
 ---
 
-## Phase 2: Core Editor (IN PROGRESS)
+## Phase 2: Core Editor (COMPLETE)
 
-**Milestone:** Widget tree panel, undo/redo, 15+ widgets, multi-level drag-drop
+**Milestone:** Widget tree panel, undo/redo, 20 widgets, multi-level drag-drop
 
-**Progress:** 10/12 tasks | **Tests:** 327
+**Completed:** 2026-01-21 | **Tasks:** 12/12 | **Tests:** 404
 
 ### Task 2.1: Command Pattern Foundation
 
@@ -369,17 +369,17 @@ See `.claude/PROGRESS.md` for detailed Phase 1 completion records.
 | Field | Value |
 |-------|-------|
 | ID | phase-2-task-11 |
-| Status | PENDING |
+| Status | COMPLETE |
 | Priority | P2 |
 | Journey AC | J02 (Widget Palette) S1 |
 | Requirements | FR1.1 |
 | Location | `lib/shared/registry/` |
 
 **Deliverables:**
-- [ ] ElevatedButton widget (child, onPressed placeholder)
-- [ ] TextButton widget (child, onPressed placeholder)
-- [ ] IconButton widget (icon, onPressed placeholder)
-- [ ] Placeholder widget (fallback size, color)
+- [x] ElevatedButton widget (child, onPressed placeholder)
+- [x] TextButton widget (child, onPressed placeholder)
+- [x] IconButton widget (icon, onPressed placeholder)
+- [x] Placeholder widget (fallback size, color)
 
 **New Widgets (4):**
 | Widget | Category | Children | Constraint |
@@ -392,11 +392,11 @@ See `.claude/PROGRESS.md` for detailed Phase 1 completion records.
 **New Category:** Input
 
 **Acceptance Criteria:**
-- [ ] Button widgets have child slot and style properties
-- [ ] IconButton has icon, size, color properties
-- [ ] Placeholder has fallbackWidth, fallbackHeight, color
-- [ ] Input category added to WidgetCategory enum
-- [ ] Tests: Registration and rendering for each widget
+- [x] Button widgets have child slot and style properties
+- [x] IconButton has icon, size, color properties
+- [x] Placeholder has fallbackWidth, fallbackHeight, color
+- [x] Input category added to WidgetCategory enum
+- [x] Tests: Registration and rendering for each widget (35 tests)
 
 ---
 
@@ -405,7 +405,7 @@ See `.claude/PROGRESS.md` for detailed Phase 1 completion records.
 | Field | Value |
 |-------|-------|
 | ID | phase-2-task-12 |
-| Status | PENDING |
+| Status | COMPLETE |
 | Priority | P1 |
 | Journey AC | J06 (Code Generation) S1, S3 |
 | Requirements | FR5.1, FR5.2 |
@@ -413,21 +413,21 @@ See `.claude/PROGRESS.md` for detailed Phase 1 completion records.
 | Location | `lib/generators/` |
 
 **Deliverables:**
-- [ ] Code generation for all new Phase 2 widgets
-- [ ] Flex child handling (Expanded, Flexible, Spacer)
-- [ ] Stack children with Positioned wrapper support
-- [ ] Button onPressed callback generation
-- [ ] Icon data code generation
+- [x] Code generation for all new Phase 2 widgets
+- [x] Flex child handling (Expanded, Flexible, Spacer)
+- [x] Stack children with Positioned wrapper support
+- [x] Button onPressed callback generation
+- [x] Icon data code generation
 
 **Acceptance Criteria (from J06):**
-- [ ] Valid, compilable Dart code for all 15+ widgets (FR5.1)
-- [ ] Proper import statements generated
-- [ ] Expanded/Flexible wrapped in valid Flex context
-- [ ] Stack children generate correctly
-- [ ] Button callbacks generate as empty closures
-- [ ] Code formatted with dart_style (FR5.2)
-- [ ] Generation <500ms for 100 widgets (NFR1.2)
-- [ ] Tests: Code generation for all new widgets
+- [x] Valid, compilable Dart code for all 20 widgets (FR5.1)
+- [x] Proper import statements generated
+- [x] Expanded/Flexible wrapped in valid Flex context
+- [x] Stack children generate correctly
+- [x] Button callbacks generate as empty closures
+- [x] Code formatted with dart_style (FR5.2)
+- [x] Generation <500ms for 100 widgets (NFR1.2)
+- [x] Tests: Code generation for all new widgets (21 tests)
 
 ---
 
@@ -439,11 +439,11 @@ See `.claude/PROGRESS.md` for detailed Phase 1 completion records.
 - [x] Context menu for tree operations
 - [x] Multi-level nested drop zones (3+ depth)
 - [x] Canvas widget reordering
-- [x] 15+ widgets in registry (currently 16)
-- [ ] Code generation for all widgets
-- [ ] `flutter analyze` passes
-- [x] `flutter test` passes (target: 180+ tests, current: 327)
-- [ ] Demo: Complex layout with undo/redo, tree reorder
+- [x] 20 widgets in registry
+- [x] Code generation for all widgets
+- [x] `flutter analyze` passes (info-level only)
+- [x] `flutter test` passes (404 tests)
+- [x] Demo: Complex layout with undo/redo, tree reorder
 
 ---
 
@@ -461,8 +461,8 @@ See `.claude/PROGRESS.md` for detailed Phase 1 completion records.
 | phase-2-task-08 | J03 Design Canvas | S4 | COMPLETE |
 | phase-2-task-09 | J02 Widget Palette | S1 | COMPLETE |
 | phase-2-task-10 | J02 Widget Palette | S1 | COMPLETE |
-| phase-2-task-11 | J02 Widget Palette | S1 | PENDING |
-| phase-2-task-12 | J06 Code Generation | S1, S3 | PENDING |
+| phase-2-task-11 | J02 Widget Palette | S1 | COMPLETE |
+| phase-2-task-12 | J06 Code Generation | S1, S3 | COMPLETE |
 
 ---
 
