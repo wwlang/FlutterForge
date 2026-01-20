@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_forge/core/models/project_state.dart';
 import 'package:flutter_forge/core/models/widget_node.dart';
-import 'package:flutter_forge/features/tree/widget_tree_item.dart';
+import 'package:flutter_forge/features/tree/draggable_tree_item.dart';
 import 'package:flutter_forge/features/tree/widget_tree_panel.dart';
 import 'package:flutter_forge/providers/providers.dart';
 import 'package:flutter_forge/shared/registry/widget_registry.dart';
@@ -43,7 +43,7 @@ void main() {
         );
 
         expect(find.text('No widgets'), findsOneWidget);
-        expect(find.byType(WidgetTreeItem), findsNothing);
+        expect(find.byType(DraggableTreeItem), findsNothing);
       });
 
       testWidgets('shows helper text in empty state', (tester) async {
@@ -73,7 +73,7 @@ void main() {
         await tester.pumpWidget(buildTestWidget(projectState: state));
 
         expect(find.text('Container'), findsOneWidget);
-        expect(find.byType(WidgetTreeItem), findsOneWidget);
+        expect(find.byType(DraggableTreeItem), findsOneWidget);
       });
 
       testWidgets('displays multiple root widgets', (tester) async {
@@ -96,7 +96,7 @@ void main() {
 
         expect(find.text('Container'), findsOneWidget);
         expect(find.text('Text'), findsOneWidget);
-        expect(find.byType(WidgetTreeItem), findsNWidgets(2));
+        expect(find.byType(DraggableTreeItem), findsNWidgets(2));
       });
 
       testWidgets('displays nested widgets with indentation', (tester) async {
@@ -119,12 +119,13 @@ void main() {
 
         await tester.pumpWidget(buildTestWidget(projectState: state));
 
-        expect(find.byType(WidgetTreeItem), findsNWidgets(2));
+        expect(find.byType(DraggableTreeItem), findsNWidgets(2));
 
-        // Child should be indented (check padding)
-        final childItem = tester.widget<WidgetTreeItem>(
+        // Child should be indented (check depth)
+        final childItem = tester.widget<DraggableTreeItem>(
           find.byWidgetPredicate(
-            (widget) => widget is WidgetTreeItem && widget.nodeId == 'text-1',
+            (widget) =>
+                widget is DraggableTreeItem && widget.nodeId == 'text-1',
           ),
         );
         expect(childItem.depth, equals(1));
@@ -161,27 +162,29 @@ void main() {
 
         await tester.pumpWidget(buildTestWidget(projectState: state));
 
-        expect(find.byType(WidgetTreeItem), findsNWidgets(3));
+        expect(find.byType(DraggableTreeItem), findsNWidgets(3));
 
         // Check depths
-        final rootItem = tester.widget<WidgetTreeItem>(
+        final rootItem = tester.widget<DraggableTreeItem>(
           find.byWidgetPredicate(
-            (widget) => widget is WidgetTreeItem && widget.nodeId == 'column-1',
+            (widget) =>
+                widget is DraggableTreeItem && widget.nodeId == 'column-1',
           ),
         );
         expect(rootItem.depth, equals(0));
 
-        final containerItem = tester.widget<WidgetTreeItem>(
+        final containerItem = tester.widget<DraggableTreeItem>(
           find.byWidgetPredicate(
             (widget) =>
-                widget is WidgetTreeItem && widget.nodeId == 'container-1',
+                widget is DraggableTreeItem && widget.nodeId == 'container-1',
           ),
         );
         expect(containerItem.depth, equals(1));
 
-        final textItem = tester.widget<WidgetTreeItem>(
+        final textItem = tester.widget<DraggableTreeItem>(
           find.byWidgetPredicate(
-            (widget) => widget is WidgetTreeItem && widget.nodeId == 'text-1',
+            (widget) =>
+                widget is DraggableTreeItem && widget.nodeId == 'text-1',
           ),
         );
         expect(textItem.depth, equals(2));
@@ -371,8 +374,8 @@ void main() {
         );
 
         // Find the tree item and check its selected state
-        final item = tester.widget<WidgetTreeItem>(
-          find.byType(WidgetTreeItem),
+        final item = tester.widget<DraggableTreeItem>(
+          find.byType(DraggableTreeItem),
         );
         expect(item.isSelected, isTrue);
       });
@@ -401,18 +404,19 @@ void main() {
         );
 
         // Container should be selected
-        final containerItem = tester.widget<WidgetTreeItem>(
+        final containerItem = tester.widget<DraggableTreeItem>(
           find.byWidgetPredicate(
             (widget) =>
-                widget is WidgetTreeItem && widget.nodeId == 'container-1',
+                widget is DraggableTreeItem && widget.nodeId == 'container-1',
           ),
         );
         expect(containerItem.isSelected, isTrue);
 
         // Text should not be selected
-        final textItem = tester.widget<WidgetTreeItem>(
+        final textItem = tester.widget<DraggableTreeItem>(
           find.byWidgetPredicate(
-            (widget) => widget is WidgetTreeItem && widget.nodeId == 'text-1',
+            (widget) =>
+                widget is DraggableTreeItem && widget.nodeId == 'text-1',
           ),
         );
         expect(textItem.isSelected, isFalse);

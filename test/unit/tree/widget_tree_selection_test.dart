@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_forge/core/models/project_state.dart';
 import 'package:flutter_forge/core/models/widget_node.dart';
-import 'package:flutter_forge/features/tree/widget_tree_item.dart';
+import 'package:flutter_forge/features/tree/draggable_tree_item.dart';
 import 'package:flutter_forge/features/tree/widget_tree_panel.dart';
 import 'package:flutter_forge/providers/providers.dart';
 import 'package:flutter_forge/shared/registry/widget_registry.dart';
@@ -196,8 +196,8 @@ void main() {
           ),
         );
 
-        final item = tester.widget<WidgetTreeItem>(
-          find.byType(WidgetTreeItem),
+        final item = tester.widget<DraggableTreeItem>(
+          find.byType(DraggableTreeItem),
         );
         expect(item.isSelected, isTrue);
       });
@@ -225,9 +225,10 @@ void main() {
           ),
         );
 
-        final textItem = tester.widget<WidgetTreeItem>(
+        final textItem = tester.widget<DraggableTreeItem>(
           find.byWidgetPredicate(
-            (widget) => widget is WidgetTreeItem && widget.nodeId == 'text-1',
+            (widget) =>
+                widget is DraggableTreeItem && widget.nodeId == 'text-1',
           ),
         );
         expect(textItem.isSelected, isFalse);
@@ -366,9 +367,10 @@ void main() {
           expect(selectedId, equals('text-1'));
 
           // Verify visual selection
-          final textItem = tester.widget<WidgetTreeItem>(
+          final textItem = tester.widget<DraggableTreeItem>(
             find.byWidgetPredicate(
-              (widget) => widget is WidgetTreeItem && widget.nodeId == 'text-1',
+              (widget) =>
+                  widget is DraggableTreeItem && widget.nodeId == 'text-1',
             ),
           );
           expect(textItem.isSelected, isTrue);
@@ -393,8 +395,8 @@ void main() {
           buildTestWidget(projectState: state, selectedId: 'container-1'),
         );
 
-        final item = tester.widget<WidgetTreeItem>(
-          find.byType(WidgetTreeItem),
+        final item = tester.widget<DraggableTreeItem>(
+          find.byType(DraggableTreeItem),
         );
         expect(item.isSelected, isTrue);
       });
@@ -447,10 +449,10 @@ void main() {
         expect(selectedId, equals('container-1'));
 
         // Verify visual update
-        var containerItem = tester.widget<WidgetTreeItem>(
+        var containerItem = tester.widget<DraggableTreeItem>(
           find.byWidgetPredicate(
             (widget) =>
-                widget is WidgetTreeItem && widget.nodeId == 'container-1',
+                widget is DraggableTreeItem && widget.nodeId == 'container-1',
           ),
         );
         expect(containerItem.isSelected, isTrue);
@@ -462,17 +464,18 @@ void main() {
         expect(selectedId, equals('text-1'));
 
         // Verify visual update
-        containerItem = tester.widget<WidgetTreeItem>(
+        containerItem = tester.widget<DraggableTreeItem>(
           find.byWidgetPredicate(
             (widget) =>
-                widget is WidgetTreeItem && widget.nodeId == 'container-1',
+                widget is DraggableTreeItem && widget.nodeId == 'container-1',
           ),
         );
         expect(containerItem.isSelected, isFalse);
 
-        final textItem = tester.widget<WidgetTreeItem>(
+        final textItem = tester.widget<DraggableTreeItem>(
           find.byWidgetPredicate(
-            (widget) => widget is WidgetTreeItem && widget.nodeId == 'text-1',
+            (widget) =>
+                widget is DraggableTreeItem && widget.nodeId == 'text-1',
           ),
         );
         expect(textItem.isSelected, isTrue);
