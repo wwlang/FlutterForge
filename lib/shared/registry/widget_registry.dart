@@ -47,6 +47,7 @@ class WidgetRegistry {
 /// Phase 1: Container, Text, Row, Column, SizedBox
 /// Phase 2 Task 9: Stack, Expanded, Flexible, Padding, Center, Align, Spacer
 /// Phase 2 Task 10: Icon, Image, Divider, VerticalDivider
+/// Phase 2 Task 11: ElevatedButton, TextButton, IconButton, Placeholder
 class DefaultWidgetRegistry extends WidgetRegistry {
   /// Creates the default registry with all widgets.
   DefaultWidgetRegistry() {
@@ -71,6 +72,12 @@ class DefaultWidgetRegistry extends WidgetRegistry {
     _registerImageWidget();
     _registerDividerWidget();
     _registerVerticalDividerWidget();
+
+    // Phase 2 Task 11: Input widgets
+    _registerElevatedButtonWidget();
+    _registerTextButtonWidget();
+    _registerIconButtonWidget();
+    _registerPlaceholderWidget();
   }
 
   void _registerContainerWidget() {
@@ -869,6 +876,223 @@ class DefaultWidgetRegistry extends WidgetRegistry {
             nullable: true,
             category: 'Style',
             description: 'Line color',
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Phase 2 Task 11: Input widgets
+
+  void _registerElevatedButtonWidget() {
+    register(
+      const WidgetDefinition(
+        type: 'ElevatedButton',
+        category: WidgetCategory.input,
+        displayName: 'Elevated Button',
+        acceptsChildren: true,
+        maxChildren: 1,
+        iconName: 'smart_button',
+        description: 'A Material Design elevated button with shadow',
+        properties: [
+          PropertyDefinition(
+            name: 'onPressed',
+            type: PropertyType.bool_,
+            displayName: 'Enabled',
+            nullable: true,
+            defaultValue: true,
+            category: 'Behavior',
+            description:
+                'Whether the button is enabled (true) or disabled (false)',
+          ),
+          PropertyDefinition(
+            name: 'style',
+            type: PropertyType.enum_,
+            displayName: 'Style',
+            nullable: true,
+            category: 'Style',
+            description: 'Button style preset',
+            enumValues: [
+              'ButtonStyle.primary',
+              'ButtonStyle.secondary',
+              'ButtonStyle.error',
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _registerTextButtonWidget() {
+    register(
+      const WidgetDefinition(
+        type: 'TextButton',
+        category: WidgetCategory.input,
+        displayName: 'Text Button',
+        acceptsChildren: true,
+        maxChildren: 1,
+        iconName: 'touch_app',
+        description: 'A Material Design text button without elevation',
+        properties: [
+          PropertyDefinition(
+            name: 'onPressed',
+            type: PropertyType.bool_,
+            displayName: 'Enabled',
+            nullable: true,
+            defaultValue: true,
+            category: 'Behavior',
+            description:
+                'Whether the button is enabled (true) or disabled (false)',
+          ),
+          PropertyDefinition(
+            name: 'style',
+            type: PropertyType.enum_,
+            displayName: 'Style',
+            nullable: true,
+            category: 'Style',
+            description: 'Button style preset',
+            enumValues: [
+              'ButtonStyle.primary',
+              'ButtonStyle.secondary',
+              'ButtonStyle.error',
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _registerIconButtonWidget() {
+    register(
+      const WidgetDefinition(
+        type: 'IconButton',
+        category: WidgetCategory.input,
+        displayName: 'Icon Button',
+        acceptsChildren: false,
+        maxChildren: 0,
+        iconName: 'radio_button_checked',
+        description: 'A Material Design icon button',
+        properties: [
+          PropertyDefinition(
+            name: 'icon',
+            type: PropertyType.enum_,
+            displayName: 'Icon',
+            nullable: false,
+            defaultValue: 'Icons.add',
+            category: 'Content',
+            description: 'The icon to display',
+            enumValues: [
+              'Icons.star',
+              'Icons.favorite',
+              'Icons.home',
+              'Icons.settings',
+              'Icons.person',
+              'Icons.search',
+              'Icons.menu',
+              'Icons.close',
+              'Icons.add',
+              'Icons.remove',
+              'Icons.check',
+              'Icons.edit',
+              'Icons.delete',
+              'Icons.share',
+              'Icons.info',
+              'Icons.warning',
+              'Icons.error',
+              'Icons.help',
+              'Icons.arrow_back',
+              'Icons.arrow_forward',
+            ],
+          ),
+          PropertyDefinition(
+            name: 'iconSize',
+            type: PropertyType.double_,
+            displayName: 'Icon Size',
+            nullable: true,
+            category: 'Size',
+            description: 'Icon size in logical pixels',
+            min: 1,
+            max: 200,
+          ),
+          PropertyDefinition(
+            name: 'color',
+            type: PropertyType.color,
+            displayName: 'Color',
+            nullable: true,
+            category: 'Style',
+            description: 'Icon color',
+          ),
+          PropertyDefinition(
+            name: 'onPressed',
+            type: PropertyType.bool_,
+            displayName: 'Enabled',
+            nullable: true,
+            defaultValue: true,
+            category: 'Behavior',
+            description:
+                'Whether the button is enabled (true) or disabled (false)',
+          ),
+          PropertyDefinition(
+            name: 'tooltip',
+            type: PropertyType.string,
+            displayName: 'Tooltip',
+            nullable: true,
+            category: 'Content',
+            description: 'Tooltip text shown on hover',
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _registerPlaceholderWidget() {
+    register(
+      const WidgetDefinition(
+        type: 'Placeholder',
+        category: WidgetCategory.content,
+        displayName: 'Placeholder',
+        acceptsChildren: false,
+        maxChildren: 0,
+        iconName: 'crop_free',
+        description: 'A widget that draws a placeholder box',
+        properties: [
+          PropertyDefinition(
+            name: 'fallbackWidth',
+            type: PropertyType.double_,
+            displayName: 'Fallback Width',
+            nullable: true,
+            defaultValue: 400.0,
+            category: 'Size',
+            description: 'Width when unconstrained',
+            min: 0,
+          ),
+          PropertyDefinition(
+            name: 'fallbackHeight',
+            type: PropertyType.double_,
+            displayName: 'Fallback Height',
+            nullable: true,
+            defaultValue: 400.0,
+            category: 'Size',
+            description: 'Height when unconstrained',
+            min: 0,
+          ),
+          PropertyDefinition(
+            name: 'color',
+            type: PropertyType.color,
+            displayName: 'Color',
+            nullable: true,
+            category: 'Style',
+            description: 'Color of the placeholder lines',
+          ),
+          PropertyDefinition(
+            name: 'strokeWidth',
+            type: PropertyType.double_,
+            displayName: 'Stroke Width',
+            nullable: true,
+            defaultValue: 2.0,
+            category: 'Style',
+            description: 'Width of the placeholder lines',
+            min: 0,
           ),
         ],
       ),
