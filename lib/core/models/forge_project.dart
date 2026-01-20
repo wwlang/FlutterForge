@@ -8,7 +8,7 @@ part 'forge_project.g.dart';
 ///
 /// Holds all screens, design tokens, and project metadata.
 /// Serialized to .forge bundle for persistence.
-@freezed
+@Freezed(toJson: true, fromJson: true)
 class ForgeProject with _$ForgeProject {
   const factory ForgeProject({
     /// Unique project identifier (UUID).
@@ -35,7 +35,7 @@ class ForgeProject with _$ForgeProject {
 ///
 /// Each screen has its own widget tree and can generate
 /// a separate Dart file.
-@freezed
+@Freezed(toJson: true, fromJson: true)
 class ScreenDefinition with _$ScreenDefinition {
   const factory ScreenDefinition({
     /// Unique screen identifier (UUID).
@@ -57,7 +57,7 @@ class ScreenDefinition with _$ScreenDefinition {
 }
 
 /// Project metadata for versioning and tracking.
-@freezed
+@Freezed(toJson: true, fromJson: true)
 class ProjectMetadata with _$ProjectMetadata {
   const factory ProjectMetadata({
     /// Project creation timestamp.
