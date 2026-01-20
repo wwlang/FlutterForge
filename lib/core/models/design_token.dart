@@ -66,6 +66,12 @@ class DesignToken with _$DesignToken {
     /// Value for dark theme mode (int for color).
     dynamic darkValue,
 
+    /// High contrast value for light theme mode.
+    dynamic highContrastLightValue,
+
+    /// High contrast value for dark theme mode.
+    dynamic highContrastDarkValue,
+
     /// Typography value for typography tokens.
     TypographyValue? typography,
 
@@ -81,6 +87,8 @@ class DesignToken with _$DesignToken {
     required String name,
     required int lightValue,
     int? darkValue,
+    int? highContrastLightValue,
+    int? highContrastDarkValue,
   }) {
     return DesignToken(
       id: id,
@@ -88,6 +96,8 @@ class DesignToken with _$DesignToken {
       type: TokenType.color,
       lightValue: lightValue,
       darkValue: darkValue ?? lightValue,
+      highContrastLightValue: highContrastLightValue,
+      highContrastDarkValue: highContrastDarkValue,
     );
   }
 

@@ -33,6 +33,8 @@ _$DesignTokenImpl _$$DesignTokenImplFromJson(Map<String, dynamic> json) =>
       type: $enumDecode(_$TokenTypeEnumMap, json['type']),
       lightValue: json['lightValue'],
       darkValue: json['darkValue'],
+      highContrastLightValue: json['highContrastLightValue'],
+      highContrastDarkValue: json['highContrastDarkValue'],
       typography: json['typography'] == null
           ? null
           : TypographyValue.fromJson(
@@ -47,6 +49,8 @@ Map<String, dynamic> _$$DesignTokenImplToJson(_$DesignTokenImpl instance) =>
       'type': _$TokenTypeEnumMap[instance.type]!,
       'lightValue': instance.lightValue,
       'darkValue': instance.darkValue,
+      'highContrastLightValue': instance.highContrastLightValue,
+      'highContrastDarkValue': instance.highContrastDarkValue,
       'typography': instance.typography,
       'aliasOf': instance.aliasOf,
     };

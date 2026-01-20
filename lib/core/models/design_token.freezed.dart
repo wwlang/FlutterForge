@@ -306,6 +306,12 @@ mixin _$DesignToken {
   /// Value for dark theme mode (int for color).
   dynamic get darkValue => throw _privateConstructorUsedError;
 
+  /// High contrast value for light theme mode.
+  dynamic get highContrastLightValue => throw _privateConstructorUsedError;
+
+  /// High contrast value for dark theme mode.
+  dynamic get highContrastDarkValue => throw _privateConstructorUsedError;
+
   /// Typography value for typography tokens.
   TypographyValue? get typography => throw _privateConstructorUsedError;
 
@@ -334,6 +340,8 @@ abstract class $DesignTokenCopyWith<$Res> {
       TokenType type,
       dynamic lightValue,
       dynamic darkValue,
+      dynamic highContrastLightValue,
+      dynamic highContrastDarkValue,
       TypographyValue? typography,
       String? aliasOf});
 
@@ -360,6 +368,8 @@ class _$DesignTokenCopyWithImpl<$Res, $Val extends DesignToken>
     Object? type = null,
     Object? lightValue = freezed,
     Object? darkValue = freezed,
+    Object? highContrastLightValue = freezed,
+    Object? highContrastDarkValue = freezed,
     Object? typography = freezed,
     Object? aliasOf = freezed,
   }) {
@@ -383,6 +393,14 @@ class _$DesignTokenCopyWithImpl<$Res, $Val extends DesignToken>
       darkValue: freezed == darkValue
           ? _value.darkValue
           : darkValue // ignore: cast_nullable_to_non_nullable
+              as dynamic,
+      highContrastLightValue: freezed == highContrastLightValue
+          ? _value.highContrastLightValue
+          : highContrastLightValue // ignore: cast_nullable_to_non_nullable
+              as dynamic,
+      highContrastDarkValue: freezed == highContrastDarkValue
+          ? _value.highContrastDarkValue
+          : highContrastDarkValue // ignore: cast_nullable_to_non_nullable
               as dynamic,
       typography: freezed == typography
           ? _value.typography
@@ -424,6 +442,8 @@ abstract class _$$DesignTokenImplCopyWith<$Res>
       TokenType type,
       dynamic lightValue,
       dynamic darkValue,
+      dynamic highContrastLightValue,
+      dynamic highContrastDarkValue,
       TypographyValue? typography,
       String? aliasOf});
 
@@ -449,6 +469,8 @@ class __$$DesignTokenImplCopyWithImpl<$Res>
     Object? type = null,
     Object? lightValue = freezed,
     Object? darkValue = freezed,
+    Object? highContrastLightValue = freezed,
+    Object? highContrastDarkValue = freezed,
     Object? typography = freezed,
     Object? aliasOf = freezed,
   }) {
@@ -473,6 +495,14 @@ class __$$DesignTokenImplCopyWithImpl<$Res>
           ? _value.darkValue
           : darkValue // ignore: cast_nullable_to_non_nullable
               as dynamic,
+      highContrastLightValue: freezed == highContrastLightValue
+          ? _value.highContrastLightValue
+          : highContrastLightValue // ignore: cast_nullable_to_non_nullable
+              as dynamic,
+      highContrastDarkValue: freezed == highContrastDarkValue
+          ? _value.highContrastDarkValue
+          : highContrastDarkValue // ignore: cast_nullable_to_non_nullable
+              as dynamic,
       typography: freezed == typography
           ? _value.typography
           : typography // ignore: cast_nullable_to_non_nullable
@@ -494,6 +524,8 @@ class _$DesignTokenImpl extends _DesignToken {
       required this.type,
       this.lightValue,
       this.darkValue,
+      this.highContrastLightValue,
+      this.highContrastDarkValue,
       this.typography,
       this.aliasOf})
       : super._();
@@ -521,6 +553,14 @@ class _$DesignTokenImpl extends _DesignToken {
   @override
   final dynamic darkValue;
 
+  /// High contrast value for light theme mode.
+  @override
+  final dynamic highContrastLightValue;
+
+  /// High contrast value for dark theme mode.
+  @override
+  final dynamic highContrastDarkValue;
+
   /// Typography value for typography tokens.
   @override
   final TypographyValue? typography;
@@ -531,7 +571,7 @@ class _$DesignTokenImpl extends _DesignToken {
 
   @override
   String toString() {
-    return 'DesignToken(id: $id, name: $name, type: $type, lightValue: $lightValue, darkValue: $darkValue, typography: $typography, aliasOf: $aliasOf)';
+    return 'DesignToken(id: $id, name: $name, type: $type, lightValue: $lightValue, darkValue: $darkValue, highContrastLightValue: $highContrastLightValue, highContrastDarkValue: $highContrastDarkValue, typography: $typography, aliasOf: $aliasOf)';
   }
 
   @override
@@ -545,6 +585,10 @@ class _$DesignTokenImpl extends _DesignToken {
             const DeepCollectionEquality()
                 .equals(other.lightValue, lightValue) &&
             const DeepCollectionEquality().equals(other.darkValue, darkValue) &&
+            const DeepCollectionEquality()
+                .equals(other.highContrastLightValue, highContrastLightValue) &&
+            const DeepCollectionEquality()
+                .equals(other.highContrastDarkValue, highContrastDarkValue) &&
             (identical(other.typography, typography) ||
                 other.typography == typography) &&
             (identical(other.aliasOf, aliasOf) || other.aliasOf == aliasOf));
@@ -559,6 +603,8 @@ class _$DesignTokenImpl extends _DesignToken {
       type,
       const DeepCollectionEquality().hash(lightValue),
       const DeepCollectionEquality().hash(darkValue),
+      const DeepCollectionEquality().hash(highContrastLightValue),
+      const DeepCollectionEquality().hash(highContrastDarkValue),
       typography,
       aliasOf);
 
@@ -585,6 +631,8 @@ abstract class _DesignToken extends DesignToken {
       required final TokenType type,
       final dynamic lightValue,
       final dynamic darkValue,
+      final dynamic highContrastLightValue,
+      final dynamic highContrastDarkValue,
       final TypographyValue? typography,
       final String? aliasOf}) = _$DesignTokenImpl;
   const _DesignToken._() : super._();
@@ -611,6 +659,14 @@ abstract class _DesignToken extends DesignToken {
   /// Value for dark theme mode (int for color).
   @override
   dynamic get darkValue;
+
+  /// High contrast value for light theme mode.
+  @override
+  dynamic get highContrastLightValue;
+
+  /// High contrast value for dark theme mode.
+  @override
+  dynamic get highContrastDarkValue;
 
   /// Typography value for typography tokens.
   @override
