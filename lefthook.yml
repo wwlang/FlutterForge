@@ -1,0 +1,46 @@
+# Lefthook configuration for Flutter projects
+# Runs format + analyze on staged files before commit
+# Runs full analyze + tests before push (mirrors CI)
+#
+# Setup for new projects:
+#   1. Copy this file to project root as lefthook.yml
+#   2. Run: lefthook install
+#
+# Requires: lefthook (brew install lefthook)
+
+pre-commit:
+  parallel: true
+  commands:
+    dart-format:
+      glob: "*.dart"
+      run: dart format --set-exit-if-changed {staged_files}
+      fail_text: |
+        Formatting issues found. Run:
+          dart format lib/
+        Then stage the changes and commit again.
+
+    flutter-analyze:
+      glob: "*.dart"
+      run: flutter analyze --no-fatal-infos {staged_files}
+      fail_text: |
+        Analysis issues found. Fix the errors above and try again.
+
+# Pre-push: Mirror CI checks to prevent local/remote divergence
+pre-push:
+  parallel: false
+  commands:
+    # Run full analyze (not just staged files) - matches CI
+    flutter-analyze-full:
+      run: flutter analyze --no-fatal-infos lib/
+      fail_text: |
+        Analysis failed. Run locally:
+          flutter analyze lib/
+        Fix all issues before pushing.
+
+    # Run tests - matches CI
+    flutter-test:
+      run: flutter test
+      fail_text: |
+        Tests failed. Run locally:
+          flutter test
+        Fix all failing tests before pushing.

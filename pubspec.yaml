@@ -1,0 +1,61 @@
+name: flutter_forge
+description: "Visual Flutter UI builder with clean code export"
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.3.0
+  flutter: ">=3.19.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # State Management
+  flutter_riverpod: ^2.6.1
+  riverpod_annotation: ^2.6.1
+
+  # Data Classes
+  freezed_annotation: ^2.4.4
+  json_annotation: ^4.9.0
+
+  # Code Generation (for generated Dart output)
+  code_builder: ^4.10.1
+  dart_style: ^3.1.1
+
+  # Navigation
+  go_router: ^14.6.2
+
+  # File System
+  file_picker: ^8.1.7
+  path_provider: ^2.1.5
+  path: ^1.9.1
+
+  # Archive (for .forge bundles)
+  archive: ^4.0.2
+
+  # Secure Storage (for macOS bookmarks)
+  flutter_secure_storage: ^9.2.3
+
+  # Utilities
+  uuid: ^4.5.1
+  collection: ^1.19.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # Linting
+  very_good_analysis: ^6.0.0
+
+  # Code Generation
+  build_runner: ^2.4.14
+  freezed: ^2.5.7
+  json_serializable: ^6.9.0
+  riverpod_generator: ^2.6.3
+
+  # Testing
+  mocktail: ^1.0.4
+
+flutter:
+  uses-material-design: true
