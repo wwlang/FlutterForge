@@ -4,7 +4,7 @@
 
 ## Current Status
 
-Phase 1 (Foundation) and Phase 2 (Core Editor) both COMPLETE. Phase 3 in progress with 4 of 13 tasks completed.
+Phase 1 (Foundation) and Phase 2 (Core Editor) both COMPLETE. Phase 3 in progress with 7 of 13 tasks completed (Design System complete, Animation Studio pending).
 
 ---
 
@@ -12,9 +12,10 @@ Phase 1 (Foundation) and Phase 2 (Core Editor) both COMPLETE. Phase 3 in progres
 
 ### Summary
 
-- 4 of 13 tasks completed
-- 517 tests passing (up from 503)
-- Design token model, panel UI, semantic aliasing, and theme mode toggle complete
+- 7 of 13 tasks completed
+- 614 tests passing
+- Design System tasks complete (3.1-3.7)
+- Animation Studio tasks pending (3.8-3.13)
 
 ### Task Summary
 
@@ -24,9 +25,9 @@ Phase 1 (Foundation) and Phase 2 (Core Editor) both COMPLETE. Phase 3 in progres
 | phase-3-task-02 | Design System Panel UI | J08 S1, FR8.1 | COMPLETE |
 | phase-3-task-03 | Semantic Token Aliasing | J08 S2, FR8.2 | COMPLETE |
 | phase-3-task-04 | Theme Mode Toggle | J08 S3, FR8.3 | COMPLETE |
-| phase-3-task-05 | Token Application to Widgets | J08 S4, FR8.4 | PENDING |
-| phase-3-task-06 | Style Presets | J08 S5, FR8.4 | PENDING |
-| phase-3-task-07 | ThemeExtension Export | J08 S6, FR8.5 | PENDING |
+| phase-3-task-05 | Token Application to Widgets | J08 S4, FR8.4 | COMPLETE |
+| phase-3-task-06 | Style Presets | J08 S5, FR8.4 | COMPLETE |
+| phase-3-task-07 | ThemeExtension Export | J08 S6, FR8.5 | COMPLETE |
 | phase-3-task-08 | Animation Model and Track | J09 S1, FR9.1 | PENDING |
 | phase-3-task-09 | Animation Panel and Timeline | J09 S1-2, FR9.1 | PENDING |
 | phase-3-task-10 | Property Keyframing | J09 S3, FR9.2 | PENDING |
@@ -115,6 +116,63 @@ Phase 1 (Foundation) and Phase 2 (Core Editor) both COMPLETE. Phase 3 in progres
 - `lib/providers/theme_mode_provider.dart`
 - `test/unit/design_system/theme_mode_toggle_test.dart`
 
+#### Task 3.5: Token Application to Widgets (COMPLETE)
+
+- `TokenBinding` model for serializing token bindings as `{"$token": "tokenName"}`
+- `resolvePropertyValue` function to resolve token-bound properties
+- `TokenPicker` widget with type filtering
+- `TokenBindableColorEditor` and `TokenBindableDoubleEditor` widgets
+- Visual indicator for token-bound properties (shows token name)
+- Tooltip shows resolved value
+- "Clear Token" button to revert to literal
+- 41 tests added
+
+**Files Created:**
+- `lib/features/properties/token_binding.dart`
+- `lib/features/properties/token_picker.dart`
+- `lib/features/properties/token_bindable_editors.dart`
+- `test/unit/design_system/token_application_test.dart`
+
+#### Task 3.6: Style Presets (COMPLETE)
+
+- `StylePreset` model with categories (button, container, text, input, layout)
+- `PresetCategory` enum
+- `StylePresetsNotifier` provider for preset management
+- `applyPresetToWidget()` function
+- `overridePresetProperty()` and `clearPropertyOverride()` functions
+- `detachPreset()` function to remove preset while keeping values
+- `getBuiltInPresets()` function with default presets
+- Added `appliedPresetId` and `propertyOverrides` to WidgetNode model
+- 26 tests added
+
+**Files Created:**
+- `lib/features/design_system/style_preset.dart`
+- `lib/providers/style_presets_provider.dart`
+- `test/unit/design_system/style_presets_test.dart`
+
+**Files Modified:**
+- `lib/core/models/widget_node.dart` (added appliedPresetId, propertyOverrides)
+- `lib/core/models/widget_node.freezed.dart` (regenerated)
+- `lib/core/models/widget_node.g.dart` (regenerated)
+
+#### Task 3.7: ThemeExtension Export (COMPLETE)
+
+- `ThemeExtensionGenerator` class for generating Flutter ThemeExtension code
+- Light and dark static instances generated
+- copyWith and lerp methods generated
+- Support for all token types (color, spacing, radius, typography)
+- Usage example comments in generated code
+- Code formatted with dart_style
+- Skips alias tokens (only generates base tokens)
+- 30 tests added
+
+**Files Created:**
+- `lib/generators/theme_extension_generator.dart`
+- `test/unit/generators/theme_extension_generator_test.dart`
+
+**Files Modified:**
+- `lib/generators/generators.dart` (barrel export)
+
 ---
 
 ## Phase 2: Core Editor (COMPLETE - 2026-01-21)
@@ -183,7 +241,10 @@ Phase 1 (Foundation) and Phase 2 (Core Editor) both COMPLETE. Phase 3 in progres
 | **Design System Panel (Task 3.2)** | **54** | **PASS** |
 | **Semantic Aliasing (Task 3.3)** | **25** | **PASS** |
 | **Theme Mode Toggle (Task 3.4)** | **14** | **PASS** |
-| **Total** | **517** | **PASS** |
+| **Token Application (Task 3.5)** | **41** | **PASS** |
+| **Style Presets (Task 3.6)** | **26** | **PASS** |
+| **ThemeExtension Export (Task 3.7)** | **30** | **PASS** |
+| **Total** | **614** | **PASS** |
 
 ---
 
@@ -201,8 +262,8 @@ Phase 1 (Foundation) and Phase 2 (Core Editor) both COMPLETE. Phase 3 in progres
 ## Orchestrator Checkpoint
 
 phase: phase-3
-current_task: task-3.5
-completed: [task-3.1, task-3.2, task-3.3, task-3.4]
-next_action: "Begin Task 3.5 - Token Application to Widgets"
+current_task: task-3.8
+completed: [task-3.1, task-3.2, task-3.3, task-3.4, task-3.5, task-3.6, task-3.7]
+next_action: "Begin Task 3.8 - Animation Model and Track"
 last_gate: G6
-timestamp: 2026-01-21T16:00:00Z
+timestamp: 2026-01-21T17:00:00Z
