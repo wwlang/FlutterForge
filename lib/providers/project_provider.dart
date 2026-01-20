@@ -14,6 +14,14 @@ class ProjectNotifier extends StateNotifier<ProjectState> {
 
   static const _uuid = Uuid();
 
+  /// Sets the project state directly.
+  ///
+  /// Used by CommandNotifier to apply command results.
+  // ignore: use_setters_to_change_properties
+  void setState(ProjectState newState) {
+    state = newState;
+  }
+
   /// Adds a widget to the project at the root level.
   void addWidget({
     required String type,
