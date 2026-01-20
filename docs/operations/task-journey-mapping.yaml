@@ -1,0 +1,319 @@
+# Task-Journey Mapping
+# Maps each task to user journey acceptance criteria for traceability
+
+version: "1.0"
+last_updated: "2026-01-21"
+
+journeys:
+  J01:
+    name: "First Time Export"
+    file: "../journeys/core/first-time-export.md"
+  J02:
+    name: "Widget Palette"
+    file: "../journeys/editor/widget-palette.md"
+  J03:
+    name: "Design Canvas"
+    file: "../journeys/editor/design-canvas.md"
+  J04:
+    name: "Widget Tree"
+    file: "../journeys/editor/widget-tree.md"
+  J05:
+    name: "Properties Panel"
+    file: "../journeys/editor/properties-panel.md"
+  J06:
+    name: "Code Generation"
+    file: "../journeys/export/code-generation.md"
+  J07:
+    name: "Edit Operations"
+    file: "../journeys/editor/edit-operations.md"
+
+# Phase 1 Tasks (COMPLETE)
+phase_1:
+  - task_id: phase-1-task-01
+    name: "Widget Registry System"
+    status: COMPLETE
+    journey: J02
+    stages: [S1, S4]
+    requirements: [FR1.1, FR1.2]
+    acceptance_criteria:
+      - "J02-S1: Categories display Layout, Content"
+      - "J02-S4: Widget has type, category, properties"
+
+  - task_id: phase-1-task-02
+    name: "Widget Palette UI"
+    status: COMPLETE
+    journey: J02
+    stages: [S1, S2, S3, S4]
+    requirements: [FR1.1, FR1.2, FR1.3, FR1.4]
+    acceptance_criteria:
+      - "J02-S1: Categorized widget list with collapsible headers"
+      - "J02-S4: Drag initiates with pointer anchor, preview follows cursor"
+
+  - task_id: phase-1-task-03
+    name: "Basic Canvas"
+    status: COMPLETE
+    journey: J03
+    stages: [S1, S2, S3]
+    requirements: [FR2.1, FR2.2, FR2.4, FR2.5]
+    acceptance_criteria:
+      - "J03-S1: Drop zone indicator on drag enter"
+      - "J03-S1: Widget renders at drop location"
+      - "J03-S3: Selection overlay on selected widget"
+      - "J03-S3: Click-to-select identifies correct widget"
+
+  - task_id: phase-1-task-04
+    name: "Single-Level Widget Insertion"
+    status: COMPLETE
+    journey: J03
+    stages: [S2]
+    requirements: [FR2.3]
+    acceptance_criteria:
+      - "J03-S2: Nested drop zone appears inside Container"
+      - "J03-S2: Single-child containers reject second child"
+
+  - task_id: phase-1-task-05
+    name: "Properties Panel"
+    status: COMPLETE
+    journey: J05
+    stages: [S1, S2, S4]
+    requirements: [FR4.1, FR4.2, FR4.4, FR4.5]
+    acceptance_criteria:
+      - "J05-S1: Panel shows properties for selected widget"
+      - "J05-S2: Editable types: String, double, int, bool, Color"
+      - "J05-S4: Canvas updates within 16ms of property change"
+
+  - task_id: phase-1-task-06
+    name: "Code Generation"
+    status: COMPLETE
+    journey: J06
+    stages: [S1, S3]
+    requirements: [FR5.1, FR5.2, FR5.3, FR5.6]
+    acceptance_criteria:
+      - "J06-S1: Valid, compilable Dart code output"
+      - "J06-S3: StatelessWidget structure generated"
+      - "J06-S3: Copy to clipboard works"
+
+  - task_id: phase-1-task-07
+    name: "App Shell Integration"
+    status: COMPLETE
+    journey: J01
+    stages: [all]
+    requirements: [NFR3.1]
+    acceptance_criteria:
+      - "J01: First export achievable within 5 minutes"
+      - "J01: 3-panel layout (palette, canvas, properties)"
+
+# Phase 2 Tasks (IN PROGRESS)
+phase_2:
+  - task_id: phase-2-task-01
+    name: "Command Pattern Foundation"
+    status: PENDING
+    journey: J07
+    stages: [S1, S2]
+    requirements: [FR7.1]
+    acceptance_criteria:
+      - "J07-CMD: Command has execute() and undo() methods"
+      - "J07-CMD: Undo stack limit 100 actions"
+      - "J07-CMD: Redo stack clears on new action"
+    deliverables:
+      - "lib/commands/command.dart"
+      - "lib/commands/command_processor.dart"
+      - "lib/commands/add_widget_command.dart"
+      - "lib/commands/delete_widget_command.dart"
+      - "lib/commands/property_change_command.dart"
+      - "lib/commands/move_widget_command.dart"
+
+  - task_id: phase-2-task-02
+    name: "Undo/Redo Provider Integration"
+    status: PENDING
+    journey: J07
+    stages: [S1, S2]
+    requirements: [FR7.1]
+    depends_on: [phase-2-task-01]
+    acceptance_criteria:
+      - "J07-S1: Undo property change reverts to previous value"
+      - "J07-S1: Undo widget add removes widget"
+      - "J07-S1: Undo widget delete restores widget with children"
+      - "J07-S2: Redo restores undone change"
+      - "J07-S2: Menu shows 'Undo: [action]' label"
+    deliverables:
+      - "lib/providers/command_provider.dart"
+      - "Edit menu integration"
+      - "Keyboard shortcuts"
+
+  - task_id: phase-2-task-03
+    name: "Widget Tree Panel UI"
+    status: PENDING
+    journey: J04
+    stages: [S1]
+    requirements: [FR3.1, FR3.5]
+    acceptance_criteria:
+      - "J04-S1: Tree shows root widget as top node"
+      - "J04-S1: Children indented under parents"
+      - "J04-S1: Expandable nodes show expand/collapse controls"
+      - "J04-S1: Keyboard Right arrow expands, Left collapses"
+      - "J04-S1: Tree render <50ms after state change"
+    deliverables:
+      - "lib/features/tree/widget_tree_panel.dart"
+      - "lib/features/tree/tree_node.dart"
+
+  - task_id: phase-2-task-04
+    name: "Widget Tree Selection Sync"
+    status: PENDING
+    journey: J04
+    stages: [S2]
+    requirements: [FR3.2]
+    depends_on: [phase-2-task-03]
+    acceptance_criteria:
+      - "J04-S2: Click tree node selects widget"
+      - "J04-S2: Canvas overlay appears on corresponding widget"
+      - "J04-S2: Canvas click highlights tree node"
+      - "J04-S2: Collapsed parent auto-expands if child selected"
+      - "J04-S2: Selection sync <16ms tree-to-canvas"
+    deliverables:
+      - "Selection sync integration"
+      - "Auto-expand logic"
+      - "Scroll-into-view"
+
+  - task_id: phase-2-task-05
+    name: "Widget Tree Drag Reorder"
+    status: PENDING
+    journey: J04
+    stages: [S3]
+    requirements: [FR3.3]
+    depends_on: [phase-2-task-04, phase-2-task-01]
+    acceptance_criteria:
+      - "J04-S3: Reorder within same parent works"
+      - "J04-S3: Move to different parent works"
+      - "J04-S3: Invalid target shows rejection with tooltip"
+      - "J04-S3: Escape cancels drag"
+      - "J04-S3: Uses MoveWidgetCommand for undo"
+    deliverables:
+      - "Tree drag-drop implementation"
+      - "Drop target validation"
+      - "Canvas sync after reorder"
+
+  - task_id: phase-2-task-06
+    name: "Widget Tree Context Menu"
+    status: PENDING
+    journey: J04
+    stages: [S4]
+    requirements: [FR3.4]
+    depends_on: [phase-2-task-04, phase-2-task-01]
+    acceptance_criteria:
+      - "J04-S4: Delete leaf widget removes it"
+      - "J04-S4: Delete with children shows confirmation"
+      - "J04-S4: Context menu shows Cut, Copy, Paste, Delete, Wrap in..."
+      - "J04-S4: Uses DeleteWidgetCommand for undo"
+    deliverables:
+      - "lib/features/tree/tree_context_menu.dart"
+      - "Delete confirmation dialog"
+
+  - task_id: phase-2-task-07
+    name: "Multi-Level Nested Drop Zones"
+    status: PENDING
+    journey: J03
+    stages: [S2]
+    requirements: [FR2.3]
+    depends_on: [phase-2-task-01]
+    acceptance_criteria:
+      - "J03-S2: Drop into nested containers works (depth 3+)"
+      - "J03-S2: Insertion indicators between children"
+      - "J03-S2: Single-child container rejects if has child"
+      - "J03-S2: Expanded rejected by non-Flex containers"
+      - "J03-S2: Uses AddWidgetCommand for undo"
+    deliverables:
+      - "Enhanced NestedDropZone"
+      - "Insertion indicators"
+      - "Parent-child validation"
+
+  - task_id: phase-2-task-08
+    name: "Canvas Widget Reordering"
+    status: PENDING
+    journey: J03
+    stages: [S4]
+    requirements: [FR2.6]
+    depends_on: [phase-2-task-07, phase-2-task-01]
+    acceptance_criteria:
+      - "J03-S4: Drag widget within Row/Column shows reorder indicators"
+      - "J03-S4: Siblings animate to show gap"
+      - "J03-S4: Drop at original position is no-op"
+      - "J03-S4: Uses MoveWidgetCommand for undo"
+    deliverables:
+      - "Canvas reorder drag handlers"
+      - "Animated gap preview"
+
+  - task_id: phase-2-task-09
+    name: "Widget Registry Expansion - Layout"
+    status: PENDING
+    journey: J02
+    stages: [S1]
+    requirements: [FR1.1]
+    acceptance_criteria:
+      - "J02-S1: Stack, Expanded, Flexible, Padding, Center, Align registered"
+      - "J02-S1: Expanded/Flexible have Flex parent constraint"
+      - "J02-S1: Widgets appear in Layout category"
+    deliverables:
+      - "Stack widget definition"
+      - "Expanded widget definition"
+      - "Flexible widget definition"
+      - "Padding widget definition"
+      - "Center widget definition"
+      - "Align widget definition"
+
+  - task_id: phase-2-task-10
+    name: "Widget Registry Expansion - Content"
+    status: PENDING
+    journey: J02
+    stages: [S1]
+    requirements: [FR1.1]
+    acceptance_criteria:
+      - "J02-S1: Icon, Image, Divider, Spacer registered"
+      - "J02-S1: Spacer has Flex parent constraint"
+    deliverables:
+      - "Icon widget definition"
+      - "Image widget definition"
+      - "Divider widget definition"
+      - "Spacer widget definition"
+
+  - task_id: phase-2-task-11
+    name: "Widget Registry Expansion - Input"
+    status: PENDING
+    journey: J02
+    stages: [S1]
+    requirements: [FR1.1]
+    acceptance_criteria:
+      - "J02-S1: ElevatedButton, TextButton, IconButton, Placeholder registered"
+      - "J02-S1: Input category added to enum"
+    deliverables:
+      - "ElevatedButton widget definition"
+      - "TextButton widget definition"
+      - "IconButton widget definition"
+      - "Placeholder widget definition"
+      - "Input category"
+
+  - task_id: phase-2-task-12
+    name: "Code Generation Updates"
+    status: PENDING
+    journey: J06
+    stages: [S1, S3]
+    requirements: [FR5.1, FR5.2]
+    depends_on: [phase-2-task-09, phase-2-task-10, phase-2-task-11]
+    acceptance_criteria:
+      - "J06-S1: Valid Dart code for all 15+ widgets"
+      - "J06-S1: Proper import statements"
+      - "J06-S3: Button callbacks generate as empty closures"
+      - "J06-S3: Generation <500ms for 100 widgets"
+    deliverables:
+      - "Widget code generators for Phase 2 widgets"
+      - "Icon data generation"
+      - "Button callback generation"
+
+# Widget Inventory
+widget_inventory:
+  phase_1_widgets: ["Container", "Text", "Row", "Column", "SizedBox"]
+  phase_2_widgets:
+    layout: ["Stack", "Expanded", "Flexible", "Padding", "Center", "Align", "Spacer"]
+    content: ["Icon", "Image", "Divider", "Placeholder"]
+    input: ["ElevatedButton", "TextButton", "IconButton"]
+  total_after_phase_2: 19

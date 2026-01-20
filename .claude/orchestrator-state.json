@@ -1,15 +1,38 @@
 {
   "version": "1.0",
   "project": "FlutterForge",
-  "current_phase": 1,
-  "phase_name": "Foundation",
-  "phase_status": "COMPLETE",
+  "current_phase": 2,
+  "phase_name": "Core Editor",
+  "phase_status": "IN_PROGRESS",
   "current_task": null,
   "phase": {
-    "total_tasks": 7,
-    "tasks_complete": 7,
-    "started_at": "2026-01-21T00:00:00Z",
-    "completed_at": "2026-01-21T16:00:00Z"
+    "total_tasks": 12,
+    "tasks_complete": 0,
+    "started_at": "2026-01-21T17:00:00Z",
+    "completed_at": null
+  },
+  "task_queue": [
+    "phase-2-task-01",
+    "phase-2-task-02",
+    "phase-2-task-03",
+    "phase-2-task-04",
+    "phase-2-task-05",
+    "phase-2-task-06",
+    "phase-2-task-07",
+    "phase-2-task-08",
+    "phase-2-task-09",
+    "phase-2-task-10",
+    "phase-2-task-11",
+    "phase-2-task-12"
+  ],
+  "task_dependencies": {
+    "phase-2-task-02": ["phase-2-task-01"],
+    "phase-2-task-04": ["phase-2-task-03"],
+    "phase-2-task-05": ["phase-2-task-04", "phase-2-task-01"],
+    "phase-2-task-06": ["phase-2-task-04", "phase-2-task-01"],
+    "phase-2-task-07": ["phase-2-task-01"],
+    "phase-2-task-08": ["phase-2-task-07", "phase-2-task-01"],
+    "phase-2-task-12": ["phase-2-task-09", "phase-2-task-10", "phase-2-task-11"]
   },
   "dispatch_history": [
     {
@@ -60,8 +83,15 @@
       "status": "SUCCESS",
       "duration_seconds": 380,
       "completed_at": "2026-01-21T00:00:00Z"
+    },
+    {
+      "task_id": "phase-2-planning",
+      "agent": "planning",
+      "status": "SUCCESS",
+      "duration_seconds": 120,
+      "completed_at": "2026-01-21T17:00:00Z"
     }
   ],
   "retry_counts": {},
-  "last_updated": "2026-01-21T16:00:00Z"
+  "last_updated": "2026-01-21T17:00:00Z"
 }

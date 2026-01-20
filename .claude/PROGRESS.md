@@ -4,16 +4,49 @@
 
 ## Orchestrator Checkpoint
 
-phase: phase-1
-current_task: null
-completed: [task-1.1, task-1.2, task-1.3, task-1.4, task-1.5, task-1.6, task-1.7]
-next_action: "Phase 1 complete - ready for validation and archival"
-last_gate: G5
-timestamp: 2026-01-21T16:00:00Z
+phase: phase-2
+current_task: phase-2-task-01
+completed: []
+next_action: "Implement Command Pattern Foundation - TDD RED phase"
+last_gate: G2
+timestamp: 2026-01-21T18:00:00Z
 
 ## Current Status
 
-Phase 1 (Foundation) is COMPLETE. All 7 tasks implemented with 109 passing tests.
+Phase 1 (Foundation) COMPLETE. Phase 2 (Core Editor) in progress - starting Task 2.1.
+
+---
+
+## Phase 2: Core Editor (IN PROGRESS - 2026-01-21)
+
+### Phase 2 Overview
+
+**Milestone:** Advanced drag-drop, widget tree panel, expanded widget library, undo/redo
+
+**Primary Journeys:**
+- J03 (Design Canvas) - Nested drop zones, widget reordering
+- J04 (Widget Tree) - Tree panel, selection sync, drag reorder, delete
+- J02 (Widget Palette) - Expanded widget categories
+- J07 (Edit Operations) - Undo/redo command system
+
+### Task Summary
+
+| Task ID | Description | Journey AC | Status |
+|---------|-------------|------------|--------|
+| phase-2-task-01 | Command Pattern Foundation | J07 S1-2 | IN PROGRESS |
+| phase-2-task-02 | Undo/Redo Provider Integration | J07 S1-2, FR7.1 | PENDING |
+| phase-2-task-03 | Widget Tree Panel UI | J04 S1, FR3.1, FR3.5 | PENDING |
+| phase-2-task-04 | Widget Tree Selection Sync | J04 S2, FR3.2 | PENDING |
+| phase-2-task-05 | Widget Tree Drag Reorder | J04 S3, FR3.3 | PENDING |
+| phase-2-task-06 | Widget Tree Context Menu | J04 S4, FR3.4 | PENDING |
+| phase-2-task-07 | Multi-Level Nested Drop Zones | J03 S2, FR2.3 | PENDING |
+| phase-2-task-08 | Canvas Widget Reordering | J03 S4, FR2.6 | PENDING |
+| phase-2-task-09 | Widget Registry Expansion (Layout) | J02 S1, FR1.1 | PENDING |
+| phase-2-task-10 | Widget Registry Expansion (Content) | J02 S1, FR1.1 | PENDING |
+| phase-2-task-11 | Widget Registry Expansion (Input) | J02 S1, FR1.1 | PENDING |
+| phase-2-task-12 | Code Generation Updates | J06, FR5.1 | PENDING |
+
+---
 
 ## Phase 1: Foundation (COMPLETE - 2026-01-21)
 
@@ -185,8 +218,4 @@ Phase 1 (Foundation) is COMPLETE. All 7 tasks implemented with 109 passing tests
 
 ## Next Steps
 
-Phase 2: Core Editor (planned for Weeks 4-6)
-- Nested DnD with multi-level drop zones
-- Widget tree panel with drag reorder
-- 15+ widgets
-- Undo/Redo command system
+Phase 2: Core Editor - Task 2.1 (Command Pattern Foundation) in progress

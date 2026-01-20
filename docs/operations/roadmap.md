@@ -4,7 +4,7 @@
 
 ## Overview
 
-This roadmap tracks implementation tasks for FlutterForge Phase 1: Foundation. Each task maps to user journey acceptance criteria for traceability.
+This roadmap tracks implementation tasks for FlutterForge. Each task maps to user journey acceptance criteria for traceability.
 
 ---
 
@@ -12,226 +12,457 @@ This roadmap tracks implementation tasks for FlutterForge Phase 1: Foundation. E
 
 **Milestone:** Drag Container with Text child, edit padding, export basic code
 
-### Task 1.1: Widget Registry System
+**Completed:** 2026-01-21 | **Tasks:** 7/7 | **Tests:** 109
+
+See `.claude/PROGRESS.md` for detailed Phase 1 completion records.
+
+| Task ID | Description | Status |
+|---------|-------------|--------|
+| phase-1-task-01 | Widget Registry System | COMPLETE |
+| phase-1-task-02 | Widget Palette UI | COMPLETE |
+| phase-1-task-03 | Basic Canvas | COMPLETE |
+| phase-1-task-04 | Single-Level Widget Insertion | COMPLETE |
+| phase-1-task-05 | Properties Panel | COMPLETE |
+| phase-1-task-06 | Code Generation | COMPLETE |
+| phase-1-task-07 | App Shell Integration | COMPLETE |
+
+---
+
+## Phase 2: Core Editor (IN PROGRESS)
+
+**Milestone:** Widget tree panel, undo/redo, 15+ widgets, multi-level drag-drop
+
+### Task 2.1: Command Pattern Foundation
 
 | Field | Value |
 |-------|-------|
-| ID | phase-1-task-01 |
-| Status | COMPLETE |
+| ID | phase-2-task-01 |
+| Status | PENDING |
 | Priority | P0 |
-| Journey AC | J02 (Widget Palette) Stage 1, Stage 4 |
-| Requirements | FR1.1, FR1.2 |
+| Journey AC | J07 (Edit Operations) S1-2, Command Pattern Reference |
+| Requirements | FR7.1 |
+| Location | `lib/commands/` |
+
+**Deliverables:**
+- [ ] `Command` abstract base class with `execute()` and `undo()` methods
+- [ ] `CommandProcessor` for managing undo/redo stacks
+- [ ] `AddWidgetCommand` for widget insertion
+- [ ] `DeleteWidgetCommand` for widget removal
+- [ ] `PropertyChangeCommand` for property modifications
+- [ ] `MoveWidgetCommand` for reordering/reparenting
+
+**Acceptance Criteria (from J07 Command Pattern Reference):**
+- [ ] Each command implements `execute()` and `undo()` methods
+- [ ] Commands are serializable for future persistence
+- [ ] Undo stack limit of 100 actions
+- [ ] Oldest undo discarded when limit exceeded
+- [ ] Redo stack clears on new action
+- [ ] Tests: Command execution and reversal for all command types
+
+---
+
+### Task 2.2: Undo/Redo Provider Integration
+
+| Field | Value |
+|-------|-------|
+| ID | phase-2-task-02 |
+| Status | PENDING |
+| Priority | P0 |
+| Journey AC | J07 (Edit Operations) S1 (Undo), S2 (Redo) |
+| Requirements | FR7.1 |
+| Depends On | phase-2-task-01 |
+| Location | `lib/providers/` |
+
+**Deliverables:**
+- [ ] `CommandProvider` Riverpod provider for command processor
+- [ ] Integration with `ProjectProvider` for state changes
+- [ ] Undo keyboard shortcut: Cmd/Ctrl+Z
+- [ ] Redo keyboard shortcut: Cmd/Ctrl+Shift+Z
+- [ ] Edit menu Undo/Redo items with action labels
+
+**Acceptance Criteria (from J07 S1-S2):**
+- [ ] Undo property change reverts to previous value (S1)
+- [ ] Undo widget add removes widget (S1)
+- [ ] Undo widget delete restores widget with children (S1)
+- [ ] Undo move restores original position (S1)
+- [ ] Redo restores undone change (S2)
+- [ ] Redo chain: 3 undos + 3 redos returns to original state (S2)
+- [ ] New action clears redo stack (S2)
+- [ ] Menu shows "Undo: [action]" label (S1)
+- [ ] Response: <50ms state update (NFR)
+- [ ] Tests: Undo/redo cycles for all command types
+
+---
+
+### Task 2.3: Widget Tree Panel UI
+
+| Field | Value |
+|-------|-------|
+| ID | phase-2-task-03 |
+| Status | PENDING |
+| Priority | P0 |
+| Journey AC | J04 (Widget Tree) S1 |
+| Requirements | FR3.1, FR3.5 |
+| Location | `lib/features/tree/` |
+
+**Deliverables:**
+- [ ] `WidgetTreePanel` component with hierarchical display
+- [ ] `TreeNode` widget with expand/collapse toggle
+- [ ] Indentation for parent-child relationships (16-20px per level)
+- [ ] Widget type icons and names per node
+- [ ] Expand All / Collapse All context menu options
+
+**Acceptance Criteria (from J04 S1):**
+- [ ] Tree shows root widget as top node (FR3.1)
+- [ ] Children indented under parents
+- [ ] Expandable nodes show expand/collapse controls (FR3.5)
+- [ ] Node shows widget type icon and name
+- [ ] Expand/collapse toggles children visibility
+- [ ] Keyboard: Right arrow expands, Left arrow collapses
+- [ ] Empty canvas shows "No widgets" placeholder
+- [ ] Tree render: <50ms after state change (NFR)
+- [ ] Node height: minimum 28px for touch target
+- [ ] Tests: Tree rendering, expand/collapse behavior
+
+---
+
+### Task 2.4: Widget Tree Selection Sync
+
+| Field | Value |
+|-------|-------|
+| ID | phase-2-task-04 |
+| Status | PENDING |
+| Priority | P0 |
+| Journey AC | J04 (Widget Tree) S2 |
+| Requirements | FR3.2 |
+| Depends On | phase-2-task-03 |
+| Location | `lib/features/tree/` |
+
+**Deliverables:**
+- [ ] Tree node click updates selection state
+- [ ] Selection state syncs to canvas overlay
+- [ ] Canvas selection syncs to tree highlight
+- [ ] Auto-expand collapsed parents when child selected via canvas
+- [ ] Scroll-into-view for selected node if needed
+
+**Acceptance Criteria (from J04 S2):**
+- [ ] Click tree node selects widget (FR3.2)
+- [ ] Canvas overlay appears on corresponding widget (FR3.2)
+- [ ] Properties panel updates to show selected widget
+- [ ] Canvas click highlights corresponding tree node
+- [ ] Collapsed parent auto-expands if child selected
+- [ ] Tree scrolls to make selected node visible
+- [ ] Keyboard Up/Down moves selection between nodes
+- [ ] Selection sync: <16ms tree-to-canvas, <50ms canvas-to-tree (NFR)
+- [ ] Tests: Bidirectional selection sync
+
+---
+
+### Task 2.5: Widget Tree Drag Reorder
+
+| Field | Value |
+|-------|-------|
+| ID | phase-2-task-05 |
+| Status | PENDING |
+| Priority | P1 |
+| Journey AC | J04 (Widget Tree) S3 |
+| Requirements | FR3.3 |
+| Depends On | phase-2-task-04, phase-2-task-01 |
+| Location | `lib/features/tree/` |
+
+**Deliverables:**
+- [ ] Drag initiation on tree node (4px threshold)
+- [ ] Drag indicator showing grabbed node
+- [ ] Insertion indicator (line between nodes)
+- [ ] Drop target validation against widget constraints
+- [ ] Canvas update after tree reorder
+
+**Acceptance Criteria (from J04 S3):**
+- [ ] Reorder within same parent: [A, B, C] -> [B, A, C] (FR3.3)
+- [ ] Move to different parent updates both parent's children
+- [ ] Invalid target (e.g., Expanded in Container) shows rejection
+- [ ] Tooltip shows reason for invalid target
+- [ ] Escape cancels drag, preserves original hierarchy
+- [ ] Canvas updates immediately after reorder
+- [ ] Drag threshold: 4px before drag initiates
+- [ ] Auto-scroll when dragging near tree viewport edge
+- [ ] Uses MoveWidgetCommand for undo support
+- [ ] Tests: Reorder, reparent, validation, cancel
+
+---
+
+### Task 2.6: Widget Tree Context Menu
+
+| Field | Value |
+|-------|-------|
+| ID | phase-2-task-06 |
+| Status | PENDING |
+| Priority | P1 |
+| Journey AC | J04 (Widget Tree) S4 |
+| Requirements | FR3.4 |
+| Depends On | phase-2-task-04, phase-2-task-01 |
+| Location | `lib/features/tree/` |
+
+**Deliverables:**
+- [ ] Right-click context menu on tree nodes
+- [ ] Delete option with keyboard shortcut
+- [ ] Cut/Copy/Paste options (preparation for Phase 4)
+- [ ] Duplicate option with keyboard shortcut
+- [ ] "Wrap in..." submenu for common wrappers
+
+**Acceptance Criteria (from J04 S4):**
+- [ ] Delete leaf widget removes it (FR3.4)
+- [ ] Delete widget with children shows confirmation dialog
+- [ ] Context menu shows: Cut, Copy, Paste, Duplicate, Delete, Wrap in...
+- [ ] Each menu item shows keyboard shortcut
+- [ ] Delete/Backspace key triggers delete
+- [ ] Context menu appears within <100ms
+- [ ] Uses DeleteWidgetCommand for undo support
+- [ ] Delete animation: fade out (150ms)
+- [ ] Tests: Delete operations, confirmation dialog
+
+---
+
+### Task 2.7: Multi-Level Nested Drop Zones
+
+| Field | Value |
+|-------|-------|
+| ID | phase-2-task-07 |
+| Status | PENDING |
+| Priority | P0 |
+| Journey AC | J03 (Design Canvas) S2 |
+| Requirements | FR2.3 |
+| Depends On | phase-2-task-01 |
+| Location | `lib/features/canvas/` |
+
+**Deliverables:**
+- [ ] Enhanced `NestedDropZone` for arbitrary nesting depth
+- [ ] Insertion indicators between children in multi-child containers
+- [ ] Parent-child compatibility validation during drag
+- [ ] Visual feedback for valid/invalid drop targets
+- [ ] Stack-specific z-ordering on drop
+
+**Acceptance Criteria (from J03 S2):**
+- [ ] Drop into nested containers works (depth 3+) (FR2.3)
+- [ ] Insertion indicators appear between children in Row/Column
+- [ ] Indicator shows exact insertion position
+- [ ] Single-child container rejects drop if already has child
+- [ ] Expanded widget rejected by non-Flex containers
+- [ ] Tooltip shows reason for rejection
+- [ ] Stack places dropped widget on top (highest z-index)
+- [ ] Nested zone appearance: <50ms after hover
+- [ ] Uses AddWidgetCommand for undo support
+- [ ] Tests: Multi-level nesting, insertion positions, validation
+
+---
+
+### Task 2.8: Canvas Widget Reordering
+
+| Field | Value |
+|-------|-------|
+| ID | phase-2-task-08 |
+| Status | PENDING |
+| Priority | P1 |
+| Journey AC | J03 (Design Canvas) S4 |
+| Requirements | FR2.6 |
+| Depends On | phase-2-task-07, phase-2-task-01 |
+| Location | `lib/features/canvas/` |
+
+**Deliverables:**
+- [ ] Drag widget within parent to reorder
+- [ ] Animated gap preview showing insertion position
+- [ ] Drop threshold: 50% of sibling dimension
+- [ ] Same-position drop results in no-op
+- [ ] Escape cancels reorder
+
+**Acceptance Criteria (from J03 S4):**
+- [ ] Drag widget within Row/Column shows reorder indicators (FR2.6)
+- [ ] Siblings animate to show gap at insertion point
+- [ ] Row [A, B, C] + drag B after C = [A, C, B]
+- [ ] Drop at original position = no-op
+- [ ] Escape during drag cancels, preserves order
+- [ ] Animation: smooth sibling repositioning (200ms)
+- [ ] Uses MoveWidgetCommand for undo support
+- [ ] Tests: Reorder within parent, cancel behavior
+
+---
+
+### Task 2.9: Widget Registry Expansion - Layout
+
+| Field | Value |
+|-------|-------|
+| ID | phase-2-task-09 |
+| Status | PENDING |
+| Priority | P1 |
+| Journey AC | J02 (Widget Palette) S1 |
+| Requirements | FR1.1 |
 | Location | `lib/shared/registry/` |
 
 **Deliverables:**
-- [x] Widget definition interface with metadata, properties, constraints
-- [x] 5 basic widgets: Container, Text, Row, Column, SizedBox
-- [x] Property schema definitions for each widget
-- [x] Widget category system (Layout, Content)
+- [ ] Stack widget (multi-child, z-ordering)
+- [ ] Expanded widget (Flex child only constraint)
+- [ ] Flexible widget (Flex child only constraint)
+- [ ] Padding widget (single-child)
+- [ ] Center widget (single-child)
+- [ ] Align widget (single-child, alignment property)
+
+**New Widgets (6):**
+| Widget | Category | Children | Constraint |
+|--------|----------|----------|------------|
+| Stack | Layout | Multi | None |
+| Expanded | Layout | Single | Flex parent |
+| Flexible | Layout | Single | Flex parent |
+| Padding | Layout | Single | None |
+| Center | Layout | Single | None |
+| Align | Layout | Single | None |
 
 **Acceptance Criteria:**
-- [x] Each widget has type, category, acceptsChildren, maxChildren
-- [x] Each widget has property definitions with types and defaults
-- [x] Registry provides O(1) lookup by widget type
-- [x] Tests verify all 5 widgets registered correctly (23 tests)
+- [ ] Each widget registered with type, category, properties
+- [ ] Expanded/Flexible have `parentConstraint: 'Flex'`
+- [ ] Stack has z-index-related properties
+- [ ] Align has alignment property
+- [ ] Widget palette shows new widgets in Layout category
+- [ ] Tests: Registration and constraints for each widget
 
 ---
 
-### Task 1.2: Widget Palette UI
+### Task 2.10: Widget Registry Expansion - Content
 
 | Field | Value |
 |-------|-------|
-| ID | phase-1-task-02 |
-| Status | COMPLETE |
-| Priority | P0 |
-| Journey AC | J02 (Widget Palette) Stage 1-4 |
-| Requirements | FR1.1, FR1.2 |
-| Location | `lib/features/palette/` |
+| ID | phase-2-task-10 |
+| Status | PENDING |
+| Priority | P1 |
+| Journey AC | J02 (Widget Palette) S1 |
+| Requirements | FR1.1 |
+| Location | `lib/shared/registry/` |
 
 **Deliverables:**
-- [x] Categorized widget list component
-- [x] Collapsible category headers
-- [x] Draggable widget items
-- [x] Drag feedback widget
+- [ ] Icon widget (icon property, size, color)
+- [ ] Image widget (placeholder for URL/asset)
+- [ ] Divider widget (orientation, thickness, color)
+- [ ] Spacer widget (Flex child only, flex property)
 
-**Acceptance Criteria (from J02):**
-- [x] Categories display: Layout, Content (FR1.1)
-- [x] Each category collapsible
-- [x] Widget shows name and icon
-- [x] Drag initiates with pointer anchor strategy (FR1.2)
-- [x] Drag preview follows cursor with reduced opacity
-- [x] Original item shows at 50% opacity during drag
-- [x] Tests: 21 unit tests covering all acceptance criteria
+**New Widgets (4):**
+| Widget | Category | Children | Constraint |
+|--------|----------|----------|------------|
+| Icon | Content | None | None |
+| Image | Content | None | None |
+| Divider | Content | None | None |
+| Spacer | Layout | None | Flex parent |
+
+**Acceptance Criteria:**
+- [ ] Icon has icon data, size, color properties
+- [ ] Image has placeholder and fit properties
+- [ ] Divider has thickness, color, indent properties
+- [ ] Spacer has flex property, requires Flex parent
+- [ ] Tests: Registration and rendering for each widget
 
 ---
 
-### Task 1.3: Basic Canvas
+### Task 2.11: Widget Registry Expansion - Input
 
 | Field | Value |
 |-------|-------|
-| ID | phase-1-task-03 |
-| Status | COMPLETE |
-| Priority | P0 |
-| Journey AC | J03 (Design Canvas) Stage 1-3 |
-| Requirements | FR2.1, FR2.2, FR2.4, FR2.5 |
-| Location | `lib/features/canvas/` |
+| ID | phase-2-task-11 |
+| Status | PENDING |
+| Priority | P2 |
+| Journey AC | J02 (Widget Palette) S1 |
+| Requirements | FR1.1 |
+| Location | `lib/shared/registry/` |
 
 **Deliverables:**
-- [x] Canvas widget with drop zone
-- [x] DesignProxy wrapper for event interception
-- [x] Selection state and overlay
-- [x] Widget renderer from WidgetNode tree
+- [ ] ElevatedButton widget (child, onPressed placeholder)
+- [ ] TextButton widget (child, onPressed placeholder)
+- [ ] IconButton widget (icon, onPressed placeholder)
+- [ ] Placeholder widget (fallback size, color)
 
-**Acceptance Criteria (from J03):**
-- [x] Drop zone indicator appears on drag enter (FR2.2)
-- [x] Widget renders at drop location (FR2.1)
-- [x] Selection overlay visible on selected widget (FR2.4)
-- [x] Click-to-select identifies correct widget (FR2.5)
-- [x] Tests: 15 unit tests covering all acceptance criteria
+**New Widgets (4):**
+| Widget | Category | Children | Constraint |
+|--------|----------|----------|------------|
+| ElevatedButton | Input | Single | None |
+| TextButton | Input | Single | None |
+| IconButton | Input | None | None |
+| Placeholder | Content | None | None |
 
----
+**New Category:** Input
 
-### Task 1.4: Single-Level Widget Insertion
-
-| Field | Value |
-|-------|-------|
-| ID | phase-1-task-04 |
-| Status | COMPLETE |
-| Priority | P0 |
-| Journey AC | J01 (First Export) Stage 4; J03 Stage 2 |
-| Requirements | FR2.3 |
-| Location | `lib/features/canvas/` |
-
-**Deliverables:**
-- [x] Nested drop zone detection
-- [x] Parent-child relationship creation
-- [x] Single-child container constraint enforcement
-- [x] Widget tree update on drop
-
-**Acceptance Criteria (from J01/J03):**
-- [x] Nested drop zone appears inside Container (FR2.3)
-- [x] Text becomes child of Container on drop
-- [x] Single-child containers reject second child
-- [x] Widget tree reflects hierarchy
-- [x] Tests: 19 unit tests covering widget insertion
+**Acceptance Criteria:**
+- [ ] Button widgets have child slot and style properties
+- [ ] IconButton has icon, size, color properties
+- [ ] Placeholder has fallbackWidth, fallbackHeight, color
+- [ ] Input category added to WidgetCategory enum
+- [ ] Tests: Registration and rendering for each widget
 
 ---
 
-### Task 1.5: Properties Panel
+### Task 2.12: Code Generation Updates
 
 | Field | Value |
 |-------|-------|
-| ID | phase-1-task-05 |
-| Status | COMPLETE |
-| Priority | P0 |
-| Journey AC | J05 (Properties Panel) Stage 1-2, 4 |
-| Requirements | FR4.1, FR4.2, FR4.4, FR4.5 |
-| Location | `lib/features/properties/` |
-
-**Deliverables:**
-- [x] Property panel component
-- [x] Property editors: String, double, int, bool, Color
-- [x] Enum editor for dropdown selection
-- [x] Live canvas preview integration
-
-**Acceptance Criteria (from J05):**
-- [x] Panel shows properties for selected widget (FR4.1, FR4.4)
-- [x] Editable: String, double, int, bool, Color types (FR4.2)
-- [x] Canvas updates within 16ms of property change (FR4.5, NFR1.1)
-- [x] Properties grouped by category
-- [x] Tests: 14 unit tests covering properties panel
-
----
-
-### Task 1.6: Code Generation
-
-| Field | Value |
-|-------|-------|
-| ID | phase-1-task-06 |
-| Status | COMPLETE |
-| Priority | P0 |
-| Journey AC | J06 (Code Generation) Stage 1, 3 |
-| Requirements | FR5.1, FR5.2, FR5.3, FR5.6 |
+| ID | phase-2-task-12 |
+| Status | PENDING |
+| Priority | P1 |
+| Journey AC | J06 (Code Generation) S1, S3 |
+| Requirements | FR5.1, FR5.2 |
+| Depends On | phase-2-task-09, phase-2-task-10, phase-2-task-11 |
 | Location | `lib/generators/` |
 
 **Deliverables:**
-- [x] DartGenerator using code_builder
-- [x] StatelessWidget class generation
-- [x] dart_style formatting
-- [x] Copy to clipboard functionality
+- [ ] Code generation for all new Phase 2 widgets
+- [ ] Flex child handling (Expanded, Flexible, Spacer)
+- [ ] Stack children with Positioned wrapper support
+- [ ] Button onPressed callback generation
+- [ ] Icon data code generation
 
 **Acceptance Criteria (from J06):**
-- [x] Valid, compilable Dart code output (FR5.1)
-- [x] Code formatted with dart_style (FR5.2)
-- [x] StatelessWidget structure generated (FR5.3)
-- [x] Copy to clipboard works (FR5.6)
-- [x] Generation <500ms for 100 widgets (NFR1.2)
-- [x] Tests: 9 unit tests for code generation
+- [ ] Valid, compilable Dart code for all 15+ widgets (FR5.1)
+- [ ] Proper import statements generated
+- [ ] Expanded/Flexible wrapped in valid Flex context
+- [ ] Stack children generate correctly
+- [ ] Button callbacks generate as empty closures
+- [ ] Code formatted with dart_style (FR5.2)
+- [ ] Generation <500ms for 100 widgets (NFR1.2)
+- [ ] Tests: Code generation for all new widgets
 
 ---
 
-### Task 1.7: App Shell and Integration
+## Phase 2 Definition of Done
 
-| Field | Value |
-|-------|-------|
-| ID | phase-1-task-07 |
-| Status | COMPLETE |
-| Priority | P0 |
-| Journey AC | J01 (First Export) All Stages |
-| Requirements | NFR3.1 |
-| Location | `lib/app.dart`, `lib/main.dart` |
-
-**Deliverables:**
-- [x] Workbench layout with 3-panel design
-- [x] Riverpod providers for project and selection state
-- [x] Panel integration (palette, canvas, properties)
-- [x] Code preview panel
-
-**Acceptance Criteria (from J01):**
-- [x] Main interface displays within 3 seconds (NFR1.3)
-- [x] Palette visible on left
-- [x] Canvas in center
-- [x] Properties on right
-- [x] Code preview accessible
-- [x] First export achievable within 5 minutes (NFR3.1)
-- [x] Tests: 8 integration tests for workbench
+- [ ] Undo/Redo system with command pattern
+- [ ] Widget tree panel with selection sync
+- [ ] Tree drag-reorder with canvas sync
+- [ ] Context menu for tree operations
+- [ ] Multi-level nested drop zones (3+ depth)
+- [ ] Canvas widget reordering
+- [ ] 15+ widgets in registry (from 5)
+- [ ] Code generation for all widgets
+- [ ] `flutter analyze` passes
+- [ ] `flutter test` passes (target: 180+ tests)
+- [ ] Demo: Complex layout with undo/redo, tree reorder
 
 ---
 
-## Phase 1 Definition of Done
-
-- [x] All 5 widgets in registry with tests
-- [x] Widget palette UI with drag support (21 tests)
-- [x] Canvas renders widgets, accepts drops (15 tests)
-- [x] Properties panel edits work with live preview
-- [x] Code generator outputs valid Dart
-- [x] `flutter analyze` passes
-- [x] `flutter test` passes (109 tests)
-- [x] Demo: Container with Text child, padding edited, code exported
-
----
-
-## Task-Journey Mapping
+## Task-Journey Mapping (Phase 2)
 
 | Task | Primary Journey | Stages | Status |
 |------|-----------------|--------|--------|
-| phase-1-task-01 | J02 Widget Palette | 1, 4 | COMPLETE |
-| phase-1-task-02 | J02 Widget Palette | 1-4 | COMPLETE |
-| phase-1-task-03 | J03 Design Canvas | 1-3 | COMPLETE |
-| phase-1-task-04 | J03 Design Canvas | 2 | COMPLETE |
-| phase-1-task-05 | J05 Properties Panel | 1-2, 4 | COMPLETE |
-| phase-1-task-06 | J06 Code Generation | 1, 3 | COMPLETE |
-| phase-1-task-07 | J01 First Export | All | COMPLETE |
+| phase-2-task-01 | J07 Edit Operations | Command Reference | PENDING |
+| phase-2-task-02 | J07 Edit Operations | S1, S2 | PENDING |
+| phase-2-task-03 | J04 Widget Tree | S1 | PENDING |
+| phase-2-task-04 | J04 Widget Tree | S2 | PENDING |
+| phase-2-task-05 | J04 Widget Tree | S3 | PENDING |
+| phase-2-task-06 | J04 Widget Tree | S4 | PENDING |
+| phase-2-task-07 | J03 Design Canvas | S2 | PENDING |
+| phase-2-task-08 | J03 Design Canvas | S4 | PENDING |
+| phase-2-task-09 | J02 Widget Palette | S1 | PENDING |
+| phase-2-task-10 | J02 Widget Palette | S1 | PENDING |
+| phase-2-task-11 | J02 Widget Palette | S1 | PENDING |
+| phase-2-task-12 | J06 Code Generation | S1, S3 | PENDING |
 
 ---
 
 ## Future Phases
-
-### Phase 2: Core Editor (Weeks 4-6)
-- Nested DnD with multi-level drop zones
-- Widget tree panel with drag reorder
-- 15+ widgets
-- Undo/Redo command system
 
 ### Phase 3: Design System & Animation (Weeks 7-9)
 - DesignToken model
