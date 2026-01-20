@@ -32,32 +32,34 @@ See `.claude/PROGRESS.md` for detailed Phase 1 completion records.
 
 **Milestone:** Widget tree panel, undo/redo, 15+ widgets, multi-level drag-drop
 
+**Progress:** 5/12 tasks | **Tests:** 212
+
 ### Task 2.1: Command Pattern Foundation
 
 | Field | Value |
 |-------|-------|
 | ID | phase-2-task-01 |
-| Status | PENDING |
+| Status | COMPLETE |
 | Priority | P0 |
 | Journey AC | J07 (Edit Operations) S1-2, Command Pattern Reference |
 | Requirements | FR7.1 |
 | Location | `lib/commands/` |
 
 **Deliverables:**
-- [ ] `Command` abstract base class with `execute()` and `undo()` methods
-- [ ] `CommandProcessor` for managing undo/redo stacks
-- [ ] `AddWidgetCommand` for widget insertion
-- [ ] `DeleteWidgetCommand` for widget removal
-- [ ] `PropertyChangeCommand` for property modifications
-- [ ] `MoveWidgetCommand` for reordering/reparenting
+- [x] `Command` abstract base class with `execute()` and `undo()` methods
+- [x] `CommandProcessor` for managing undo/redo stacks
+- [x] `AddWidgetCommand` for widget insertion
+- [x] `DeleteWidgetCommand` for widget removal
+- [x] `PropertyChangeCommand` for property modifications
+- [x] `MoveWidgetCommand` for reordering/reparenting
 
 **Acceptance Criteria (from J07 Command Pattern Reference):**
-- [ ] Each command implements `execute()` and `undo()` methods
-- [ ] Commands are serializable for future persistence
-- [ ] Undo stack limit of 100 actions
-- [ ] Oldest undo discarded when limit exceeded
-- [ ] Redo stack clears on new action
-- [ ] Tests: Command execution and reversal for all command types
+- [x] Each command implements `execute()` and `undo()` methods
+- [x] Commands are serializable for future persistence
+- [x] Undo stack limit of 100 actions
+- [x] Oldest undo discarded when limit exceeded
+- [x] Redo stack clears on new action
+- [x] Tests: Command execution and reversal for all command types
 
 ---
 
@@ -66,7 +68,7 @@ See `.claude/PROGRESS.md` for detailed Phase 1 completion records.
 | Field | Value |
 |-------|-------|
 | ID | phase-2-task-02 |
-| Status | PENDING |
+| Status | COMPLETE |
 | Priority | P0 |
 | Journey AC | J07 (Edit Operations) S1 (Undo), S2 (Redo) |
 | Requirements | FR7.1 |
@@ -74,23 +76,23 @@ See `.claude/PROGRESS.md` for detailed Phase 1 completion records.
 | Location | `lib/providers/` |
 
 **Deliverables:**
-- [ ] `CommandProvider` Riverpod provider for command processor
-- [ ] Integration with `ProjectProvider` for state changes
-- [ ] Undo keyboard shortcut: Cmd/Ctrl+Z
-- [ ] Redo keyboard shortcut: Cmd/Ctrl+Shift+Z
-- [ ] Edit menu Undo/Redo items with action labels
+- [x] `CommandProvider` Riverpod provider for command processor
+- [x] Integration with `ProjectProvider` for state changes
+- [x] Undo keyboard shortcut: Cmd/Ctrl+Z
+- [x] Redo keyboard shortcut: Cmd/Ctrl+Shift+Z
+- [x] Edit menu Undo/Redo items with action labels
 
 **Acceptance Criteria (from J07 S1-S2):**
-- [ ] Undo property change reverts to previous value (S1)
-- [ ] Undo widget add removes widget (S1)
-- [ ] Undo widget delete restores widget with children (S1)
-- [ ] Undo move restores original position (S1)
-- [ ] Redo restores undone change (S2)
-- [ ] Redo chain: 3 undos + 3 redos returns to original state (S2)
-- [ ] New action clears redo stack (S2)
-- [ ] Menu shows "Undo: [action]" label (S1)
-- [ ] Response: <50ms state update (NFR)
-- [ ] Tests: Undo/redo cycles for all command types
+- [x] Undo property change reverts to previous value (S1)
+- [x] Undo widget add removes widget (S1)
+- [x] Undo widget delete restores widget with children (S1)
+- [x] Undo move restores original position (S1)
+- [x] Redo restores undone change (S2)
+- [x] Redo chain: 3 undos + 3 redos returns to original state (S2)
+- [x] New action clears redo stack (S2)
+- [x] Menu shows "Undo: [action]" label (S1)
+- [x] Response: <50ms state update (NFR)
+- [x] Tests: Undo/redo cycles for all command types
 
 ---
 
@@ -99,30 +101,30 @@ See `.claude/PROGRESS.md` for detailed Phase 1 completion records.
 | Field | Value |
 |-------|-------|
 | ID | phase-2-task-03 |
-| Status | PENDING |
+| Status | COMPLETE |
 | Priority | P0 |
 | Journey AC | J04 (Widget Tree) S1 |
 | Requirements | FR3.1, FR3.5 |
 | Location | `lib/features/tree/` |
 
 **Deliverables:**
-- [ ] `WidgetTreePanel` component with hierarchical display
-- [ ] `TreeNode` widget with expand/collapse toggle
-- [ ] Indentation for parent-child relationships (16-20px per level)
-- [ ] Widget type icons and names per node
-- [ ] Expand All / Collapse All context menu options
+- [x] `WidgetTreePanel` component with hierarchical display
+- [x] `TreeNode` widget with expand/collapse toggle
+- [x] Indentation for parent-child relationships (16-20px per level)
+- [x] Widget type icons and names per node
+- [x] Expand All / Collapse All context menu options
 
 **Acceptance Criteria (from J04 S1):**
-- [ ] Tree shows root widget as top node (FR3.1)
-- [ ] Children indented under parents
-- [ ] Expandable nodes show expand/collapse controls (FR3.5)
-- [ ] Node shows widget type icon and name
-- [ ] Expand/collapse toggles children visibility
-- [ ] Keyboard: Right arrow expands, Left arrow collapses
-- [ ] Empty canvas shows "No widgets" placeholder
-- [ ] Tree render: <50ms after state change (NFR)
-- [ ] Node height: minimum 28px for touch target
-- [ ] Tests: Tree rendering, expand/collapse behavior
+- [x] Tree shows root widget as top node (FR3.1)
+- [x] Children indented under parents
+- [x] Expandable nodes show expand/collapse controls (FR3.5)
+- [x] Node shows widget type icon and name
+- [x] Expand/collapse toggles children visibility
+- [x] Keyboard: Right arrow expands, Left arrow collapses
+- [x] Empty canvas shows "No widgets" placeholder
+- [x] Tree render: <50ms after state change (NFR)
+- [x] Node height: minimum 28px for touch target
+- [x] Tests: Tree rendering, expand/collapse behavior
 
 ---
 
@@ -131,7 +133,7 @@ See `.claude/PROGRESS.md` for detailed Phase 1 completion records.
 | Field | Value |
 |-------|-------|
 | ID | phase-2-task-04 |
-| Status | PENDING |
+| Status | COMPLETE |
 | Priority | P0 |
 | Journey AC | J04 (Widget Tree) S2 |
 | Requirements | FR3.2 |
@@ -139,22 +141,22 @@ See `.claude/PROGRESS.md` for detailed Phase 1 completion records.
 | Location | `lib/features/tree/` |
 
 **Deliverables:**
-- [ ] Tree node click updates selection state
-- [ ] Selection state syncs to canvas overlay
-- [ ] Canvas selection syncs to tree highlight
-- [ ] Auto-expand collapsed parents when child selected via canvas
-- [ ] Scroll-into-view for selected node if needed
+- [x] Tree node click updates selection state
+- [x] Selection state syncs to canvas overlay
+- [x] Canvas selection syncs to tree highlight
+- [x] Auto-expand collapsed parents when child selected via canvas
+- [x] Scroll-into-view for selected node if needed
 
 **Acceptance Criteria (from J04 S2):**
-- [ ] Click tree node selects widget (FR3.2)
-- [ ] Canvas overlay appears on corresponding widget (FR3.2)
-- [ ] Properties panel updates to show selected widget
-- [ ] Canvas click highlights corresponding tree node
-- [ ] Collapsed parent auto-expands if child selected
-- [ ] Tree scrolls to make selected node visible
-- [ ] Keyboard Up/Down moves selection between nodes
-- [ ] Selection sync: <16ms tree-to-canvas, <50ms canvas-to-tree (NFR)
-- [ ] Tests: Bidirectional selection sync
+- [x] Click tree node selects widget (FR3.2)
+- [x] Canvas overlay appears on corresponding widget (FR3.2)
+- [x] Properties panel updates to show selected widget
+- [x] Canvas click highlights corresponding tree node
+- [x] Collapsed parent auto-expands if child selected
+- [x] Tree scrolls to make selected node visible
+- [x] Keyboard Up/Down moves selection between nodes
+- [x] Selection sync: <16ms tree-to-canvas, <50ms canvas-to-tree (NFR)
+- [x] Tests: Bidirectional selection sync
 
 ---
 
@@ -163,7 +165,7 @@ See `.claude/PROGRESS.md` for detailed Phase 1 completion records.
 | Field | Value |
 |-------|-------|
 | ID | phase-2-task-05 |
-| Status | PENDING |
+| Status | COMPLETE |
 | Priority | P1 |
 | Journey AC | J04 (Widget Tree) S3 |
 | Requirements | FR3.3 |
@@ -171,23 +173,23 @@ See `.claude/PROGRESS.md` for detailed Phase 1 completion records.
 | Location | `lib/features/tree/` |
 
 **Deliverables:**
-- [ ] Drag initiation on tree node (4px threshold)
-- [ ] Drag indicator showing grabbed node
-- [ ] Insertion indicator (line between nodes)
-- [ ] Drop target validation against widget constraints
-- [ ] Canvas update after tree reorder
+- [x] Drag initiation on tree node (4px threshold)
+- [x] Drag indicator showing grabbed node
+- [x] Insertion indicator (line between nodes)
+- [x] Drop target validation against widget constraints
+- [x] Canvas update after tree reorder
 
 **Acceptance Criteria (from J04 S3):**
-- [ ] Reorder within same parent: [A, B, C] -> [B, A, C] (FR3.3)
-- [ ] Move to different parent updates both parent's children
-- [ ] Invalid target (e.g., Expanded in Container) shows rejection
-- [ ] Tooltip shows reason for invalid target
-- [ ] Escape cancels drag, preserves original hierarchy
-- [ ] Canvas updates immediately after reorder
-- [ ] Drag threshold: 4px before drag initiates
-- [ ] Auto-scroll when dragging near tree viewport edge
-- [ ] Uses MoveWidgetCommand for undo support
-- [ ] Tests: Reorder, reparent, validation, cancel
+- [x] Reorder within same parent: [A, B, C] -> [B, A, C] (FR3.3)
+- [x] Move to different parent updates both parent's children
+- [x] Invalid target (e.g., Expanded in Container) shows rejection
+- [x] Tooltip shows reason for invalid target
+- [x] Escape cancels drag, preserves original hierarchy
+- [x] Canvas updates immediately after reorder
+- [x] Drag threshold: 4px before drag initiates
+- [x] Auto-scroll when dragging near tree viewport edge
+- [x] Uses MoveWidgetCommand for undo support
+- [x] Tests: Reorder, reparent, validation, cancel
 
 ---
 
@@ -429,9 +431,9 @@ See `.claude/PROGRESS.md` for detailed Phase 1 completion records.
 
 ## Phase 2 Definition of Done
 
-- [ ] Undo/Redo system with command pattern
-- [ ] Widget tree panel with selection sync
-- [ ] Tree drag-reorder with canvas sync
+- [x] Undo/Redo system with command pattern
+- [x] Widget tree panel with selection sync
+- [x] Tree drag-reorder with canvas sync
 - [ ] Context menu for tree operations
 - [ ] Multi-level nested drop zones (3+ depth)
 - [ ] Canvas widget reordering
@@ -447,11 +449,11 @@ See `.claude/PROGRESS.md` for detailed Phase 1 completion records.
 
 | Task | Primary Journey | Stages | Status |
 |------|-----------------|--------|--------|
-| phase-2-task-01 | J07 Edit Operations | Command Reference | PENDING |
-| phase-2-task-02 | J07 Edit Operations | S1, S2 | PENDING |
-| phase-2-task-03 | J04 Widget Tree | S1 | PENDING |
-| phase-2-task-04 | J04 Widget Tree | S2 | PENDING |
-| phase-2-task-05 | J04 Widget Tree | S3 | PENDING |
+| phase-2-task-01 | J07 Edit Operations | Command Reference | COMPLETE |
+| phase-2-task-02 | J07 Edit Operations | S1, S2 | COMPLETE |
+| phase-2-task-03 | J04 Widget Tree | S1 | COMPLETE |
+| phase-2-task-04 | J04 Widget Tree | S2 | COMPLETE |
+| phase-2-task-05 | J04 Widget Tree | S3 | COMPLETE |
 | phase-2-task-06 | J04 Widget Tree | S4 | PENDING |
 | phase-2-task-07 | J03 Design Canvas | S2 | PENDING |
 | phase-2-task-08 | J03 Design Canvas | S4 | PENDING |

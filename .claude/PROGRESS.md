@@ -5,15 +5,15 @@
 ## Orchestrator Checkpoint
 
 phase: phase-2
-current_task: null
-completed: [phase-2-task-01, phase-2-task-02, phase-2-task-03, phase-2-task-04]
-next_action: "Continue with phase-2-task-05 (Widget Tree Drag Reorder)"
-last_gate: G3
-timestamp: 2026-01-21T20:15:00Z
+current_task: phase-2-task-06
+completed: [phase-2-task-01, phase-2-task-02, phase-2-task-03, phase-2-task-04, phase-2-task-05]
+next_action: "Continue with phase-2-task-06 (Widget Tree Context Menu)"
+last_gate: G5
+timestamp: 2026-01-21T21:00:00Z
 
 ## Current Status
 
-Phase 1 (Foundation) COMPLETE. Phase 2 (Core Editor) in progress - 4 of 12 tasks complete.
+Phase 1 (Foundation) COMPLETE. Phase 2 (Core Editor) in progress - 5 of 12 tasks complete.
 
 ---
 
@@ -27,7 +27,7 @@ Phase 1 (Foundation) COMPLETE. Phase 2 (Core Editor) in progress - 4 of 12 tasks
 | phase-2-task-02 | Undo/Redo Provider Integration | J07 S1-2, FR7.1 | COMPLETE |
 | phase-2-task-03 | Widget Tree Panel UI | J04 S1, FR3.1, FR3.5 | COMPLETE |
 | phase-2-task-04 | Widget Tree Selection Sync | J04 S2, FR3.2 | COMPLETE |
-| phase-2-task-05 | Widget Tree Drag Reorder | J04 S3, FR3.3 | PENDING |
+| phase-2-task-05 | Widget Tree Drag Reorder | J04 S3, FR3.3 | COMPLETE |
 | phase-2-task-06 | Widget Tree Context Menu | J04 S4, FR3.4 | PENDING |
 | phase-2-task-07 | Multi-Level Nested Drop Zones | J03 S2, FR2.3 | PENDING |
 | phase-2-task-08 | Canvas Widget Reordering | J03 S4, FR2.6 | PENDING |
@@ -97,6 +97,26 @@ Phase 1 (Foundation) COMPLETE. Phase 2 (Core Editor) in progress - 4 of 12 tasks
 - `lib/features/tree/widget_tree_panel.dart`
 - `test/unit/tree/widget_tree_selection_test.dart`
 
+#### Task 2.5: Widget Tree Drag Reorder (COMPLETE)
+
+- [x] DraggableTreeItem with LongPressDraggable and DragTarget
+- [x] TreeDragData for transferring drag information
+- [x] Drop validation (self-drop, descendant detection, max children)
+- [x] Visual feedback for valid/invalid drop targets
+- [x] Rejection tooltips showing reason for invalid targets
+- [x] Integration with MoveWidgetCommand for undo support
+- [x] 15 unit tests covering drag, validation, and selection
+
+**Files Created:**
+- `lib/features/tree/draggable_tree_item.dart`
+- `test/unit/tree/widget_tree_drag_test.dart`
+
+**Files Updated:**
+- `lib/features/tree/widget_tree_panel.dart`
+- `lib/features/tree/tree.dart`
+- `test/unit/tree/widget_tree_panel_test.dart`
+- `test/unit/tree/widget_tree_selection_test.dart`
+
 ---
 
 ## Phase 1: Foundation (COMPLETE - 2026-01-21)
@@ -125,4 +145,5 @@ Phase 1 (Foundation) COMPLETE. Phase 2 (Core Editor) in progress - 4 of 12 tasks
 | **Widget Tree Panel** | **15** | **PASS** |
 | **Command Provider** | **23** | **PASS** |
 | **Widget Tree Selection** | **9** | **PASS** |
-| **Total** | **197** | **PASS** |
+| **Widget Tree Drag** | **15** | **PASS** |
+| **Total** | **212** | **PASS** |
