@@ -4,7 +4,7 @@
 
 ## Current Status
 
-Project scaffolding complete. Ready for Phase 1 implementation.
+Phase 1 implementation in progress. Widget Registry complete.
 
 ## Completed
 
@@ -19,13 +19,39 @@ Project scaffolding complete. Ready for Phase 1 implementation.
 - [x] Set up lefthook for pre-commit hooks
 - [x] Verified build and tests pass
 
+### Phase 1: Foundation (In Progress)
+
+#### Task 1.1: Widget Registry System (COMPLETE)
+
+- [x] Created `PropertyDefinition` freezed class with all property types
+- [x] Created `WidgetDefinition` freezed class with metadata and constraints
+- [x] Created `WidgetRegistry` with O(1) lookup and category filtering
+- [x] Created `DefaultWidgetRegistry` with 5 Phase 1 widgets:
+  - Container (Layout, single-child)
+  - Text (Content, leaf)
+  - Row (Layout, multi-child)
+  - Column (Layout, multi-child)
+  - SizedBox (Layout, single-child)
+- [x] 23 unit tests for registry components
+- [x] All tests pass, flutter analyze clean
+
+**Files Created:**
+- `lib/shared/registry/property_definition.dart`
+- `lib/shared/registry/widget_definition.dart`
+- `lib/shared/registry/widget_registry.dart`
+- `lib/shared/registry/registry.dart` (barrel export)
+- `test/unit/registry/widget_definition_test.dart`
+- `test/unit/registry/widget_registry_test.dart`
+
 ## Next Steps
 
-Phase 1: Foundation (from prd.md)
-- [ ] Widget registry (5 basic widgets)
-- [ ] Basic canvas with single-level DnD
-- [ ] Properties panel (basic types)
-- [ ] Simple code generation
+Phase 1: Foundation (remaining tasks)
+- [ ] Widget Palette UI (phase-1-task-02)
+- [ ] Basic Canvas (phase-1-task-03)
+- [ ] Single-Level Widget Insertion (phase-1-task-04)
+- [ ] Properties Panel (phase-1-task-05)
+- [ ] Code Generation (phase-1-task-06)
+- [ ] App Shell Integration (phase-1-task-07)
 
 ## Tech Stack Verified
 
@@ -39,3 +65,11 @@ Phase 1: Foundation (from prd.md)
 | Formatting | dart_style | 3.1+ | OK |
 | Navigation | go_router | 14+ | OK |
 | Linting | very_good_analysis | 6.0+ | OK |
+
+## Test Summary
+
+| Category | Tests | Status |
+|----------|-------|--------|
+| Widget Registry | 23 | PASS |
+| App Widget | 1 | PASS |
+| **Total** | **24** | **PASS** |
