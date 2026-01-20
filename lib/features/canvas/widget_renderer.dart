@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_forge/core/models/widget_node.dart';
 import 'package:flutter_forge/features/canvas/design_proxy.dart';
+import 'package:flutter_forge/features/canvas/nested_drop_zone.dart';
 import 'package:flutter_forge/features/canvas/widget_selection_overlay.dart';
 import 'package:flutter_forge/shared/registry/registry.dart';
 
@@ -17,6 +18,7 @@ class WidgetRenderer extends StatelessWidget {
     required this.registry,
     required this.selectedWidgetId,
     required this.onWidgetSelected,
+    this.onWidgetDropped,
     super.key,
   });
 
@@ -35,6 +37,9 @@ class WidgetRenderer extends StatelessWidget {
   /// Callback when a widget is selected.
   final void Function(String id) onWidgetSelected;
 
+  /// Callback when a widget is dropped into a nested container.
+  final void Function(String widgetType, String parentId)? onWidgetDropped;
+
   @override
   Widget build(BuildContext context) {
     final node = nodes[nodeId];
@@ -51,6 +56,21 @@ class WidgetRenderer extends StatelessWidget {
 
     // Build the widget based on type
     var renderedWidget = _buildWidget(node, definition);
+
+    // Wrap in nested drop zone if widget accepts children
+    if (definition.acceptsChildren) {
+      renderedWidget = NestedDropZone(
+        parentId: nodeId,
+        acceptsChildren: definition.acceptsChildren,
+        hasChild: node.childrenIds.isNotEmpty && definition.isSingleChild,
+        maxChildren: definition.maxChildren,
+        childCount: node.childrenIds.length,
+        onWidgetDropped: (type, parentId) {
+          onWidgetDropped?.call(type, parentId);
+        },
+        child: renderedWidget,
+      );
+    }
 
     // Wrap in DesignProxy for event interception
     renderedWidget = DesignProxy(
@@ -101,6 +121,7 @@ class WidgetRenderer extends StatelessWidget {
         registry: registry,
         selectedWidgetId: selectedWidgetId,
         onWidgetSelected: onWidgetSelected,
+        onWidgetDropped: onWidgetDropped,
       );
     }
 
@@ -175,6 +196,7 @@ class WidgetRenderer extends StatelessWidget {
         registry: registry,
         selectedWidgetId: selectedWidgetId,
         onWidgetSelected: onWidgetSelected,
+        onWidgetDropped: onWidgetDropped,
       );
     }
 
@@ -193,6 +215,7 @@ class WidgetRenderer extends StatelessWidget {
         registry: registry,
         selectedWidgetId: selectedWidgetId,
         onWidgetSelected: onWidgetSelected,
+        onWidgetDropped: onWidgetDropped,
       );
     }).toList();
   }
