@@ -5,11 +5,11 @@
 ## Orchestrator Checkpoint
 
 phase: phase-2
-current_task: phase-2-task-02
-completed: [phase-2-task-01, phase-2-task-03]
-next_action: "Implement Undo/Redo Provider Integration - TDD RED phase"
+current_task: phase-2-task-04
+completed: [phase-2-task-01, phase-2-task-02, phase-2-task-03]
+next_action: "Implement Widget Tree Selection Sync - TDD RED phase"
 last_gate: G3
-timestamp: 2026-01-21T19:20:00Z
+timestamp: 2026-01-21T19:45:00Z
 
 ## Current Status
 
@@ -24,9 +24,9 @@ Phase 1 (Foundation) COMPLETE. Phase 2 (Core Editor) in progress.
 | Task ID | Description | Journey AC | Status |
 |---------|-------------|------------|--------|
 | phase-2-task-01 | Command Pattern Foundation | J07 S1-2 | COMPLETE |
-| phase-2-task-02 | Undo/Redo Provider Integration | J07 S1-2, FR7.1 | IN PROGRESS |
+| phase-2-task-02 | Undo/Redo Provider Integration | J07 S1-2, FR7.1 | COMPLETE |
 | phase-2-task-03 | Widget Tree Panel UI | J04 S1, FR3.1, FR3.5 | COMPLETE |
-| phase-2-task-04 | Widget Tree Selection Sync | J04 S2, FR3.2 | PENDING |
+| phase-2-task-04 | Widget Tree Selection Sync | J04 S2, FR3.2 | IN PROGRESS |
 | phase-2-task-05 | Widget Tree Drag Reorder | J04 S3, FR3.3 | PENDING |
 | phase-2-task-06 | Widget Tree Context Menu | J04 S4, FR3.4 | PENDING |
 | phase-2-task-07 | Multi-Level Nested Drop Zones | J03 S2, FR2.3 | PENDING |
@@ -57,6 +57,20 @@ Phase 1 (Foundation) COMPLETE. Phase 2 (Core Editor) in progress.
 - `lib/commands/move_widget_command.dart`
 - `lib/commands/commands.dart` (barrel export)
 - `test/unit/commands/command_test.dart`
+
+#### Task 2.2: Undo/Redo Provider Integration (COMPLETE)
+
+- [x] CommandProvider Riverpod provider for command processor
+- [x] Integration with ProjectProvider for state changes
+- [x] CommandState (freezed) for reactive UI updates
+- [x] canUndo/canRedo and description properties
+- [x] 100 command stack limit enforcement
+- [x] 23 unit tests covering all undo/redo scenarios
+
+**Files Created:**
+- `lib/providers/command_provider.dart`
+- `lib/providers/command_provider.freezed.dart`
+- `test/unit/providers/command_provider_test.dart`
 
 #### Task 2.3: Widget Tree Panel UI (COMPLETE)
 
@@ -101,4 +115,5 @@ Phase 1 (Foundation) COMPLETE. Phase 2 (Core Editor) in progress.
 | App Integration | 8 | PASS |
 | **Command Pattern** | **41** | **PASS** |
 | **Widget Tree Panel** | **15** | **PASS** |
-| **Total** | **165** | **PASS** |
+| **Command Provider** | **23** | **PASS** |
+| **Total** | **188** | **PASS** |

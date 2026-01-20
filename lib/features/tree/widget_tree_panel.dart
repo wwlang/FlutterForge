@@ -19,10 +19,19 @@ class _WidgetTreePanelState extends ConsumerState<WidgetTreePanel> {
   /// Tracks which nodes are collapsed.
   final Set<String> _collapsedNodes = {};
 
+  /// Previous selection for detecting changes.
+  String? _previousSelection;
+
   @override
   Widget build(BuildContext context) {
     final projectState = ref.watch(projectProvider);
     final selectedId = ref.watch(selectionProvider);
+
+    // Auto-expand ancestors when selection changes externally
+    if (selectedId != null && selectedId != _previousSelection) {
+      _autoExpandAncestors(selectedId, projectState);
+    }
+    _previousSelection = selectedId;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -131,6 +140,7 @@ class _WidgetTreePanelState extends ConsumerState<WidgetTreePanel> {
         isExpanded: !isCollapsed,
         isSelected: nodeId == selectedId,
         onToggleExpanded: hasChildren ? () => _toggleExpanded(nodeId) : null,
+        onTap: () => _selectNode(nodeId),
       ),
     ];
 
@@ -161,5 +171,27 @@ class _WidgetTreePanelState extends ConsumerState<WidgetTreePanel> {
         _collapsedNodes.add(nodeId);
       }
     });
+  }
+
+  // Riverpod StateProvider requires setting state property directly
+  // ignore: use_setters_to_change_properties
+  void _selectNode(String nodeId) {
+    ref.read(selectionProvider.notifier).state = nodeId;
+  }
+
+  /// Auto-expands all ancestor nodes when a child is selected.
+  ///
+  /// This ensures the selected node is visible in the tree.
+  void _autoExpandAncestors(String nodeId, ProjectState projectState) {
+    final node = projectState.nodes[nodeId];
+    if (node == null) return;
+
+    // Walk up the parent chain and expand all ancestors
+    var currentId = node.parentId;
+    while (currentId != null) {
+      _collapsedNodes.remove(currentId);
+      final parent = projectState.nodes[currentId];
+      currentId = parent?.parentId;
+    }
   }
 }

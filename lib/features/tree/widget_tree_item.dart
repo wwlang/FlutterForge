@@ -13,6 +13,7 @@ class WidgetTreeItem extends StatelessWidget {
     required this.isExpanded,
     required this.isSelected,
     this.onToggleExpanded,
+    this.onTap,
     super.key,
   });
 
@@ -37,6 +38,9 @@ class WidgetTreeItem extends StatelessWidget {
   /// Callback when expand/collapse is toggled.
   final VoidCallback? onToggleExpanded;
 
+  /// Callback when the item is tapped.
+  final VoidCallback? onTap;
+
   /// Indentation per depth level in pixels.
   static const double indentPerLevel = 16;
 
@@ -44,52 +48,59 @@ class WidgetTreeItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Container(
-      color: isSelected
-          ? theme.colorScheme.primaryContainer.withValues(alpha: 0.5)
-          : null,
-      child: Padding(
-        padding: EdgeInsets.only(left: depth * indentPerLevel),
-        child: Row(
-          children: [
-            // Expand/collapse arrow
-            SizedBox(
-              width: 24,
-              height: 24,
-              child: hasChildren
-                  ? IconButton(
-                      padding: EdgeInsets.zero,
-                      iconSize: 18,
-                      icon: Icon(
-                        isExpanded
-                            ? Icons.keyboard_arrow_down
-                            : Icons.keyboard_arrow_right,
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
-                      onPressed: onToggleExpanded,
-                    )
-                  : null,
-            ),
-            // Widget icon
-            Icon(
-              _getIconForType(widgetType),
-              size: 16,
-              color: isSelected
-                  ? theme.colorScheme.primary
-                  : theme.colorScheme.onSurfaceVariant,
-            ),
-            const SizedBox(width: 8),
-            // Widget type name
-            Text(
-              widgetType,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: isSelected
-                    ? theme.colorScheme.onPrimaryContainer
-                    : theme.colorScheme.onSurface,
-                fontWeight: isSelected ? FontWeight.w600 : null,
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: Container(
+        color: isSelected
+            ? theme.colorScheme.primaryContainer.withValues(alpha: 0.5)
+            : null,
+        child: Padding(
+          padding: EdgeInsets.only(left: depth * indentPerLevel),
+          child: Row(
+            children: [
+              // Expand/collapse arrow
+              SizedBox(
+                width: 24,
+                height: 24,
+                child: hasChildren
+                    ? IconButton(
+                        padding: EdgeInsets.zero,
+                        iconSize: 18,
+                        icon: Icon(
+                          isExpanded
+                              ? Icons.keyboard_arrow_down
+                              : Icons.keyboard_arrow_right,
+                          color: theme.colorScheme.onSurfaceVariant,
+                        ),
+                        onPressed: onToggleExpanded,
+                      )
+                    : null,
               ),
-            ),
-          ],
+              // Widget icon
+              Icon(
+                _getIconForType(widgetType),
+                size: 16,
+                color: isSelected
+                    ? theme.colorScheme.primary
+                    : theme.colorScheme.onSurfaceVariant,
+              ),
+              const SizedBox(width: 8),
+              // Widget type name
+              Expanded(
+                child: Text(
+                  widgetType,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: isSelected
+                        ? theme.colorScheme.onPrimaryContainer
+                        : theme.colorScheme.onSurface,
+                    fontWeight: isSelected ? FontWeight.w600 : null,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
