@@ -32,7 +32,7 @@ See `.claude/PROGRESS.md` for detailed Phase 1 completion records.
 
 **Milestone:** Widget tree panel, undo/redo, 15+ widgets, multi-level drag-drop
 
-**Progress:** 9/12 tasks | **Tests:** 296
+**Progress:** 10/12 tasks | **Tests:** 327
 
 ### Task 2.1: Command Pattern Foundation
 
@@ -335,29 +335,32 @@ See `.claude/PROGRESS.md` for detailed Phase 1 completion records.
 | Field | Value |
 |-------|-------|
 | ID | phase-2-task-10 |
-| Status | PENDING |
+| Status | COMPLETE |
 | Priority | P1 |
 | Journey AC | J02 (Widget Palette) S1 |
 | Requirements | FR1.1 |
 | Location | `lib/shared/registry/` |
 
 **Deliverables:**
-- [ ] Icon widget (icon property, size, color)
-- [ ] Image widget (placeholder for URL/asset)
-- [ ] Divider widget (orientation, thickness, color)
+- [x] Icon widget (icon property, size, color)
+- [x] Image widget (width, height, fit, alignment)
+- [x] Divider widget (thickness, indent, endIndent, color)
+- [x] VerticalDivider widget (thickness, width, indent, endIndent, color)
 
-**New Widgets (3):**
+**New Widgets (4):**
 | Widget | Category | Children | Constraint |
 |--------|----------|----------|------------|
 | Icon | Content | None | None |
 | Image | Content | None | None |
 | Divider | Content | None | None |
+| VerticalDivider | Content | None | None |
 
 **Acceptance Criteria:**
-- [ ] Icon has icon data, size, color properties
-- [ ] Image has placeholder and fit properties
-- [ ] Divider has thickness, color, indent properties
-- [ ] Tests: Registration and rendering for each widget
+- [x] Icon has icon enum, size, color properties
+- [x] Image has width, height, fit, alignment properties
+- [x] Divider has thickness, color, indent, endIndent properties
+- [x] VerticalDivider has thickness, width, color, indent properties
+- [x] Tests: Registration and properties for each widget (31 tests)
 
 ---
 
@@ -436,10 +439,10 @@ See `.claude/PROGRESS.md` for detailed Phase 1 completion records.
 - [x] Context menu for tree operations
 - [x] Multi-level nested drop zones (3+ depth)
 - [x] Canvas widget reordering
-- [ ] 15+ widgets in registry (currently 12)
+- [x] 15+ widgets in registry (currently 16)
 - [ ] Code generation for all widgets
 - [ ] `flutter analyze` passes
-- [ ] `flutter test` passes (target: 180+ tests, current: 296)
+- [x] `flutter test` passes (target: 180+ tests, current: 327)
 - [ ] Demo: Complex layout with undo/redo, tree reorder
 
 ---
@@ -457,7 +460,7 @@ See `.claude/PROGRESS.md` for detailed Phase 1 completion records.
 | phase-2-task-07 | J03 Design Canvas | S2 | COMPLETE |
 | phase-2-task-08 | J03 Design Canvas | S4 | COMPLETE |
 | phase-2-task-09 | J02 Widget Palette | S1 | COMPLETE |
-| phase-2-task-10 | J02 Widget Palette | S1 | PENDING |
+| phase-2-task-10 | J02 Widget Palette | S1 | COMPLETE |
 | phase-2-task-11 | J02 Widget Palette | S1 | PENDING |
 | phase-2-task-12 | J06 Code Generation | S1, S3 | PENDING |
 

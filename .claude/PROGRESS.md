@@ -5,15 +5,15 @@
 ## Orchestrator Checkpoint
 
 phase: phase-2
-current_task: phase-2-task-10
-completed: [phase-2-task-01, phase-2-task-02, phase-2-task-03, phase-2-task-04, phase-2-task-05, phase-2-task-06, phase-2-task-07, phase-2-task-08, phase-2-task-09]
-next_action: "Continue with phase-2-task-10 (Widget Registry Expansion - Content)"
+current_task: phase-2-task-11
+completed: [phase-2-task-01, phase-2-task-02, phase-2-task-03, phase-2-task-04, phase-2-task-05, phase-2-task-06, phase-2-task-07, phase-2-task-08, phase-2-task-09, phase-2-task-10]
+next_action: "Continue with phase-2-task-11 (Widget Registry Expansion - Input)"
 last_gate: G5
-timestamp: 2026-01-21T23:00:00Z
+timestamp: 2026-01-21T23:30:00Z
 
 ## Current Status
 
-Phase 1 (Foundation) COMPLETE. Phase 2 (Core Editor) in progress - 9 of 12 tasks complete.
+Phase 1 (Foundation) COMPLETE. Phase 2 (Core Editor) in progress - 10 of 12 tasks complete.
 
 ---
 
@@ -32,7 +32,7 @@ Phase 1 (Foundation) COMPLETE. Phase 2 (Core Editor) in progress - 9 of 12 tasks
 | phase-2-task-07 | Multi-Level Nested Drop Zones | J03 S2, FR2.3 | COMPLETE |
 | phase-2-task-08 | Canvas Widget Reordering | J03 S4, FR2.6 | COMPLETE |
 | phase-2-task-09 | Widget Registry Expansion (Layout) | J02 S1, FR1.1 | COMPLETE |
-| phase-2-task-10 | Widget Registry Expansion (Content) | J02 S1, FR1.1 | PENDING |
+| phase-2-task-10 | Widget Registry Expansion (Content) | J02 S1, FR1.1 | COMPLETE |
 | phase-2-task-11 | Widget Registry Expansion (Input) | J02 S1, FR1.1 | PENDING |
 | phase-2-task-12 | Code Generation Updates | J06, FR5.1 | PENDING |
 
@@ -201,6 +201,20 @@ Phase 1 (Foundation) COMPLETE. Phase 2 (Core Editor) in progress - 9 of 12 tasks
 - `test/unit/registry/widget_registry_test.dart` (updated counts)
 - `test/unit/palette/widget_palette_test.dart` (added Phase 2 widget tests)
 
+#### Task 2.10: Widget Registry Expansion - Content (COMPLETE)
+
+- [x] Icon widget (icon enum, size, color)
+- [x] Image widget (width, height, fit, alignment)
+- [x] Divider widget (thickness, indent, endIndent, color)
+- [x] VerticalDivider widget (thickness, width, indent, endIndent, color)
+- [x] 31 unit tests covering all new content widgets
+
+**Files Modified:**
+- `lib/shared/registry/widget_registry.dart` (added 4 new content widgets)
+
+**Files Created:**
+- `test/unit/registry/content_widgets_test.dart`
+
 ---
 
 ## Phase 1: Foundation (COMPLETE - 2026-01-21)
@@ -234,4 +248,5 @@ Phase 1 (Foundation) COMPLETE. Phase 2 (Core Editor) in progress - 9 of 12 tasks
 | **Multi-Level Drop Zones** | **19** | **PASS** |
 | **Canvas Reordering** | **10** | **PASS** |
 | **Layout Widgets (Task 2.9)** | **38** | **PASS** |
-| **Total** | **296** | **PASS** |
+| **Content Widgets (Task 2.10)** | **31** | **PASS** |
+| **Total** | **327** | **PASS** |

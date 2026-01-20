@@ -46,6 +46,7 @@ class WidgetRegistry {
 ///
 /// Phase 1: Container, Text, Row, Column, SizedBox
 /// Phase 2 Task 9: Stack, Expanded, Flexible, Padding, Center, Align, Spacer
+/// Phase 2 Task 10: Icon, Image, Divider, VerticalDivider
 class DefaultWidgetRegistry extends WidgetRegistry {
   /// Creates the default registry with all widgets.
   DefaultWidgetRegistry() {
@@ -64,6 +65,12 @@ class DefaultWidgetRegistry extends WidgetRegistry {
     _registerCenterWidget();
     _registerAlignWidget();
     _registerSpacerWidget();
+
+    // Phase 2 Task 10: Content widgets
+    _registerIconWidget();
+    _registerImageWidget();
+    _registerDividerWidget();
+    _registerVerticalDividerWidget();
   }
 
   void _registerContainerWidget() {
@@ -625,6 +632,243 @@ class DefaultWidgetRegistry extends WidgetRegistry {
             category: 'Layout',
             description: 'Flex factor for space distribution',
             min: 1,
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Phase 2 Task 10: Content widgets
+
+  void _registerIconWidget() {
+    register(
+      const WidgetDefinition(
+        type: 'Icon',
+        category: WidgetCategory.content,
+        displayName: 'Icon',
+        acceptsChildren: false,
+        maxChildren: 0,
+        iconName: 'star',
+        description: 'A Material Design icon',
+        properties: [
+          PropertyDefinition(
+            name: 'icon',
+            type: PropertyType.enum_,
+            displayName: 'Icon',
+            nullable: false,
+            defaultValue: 'Icons.star',
+            category: 'Content',
+            description: 'The icon to display',
+            enumValues: [
+              'Icons.star',
+              'Icons.favorite',
+              'Icons.home',
+              'Icons.settings',
+              'Icons.person',
+              'Icons.search',
+              'Icons.menu',
+              'Icons.close',
+              'Icons.add',
+              'Icons.remove',
+              'Icons.check',
+              'Icons.edit',
+              'Icons.delete',
+              'Icons.share',
+              'Icons.info',
+              'Icons.warning',
+              'Icons.error',
+              'Icons.help',
+              'Icons.arrow_back',
+              'Icons.arrow_forward',
+            ],
+          ),
+          PropertyDefinition(
+            name: 'size',
+            type: PropertyType.double_,
+            displayName: 'Size',
+            nullable: true,
+            category: 'Size',
+            description: 'Icon size in logical pixels',
+            min: 1,
+            max: 200,
+          ),
+          PropertyDefinition(
+            name: 'color',
+            type: PropertyType.color,
+            displayName: 'Color',
+            nullable: true,
+            category: 'Style',
+            description: 'Icon color',
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _registerImageWidget() {
+    register(
+      const WidgetDefinition(
+        type: 'Image',
+        category: WidgetCategory.content,
+        displayName: 'Image',
+        acceptsChildren: false,
+        maxChildren: 0,
+        iconName: 'image',
+        description: 'Displays an image',
+        properties: [
+          PropertyDefinition(
+            name: 'width',
+            type: PropertyType.double_,
+            displayName: 'Width',
+            nullable: true,
+            category: 'Size',
+            description: 'Image width in logical pixels',
+            min: 0,
+          ),
+          PropertyDefinition(
+            name: 'height',
+            type: PropertyType.double_,
+            displayName: 'Height',
+            nullable: true,
+            category: 'Size',
+            description: 'Image height in logical pixels',
+            min: 0,
+          ),
+          PropertyDefinition(
+            name: 'fit',
+            type: PropertyType.enum_,
+            displayName: 'Fit',
+            nullable: true,
+            category: 'Layout',
+            description: 'How to inscribe the image into the space',
+            enumValues: [
+              'BoxFit.contain',
+              'BoxFit.cover',
+              'BoxFit.fill',
+              'BoxFit.fitWidth',
+              'BoxFit.fitHeight',
+              'BoxFit.none',
+              'BoxFit.scaleDown',
+            ],
+          ),
+          PropertyDefinition(
+            name: 'alignment',
+            type: PropertyType.alignment,
+            displayName: 'Alignment',
+            nullable: true,
+            category: 'Layout',
+            description: 'How to align the image within its bounds',
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _registerDividerWidget() {
+    register(
+      const WidgetDefinition(
+        type: 'Divider',
+        category: WidgetCategory.content,
+        displayName: 'Divider',
+        acceptsChildren: false,
+        maxChildren: 0,
+        iconName: 'horizontal_rule',
+        description: 'A horizontal line divider',
+        properties: [
+          PropertyDefinition(
+            name: 'thickness',
+            type: PropertyType.double_,
+            displayName: 'Thickness',
+            nullable: true,
+            category: 'Size',
+            description: 'Line thickness in logical pixels',
+            min: 0,
+          ),
+          PropertyDefinition(
+            name: 'indent',
+            type: PropertyType.double_,
+            displayName: 'Indent',
+            nullable: true,
+            category: 'Spacing',
+            description: 'Leading empty space',
+            min: 0,
+          ),
+          PropertyDefinition(
+            name: 'endIndent',
+            type: PropertyType.double_,
+            displayName: 'End Indent',
+            nullable: true,
+            category: 'Spacing',
+            description: 'Trailing empty space',
+            min: 0,
+          ),
+          PropertyDefinition(
+            name: 'color',
+            type: PropertyType.color,
+            displayName: 'Color',
+            nullable: true,
+            category: 'Style',
+            description: 'Line color',
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _registerVerticalDividerWidget() {
+    register(
+      const WidgetDefinition(
+        type: 'VerticalDivider',
+        category: WidgetCategory.content,
+        displayName: 'Vertical Divider',
+        acceptsChildren: false,
+        maxChildren: 0,
+        iconName: 'more_vert',
+        description: 'A vertical line divider',
+        properties: [
+          PropertyDefinition(
+            name: 'thickness',
+            type: PropertyType.double_,
+            displayName: 'Thickness',
+            nullable: true,
+            category: 'Size',
+            description: 'Line thickness in logical pixels',
+            min: 0,
+          ),
+          PropertyDefinition(
+            name: 'width',
+            type: PropertyType.double_,
+            displayName: 'Width',
+            nullable: true,
+            category: 'Size',
+            description: 'Total width including indents',
+            min: 0,
+          ),
+          PropertyDefinition(
+            name: 'indent',
+            type: PropertyType.double_,
+            displayName: 'Indent',
+            nullable: true,
+            category: 'Spacing',
+            description: 'Top empty space',
+            min: 0,
+          ),
+          PropertyDefinition(
+            name: 'endIndent',
+            type: PropertyType.double_,
+            displayName: 'End Indent',
+            nullable: true,
+            category: 'Spacing',
+            description: 'Bottom empty space',
+            min: 0,
+          ),
+          PropertyDefinition(
+            name: 'color',
+            type: PropertyType.color,
+            displayName: 'Color',
+            nullable: true,
+            category: 'Style',
+            description: 'Line color',
           ),
         ],
       ),
