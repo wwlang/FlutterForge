@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:flutter_forge/features/canvas/canvas.dart';
 import 'package:flutter_forge/features/palette/palette.dart';
 import 'package:flutter_forge/features/properties/properties.dart';
 import 'package:flutter_forge/generators/generators.dart';
 import 'package:flutter_forge/providers/providers.dart';
 import 'package:flutter_forge/shared/registry/registry.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// The main workbench layout with 3-panel design.
 ///
