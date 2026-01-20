@@ -5,15 +5,15 @@
 ## Orchestrator Checkpoint
 
 phase: phase-2
-current_task: phase-2-task-04
-completed: [phase-2-task-01, phase-2-task-02, phase-2-task-03]
-next_action: "Implement Widget Tree Selection Sync - TDD RED phase"
+current_task: null
+completed: [phase-2-task-01, phase-2-task-02, phase-2-task-03, phase-2-task-04]
+next_action: "Continue with phase-2-task-05 (Widget Tree Drag Reorder)"
 last_gate: G3
-timestamp: 2026-01-21T19:45:00Z
+timestamp: 2026-01-21T20:15:00Z
 
 ## Current Status
 
-Phase 1 (Foundation) COMPLETE. Phase 2 (Core Editor) in progress.
+Phase 1 (Foundation) COMPLETE. Phase 2 (Core Editor) in progress - 4 of 12 tasks complete.
 
 ---
 
@@ -26,7 +26,7 @@ Phase 1 (Foundation) COMPLETE. Phase 2 (Core Editor) in progress.
 | phase-2-task-01 | Command Pattern Foundation | J07 S1-2 | COMPLETE |
 | phase-2-task-02 | Undo/Redo Provider Integration | J07 S1-2, FR7.1 | COMPLETE |
 | phase-2-task-03 | Widget Tree Panel UI | J04 S1, FR3.1, FR3.5 | COMPLETE |
-| phase-2-task-04 | Widget Tree Selection Sync | J04 S2, FR3.2 | IN PROGRESS |
+| phase-2-task-04 | Widget Tree Selection Sync | J04 S2, FR3.2 | COMPLETE |
 | phase-2-task-05 | Widget Tree Drag Reorder | J04 S3, FR3.3 | PENDING |
 | phase-2-task-06 | Widget Tree Context Menu | J04 S4, FR3.4 | PENDING |
 | phase-2-task-07 | Multi-Level Nested Drop Zones | J03 S2, FR2.3 | PENDING |
@@ -42,10 +42,7 @@ Phase 1 (Foundation) COMPLETE. Phase 2 (Core Editor) in progress.
 
 - [x] Command base class with execute(), undo(), description, toJson()
 - [x] CommandProcessor with undo/redo stacks (100 command limit)
-- [x] AddWidgetCommand for adding widgets with parent support
-- [x] DeleteWidgetCommand with cascade delete and position restore
-- [x] PropertyChangeCommand for property modifications
-- [x] MoveWidgetCommand for reordering and reparenting
+- [x] AddWidgetCommand, DeleteWidgetCommand, PropertyChangeCommand, MoveWidgetCommand
 - [x] 41 unit tests covering all command operations
 
 **Files Created:**
@@ -64,7 +61,6 @@ Phase 1 (Foundation) COMPLETE. Phase 2 (Core Editor) in progress.
 - [x] Integration with ProjectProvider for state changes
 - [x] CommandState (freezed) for reactive UI updates
 - [x] canUndo/canRedo and description properties
-- [x] 100 command stack limit enforcement
 - [x] 23 unit tests covering all undo/redo scenarios
 
 **Files Created:**
@@ -78,7 +74,6 @@ Phase 1 (Foundation) COMPLETE. Phase 2 (Core Editor) in progress.
 - [x] WidgetTreeItem with expand/collapse toggle
 - [x] Indentation for parent-child relationships (16px per level)
 - [x] Widget type icons (Container, Text, Row, Column, SizedBox)
-- [x] Selection highlighting
 - [x] Empty state when no widgets
 - [x] 15 unit tests covering all UI behaviors
 
@@ -88,6 +83,19 @@ Phase 1 (Foundation) COMPLETE. Phase 2 (Core Editor) in progress.
 - `lib/features/tree/tree.dart` (barrel export)
 - `lib/providers/registry_provider.dart`
 - `test/unit/tree/widget_tree_panel_test.dart`
+
+#### Task 2.4: Widget Tree Selection Sync (COMPLETE)
+
+- [x] Tree node click updates selectionProvider
+- [x] GestureDetector with onTap callback on WidgetTreeItem
+- [x] Auto-expand collapsed ancestors when child selected
+- [x] Selection highlight visual feedback
+- [x] 9 unit tests covering selection sync behaviors
+
+**Files Updated:**
+- `lib/features/tree/widget_tree_item.dart`
+- `lib/features/tree/widget_tree_panel.dart`
+- `test/unit/tree/widget_tree_selection_test.dart`
 
 ---
 
@@ -116,4 +124,5 @@ Phase 1 (Foundation) COMPLETE. Phase 2 (Core Editor) in progress.
 | **Command Pattern** | **41** | **PASS** |
 | **Widget Tree Panel** | **15** | **PASS** |
 | **Command Provider** | **23** | **PASS** |
-| **Total** | **188** | **PASS** |
+| **Widget Tree Selection** | **9** | **PASS** |
+| **Total** | **197** | **PASS** |
