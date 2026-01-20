@@ -107,6 +107,7 @@ class _DesignSystemPanelState extends ConsumerState<DesignSystemPanel>
 
   Widget _buildTokenList(TokenType type, String listKey) {
     final tokens = ref.watch(designTokensProvider);
+    final notifier = ref.read(designTokensProvider.notifier);
     final filteredTokens = tokens.where((t) => t.type == type).toList();
 
     if (filteredTokens.isEmpty) {
@@ -122,9 +123,11 @@ class _DesignSystemPanelState extends ConsumerState<DesignSystemPanel>
             itemCount: filteredTokens.length,
             itemBuilder: (context, index) {
               final token = filteredTokens[index];
+              final isDeepChain = notifier.isDeepAliasChain(token.id);
               return TokenListItem(
                 key: Key('token_item_${token.id}'),
                 token: token,
+                isDeepChain: isDeepChain,
                 onTap: () => _onEditToken(token),
                 onDelete: () => _onDeleteToken(token),
               );

@@ -7,12 +7,16 @@ class TokenListItem extends StatelessWidget {
     required this.token,
     required this.onTap,
     required this.onDelete,
+    this.isDeepChain = false,
     super.key,
   });
 
   final DesignToken token;
   final VoidCallback onTap;
   final VoidCallback onDelete;
+
+  /// Whether this token has a deep alias chain (>3 levels).
+  final bool isDeepChain;
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +53,19 @@ class TokenListItem extends StatelessWidget {
                   ],
                 ),
               ),
+              if (isDeepChain)
+                Padding(
+                  key: Key('deep_chain_warning_${token.name}'),
+                  padding: const EdgeInsets.only(right: 8),
+                  child: Tooltip(
+                    message: 'Deep alias chain (>3 levels)',
+                    child: Icon(
+                      Icons.warning_amber,
+                      size: 16,
+                      color: theme.colorScheme.error,
+                    ),
+                  ),
+                ),
               if (token.isAlias)
                 Padding(
                   padding: const EdgeInsets.only(right: 8),

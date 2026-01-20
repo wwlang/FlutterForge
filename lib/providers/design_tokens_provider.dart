@@ -141,6 +141,71 @@ class DesignTokensNotifier extends StateNotifier<List<DesignToken>> {
     return getAliasChainDepth(id) > _maxAliasChainDepth;
   }
 
+  /// Gets all tokens that alias a given token name.
+  List<DesignToken> getAliasesOf(String tokenName) {
+    return state.where((t) => t.aliasOf == tokenName).toList();
+  }
+
+  /// Gets the full alias chain from a token to its base.
+  ///
+  /// Returns a list starting with the given token and ending with the base.
+  /// Returns single element if token is not an alias.
+  /// Returns empty list if token not found.
+  List<DesignToken> getAliasChain(String id) {
+    final token = getTokenById(id);
+    if (token == null) return [];
+
+    final chain = <DesignToken>[token];
+    if (!token.isAlias) return chain;
+
+    final visited = <String>{id};
+    var current = token;
+
+    while (current.isAlias) {
+      final referenced = getTokenByName(current.aliasOf!, current.type);
+      if (referenced == null) break;
+      if (visited.contains(referenced.id)) break; // Circular reference
+
+      visited.add(referenced.id);
+      chain.add(referenced);
+      current = referenced;
+    }
+
+    return chain;
+  }
+
+  /// Checks if making tokenId alias targetName would create a circular reference.
+  ///
+  /// Returns true if:
+  /// - targetName directly or indirectly aliases tokenId
+  /// - tokenId and targetName would form a cycle
+  bool wouldCreateCircularAlias(String tokenId, String targetName) {
+    final token = getTokenById(tokenId);
+    if (token == null) return false;
+
+    // Check if target exists
+    final targetToken = getTokenByName(targetName, token.type);
+    if (targetToken == null) return false;
+
+    // If target is itself, that's circular
+    if (targetToken.id == tokenId) return true;
+
+    // Check if target aliases us (directly or indirectly)
+    final visited = <String>{tokenId};
+    var current = targetToken;
+
+    while (current.isAlias) {
+      final referenced = getTokenByName(current.aliasOf!, current.type);
+      if (referenced == null) break;
+      if (referenced.id == tokenId) return true;
+      if (visited.contains(referenced.id)) break;
+      visited.add(referenced.id);
+      current = referenced;
+    }
+
+    return false;
+  }
+
   /// Replaces all tokens with a new list.
   void setTokens(List<DesignToken> tokens) {
     state = List.unmodifiable(tokens);

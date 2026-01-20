@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_forge/core/models/design_token.dart';
 import 'package:flutter_forge/features/design_system/color_picker_dialog.dart';
+import 'package:flutter_forge/providers/design_tokens_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
 /// Form for creating or editing design tokens.
-class TokenForm extends StatefulWidget {
+class TokenForm extends ConsumerStatefulWidget {
   const TokenForm({
     required this.tokenType,
     required this.onSave,
@@ -20,10 +22,10 @@ class TokenForm extends StatefulWidget {
   final VoidCallback onCancel;
 
   @override
-  State<TokenForm> createState() => _TokenFormState();
+  ConsumerState<TokenForm> createState() => _TokenFormState();
 }
 
-class _TokenFormState extends State<TokenForm> {
+class _TokenFormState extends ConsumerState<TokenForm> {
   final _formKey = GlobalKey<FormState>();
 
   late TextEditingController _nameController;
@@ -39,6 +41,10 @@ class _TokenFormState extends State<TokenForm> {
   String? _lightValueError;
   String? _valueError;
   String? _nameSuggestion;
+  String? _aliasError;
+
+  bool _isAlias = false;
+  String? _aliasTarget;
 
   bool get _isEditing => widget.existingToken != null;
 
@@ -54,9 +60,13 @@ class _TokenFormState extends State<TokenForm> {
     _nameController = TextEditingController(text: existing?.name ?? '');
     _nameController.addListener(_onNameChanged);
 
+    // Check if existing is an alias
+    _isAlias = existing?.isAlias ?? false;
+    _aliasTarget = existing?.aliasOf;
+
     // Color fields
     _lightValueController = TextEditingController(
-      text: existing?.lightValue != null
+      text: existing?.lightValue != null && !(existing?.isAlias ?? false)
           ? (existing!.lightValue as int)
               .toRadixString(16)
               .toUpperCase()
@@ -64,7 +74,7 @@ class _TokenFormState extends State<TokenForm> {
           : '',
     );
     _darkValueController = TextEditingController(
-      text: existing?.darkValue != null
+      text: existing?.darkValue != null && !(existing?.isAlias ?? false)
           ? (existing!.darkValue as int)
               .toRadixString(16)
               .toUpperCase()
@@ -93,7 +103,7 @@ class _TokenFormState extends State<TokenForm> {
   }
 
   double? _getNumericValue(DesignToken? token) {
-    if (token == null) return null;
+    if (token == null || token.isAlias) return null;
     switch (token.type) {
       case TokenType.spacing:
         return token.spacingValue;
@@ -150,7 +160,18 @@ class _TokenFormState extends State<TokenForm> {
             const SizedBox(height: 16),
             _buildNameField(),
             const SizedBox(height: 16),
-            ..._buildTypeSpecificFields(),
+            _buildAliasToggle(),
+            const SizedBox(height: 16),
+            if (_isAlias) ...[
+              _buildAliasTargetSelector(),
+              if (_isEditing && (widget.existingToken?.isAlias ?? false)) ...[
+                const SizedBox(height: 16),
+                _buildAliasChainVisualization(),
+                const SizedBox(height: 16),
+                _buildConvertToValueButton(),
+              ],
+            ] else
+              ..._buildTypeSpecificFields(),
             const SizedBox(height: 24),
             _buildActions(),
           ],
@@ -190,17 +211,271 @@ class _TokenFormState extends State<TokenForm> {
     );
   }
 
-  List<Widget> _buildTypeSpecificFields() {
-    switch (widget.tokenType) {
-      case TokenType.color:
-        return _buildColorFields();
-      case TokenType.typography:
-        return _buildTypographyFields();
-      case TokenType.spacing:
-        return _buildSpacingFields();
-      case TokenType.radius:
-        return _buildRadiusFields();
+  Widget _buildAliasToggle() {
+    return Row(
+      children: [
+        Switch(
+          key: const Key('alias_toggle'),
+          value: _isAlias,
+          onChanged: (value) {
+            setState(() {
+              _isAlias = value;
+              _aliasTarget = null;
+              _aliasError = null;
+            });
+          },
+        ),
+        const SizedBox(width: 8),
+        const Text('Create as Alias'),
+      ],
+    );
+  }
+
+  Widget _buildAliasTargetSelector() {
+    final notifier = ref.read(designTokensProvider.notifier);
+    final tokens = notifier.getTokensByType(widget.tokenType);
+
+    // Filter out the current token (if editing) and circular refs
+    final availableTokens = tokens.where((t) {
+      if (_isEditing && t.id == widget.existingToken!.id) return false;
+      // Check if selecting this would create circular reference
+      if (_isEditing &&
+          notifier.wouldCreateCircularAlias(
+            widget.existingToken!.id,
+            t.name,
+          )) {
+        return false;
+      }
+      return true;
+    }).toList();
+
+    // Check for circular reference warnings
+    final circularWarnings = <String, bool>{};
+    if (_isEditing) {
+      for (final t in tokens) {
+        if (t.id != widget.existingToken!.id) {
+          circularWarnings[t.name] = notifier.wouldCreateCircularAlias(
+            widget.existingToken!.id,
+            t.name,
+          );
+        }
+      }
     }
+
+    if (availableTokens.isEmpty) {
+      return Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surfaceContainerHighest,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: const Text('No tokens available to alias'),
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text('Alias Target'),
+        const SizedBox(height: 4),
+        DropdownButtonFormField<String>(
+          key: const Key('alias_target_dropdown'),
+          decoration: InputDecoration(
+            isDense: true,
+            border: const OutlineInputBorder(),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+            errorText: _aliasError,
+          ),
+          value: _aliasTarget,
+          hint: const Text('Select token to alias'),
+          items: [
+            ...availableTokens.map((t) {
+              return DropdownMenuItem(
+                value: t.name,
+                child: Text(t.name),
+              );
+            }),
+            // Show disabled items with warning for circular references
+            ...tokens.where((t) {
+              if (_isEditing) {
+                return t.id != widget.existingToken!.id &&
+                    (circularWarnings[t.name] ?? false);
+              }
+              return false;
+            }).map((t) {
+              return DropdownMenuItem(
+                value: t.name,
+                enabled: false,
+                child: Row(
+                  children: [
+                    Text(
+                      t.name,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.error,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Icon(
+                      Icons.warning,
+                      size: 16,
+                      color: Theme.of(context).colorScheme.error,
+                    ),
+                  ],
+                ),
+              );
+            }),
+          ],
+          onChanged: (value) {
+            setState(() {
+              _aliasTarget = value;
+              _aliasError = null;
+            });
+          },
+        ),
+        if (_isEditing && circularWarnings.values.any((v) => v)) ...[
+          const SizedBox(height: 4),
+          Text(
+            'Would create circular reference',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Theme.of(context).colorScheme.error,
+                ),
+          ),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildAliasChainVisualization() {
+    if (!_isEditing || widget.existingToken == null) return const SizedBox();
+
+    final notifier = ref.read(designTokensProvider.notifier);
+    final chain = notifier.getAliasChain(widget.existingToken!.id);
+    final isDeepChain = notifier.isDeepAliasChain(widget.existingToken!.id);
+
+    if (chain.isEmpty) return const SizedBox();
+
+    return Container(
+      key: const Key('alias_chain_visualization'),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(8),
+        border: isDeepChain
+            ? Border.all(color: Theme.of(context).colorScheme.error)
+            : null,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.link, size: 16),
+              const SizedBox(width: 8),
+              Text(
+                'Alias Chain',
+                style: Theme.of(context).textTheme.titleSmall,
+              ),
+              if (isDeepChain) ...[
+                const SizedBox(width: 8),
+                Icon(
+                  Icons.warning,
+                  size: 16,
+                  color: Theme.of(context).colorScheme.error,
+                ),
+                const SizedBox(width: 4),
+                Text(
+                  'Deep chain',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Theme.of(context).colorScheme.error,
+                      ),
+                ),
+              ],
+            ],
+          ),
+          const SizedBox(height: 8),
+          Wrap(
+            spacing: 8,
+            runSpacing: 4,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              for (int i = 0; i < chain.length; i++) ...[
+                Chip(
+                  label: Text(chain[i].name),
+                  backgroundColor: chain[i].isAlias
+                      ? null
+                      : Theme.of(context).colorScheme.primaryContainer,
+                ),
+                if (i < chain.length - 1)
+                  const Icon(Icons.arrow_forward, size: 16),
+              ],
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildConvertToValueButton() {
+    return OutlinedButton.icon(
+      onPressed: _onConvertToValue,
+      icon: const Icon(Icons.link_off),
+      label: const Text('Convert to Value'),
+    );
+  }
+
+  void _onConvertToValue() {
+    if (widget.existingToken == null || !widget.existingToken!.isAlias) return;
+
+    final notifier = ref.read(designTokensProvider.notifier);
+    final resolved = notifier.resolveToken(widget.existingToken!.id);
+
+    if (resolved == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Could not resolve alias value')),
+      );
+      return;
+    }
+
+    // Create a new token with the resolved value
+    final converted = switch (widget.tokenType) {
+      TokenType.color => DesignToken.color(
+          id: widget.existingToken!.id,
+          name: widget.existingToken!.name,
+          lightValue: resolved.lightValue as int,
+          darkValue: resolved.darkValue as int? ?? resolved.lightValue as int,
+        ),
+      TokenType.typography => DesignToken.typography(
+          id: widget.existingToken!.id,
+          name: widget.existingToken!.name,
+          fontFamily: resolved.typographyValue!.fontFamily,
+          fontSize: resolved.typographyValue!.fontSize,
+          fontWeight: resolved.typographyValue!.fontWeight,
+          lineHeight: resolved.typographyValue!.lineHeight,
+          letterSpacing: resolved.typographyValue!.letterSpacing,
+        ),
+      TokenType.spacing => DesignToken.spacing(
+          id: widget.existingToken!.id,
+          name: widget.existingToken!.name,
+          value: resolved.spacingValue!,
+        ),
+      TokenType.radius => DesignToken.radius(
+          id: widget.existingToken!.id,
+          name: widget.existingToken!.name,
+          value: resolved.radiusValue!,
+        ),
+    };
+
+    widget.onSave(converted);
+  }
+
+  List<Widget> _buildTypeSpecificFields() {
+    return switch (widget.tokenType) {
+      TokenType.color => _buildColorFields(),
+      TokenType.typography => _buildTypographyFields(),
+      TokenType.spacing => _buildSpacingFields(),
+      TokenType.radius => _buildRadiusFields(),
+    };
   }
 
   List<Widget> _buildColorFields() {
@@ -382,7 +657,9 @@ class _TokenFormState extends State<TokenForm> {
             DropdownMenuItem(value: '800', child: Text('800 - Extra Bold')),
             DropdownMenuItem(value: '900', child: Text('900 - Black')),
           ],
-          initialValue: _fontWeightController.text,
+          value: _fontWeightController.text.isEmpty
+              ? '400'
+              : _fontWeightController.text,
           onChanged: (value) {
             if (value != null) {
               _fontWeightController.text = value;
@@ -529,6 +806,7 @@ class _TokenFormState extends State<TokenForm> {
       _nameError = null;
       _lightValueError = null;
       _valueError = null;
+      _aliasError = null;
     });
 
     // Validate
@@ -539,6 +817,37 @@ class _TokenFormState extends State<TokenForm> {
     }
     if (!DesignToken.isValidName(name)) {
       setState(() => _nameError = 'Name must be in camelCase');
+      return;
+    }
+
+    // Alias validation
+    if (_isAlias) {
+      if (_aliasTarget == null) {
+        setState(() => _aliasError = 'Select a token to alias');
+        return;
+      }
+
+      // Check for circular reference
+      if (_isEditing) {
+        final notifier = ref.read(designTokensProvider.notifier);
+        if (notifier.wouldCreateCircularAlias(
+          widget.existingToken!.id,
+          _aliasTarget!,
+        )) {
+          setState(
+            () => _aliasError = 'This would create a circular reference',
+          );
+          return;
+        }
+      }
+
+      final token = DesignToken.alias(
+        id: widget.existingToken?.id ?? const Uuid().v4(),
+        name: name,
+        type: widget.tokenType,
+        aliasOf: _aliasTarget!,
+      );
+      widget.onSave(token);
       return;
     }
 
@@ -558,79 +867,88 @@ class _TokenFormState extends State<TokenForm> {
   DesignToken? _createToken(String name) {
     final id = widget.existingToken?.id ?? const Uuid().v4();
 
-    switch (widget.tokenType) {
-      case TokenType.color:
-        final lightHex = _lightValueController.text.trim();
-        if (lightHex.isEmpty) {
-          setState(() => _lightValueError = 'Light value is required');
-          throw Exception('Validation failed');
-        }
-        final lightValue = int.tryParse(lightHex, radix: 16);
-        if (lightValue == null) {
-          setState(() => _lightValueError = 'Invalid color value');
-          throw Exception('Validation failed');
-        }
+    return switch (widget.tokenType) {
+      TokenType.color => _createColorToken(id, name),
+      TokenType.typography => _createTypographyToken(id, name),
+      TokenType.spacing => _createSpacingToken(id, name),
+      TokenType.radius => _createRadiusToken(id, name),
+    };
+  }
 
-        final darkHex = _darkValueController.text.trim();
-        final darkValue =
-            darkHex.isNotEmpty ? int.tryParse(darkHex, radix: 16) : lightValue;
-
-        return DesignToken.color(
-          id: id,
-          name: name,
-          lightValue: lightValue,
-          darkValue: darkValue,
-        );
-
-      case TokenType.typography:
-        final fontSize = double.tryParse(_fontSizeController.text) ?? 14.0;
-        final fontWeight = int.tryParse(_fontWeightController.text) ?? 400;
-        final lineHeight = double.tryParse(_lineHeightController.text) ?? 1.5;
-
-        return DesignToken.typography(
-          id: id,
-          name: name,
-          fontFamily: _fontFamilyController.text.isNotEmpty
-              ? _fontFamilyController.text
-              : null,
-          fontSize: fontSize,
-          fontWeight: fontWeight,
-          lineHeight: lineHeight,
-        );
-
-      case TokenType.spacing:
-        final value = double.tryParse(_valueController.text);
-        if (value == null) {
-          setState(() => _valueError = 'Value is required');
-          throw Exception('Validation failed');
-        }
-        if (value < 0) {
-          setState(() => _valueError = 'Value must be positive');
-          throw Exception('Validation failed');
-        }
-
-        return DesignToken.spacing(
-          id: id,
-          name: name,
-          value: value,
-        );
-
-      case TokenType.radius:
-        final value = double.tryParse(_valueController.text);
-        if (value == null) {
-          setState(() => _valueError = 'Value is required');
-          throw Exception('Validation failed');
-        }
-        if (value < 0) {
-          setState(() => _valueError = 'Value must be positive');
-          throw Exception('Validation failed');
-        }
-
-        return DesignToken.radius(
-          id: id,
-          name: name,
-          value: value,
-        );
+  DesignToken _createColorToken(String id, String name) {
+    final lightHex = _lightValueController.text.trim();
+    if (lightHex.isEmpty) {
+      setState(() => _lightValueError = 'Light value is required');
+      throw Exception('Validation failed');
     }
+    final lightValue = int.tryParse(lightHex, radix: 16);
+    if (lightValue == null) {
+      setState(() => _lightValueError = 'Invalid color value');
+      throw Exception('Validation failed');
+    }
+
+    final darkHex = _darkValueController.text.trim();
+    final darkValue =
+        darkHex.isNotEmpty ? int.tryParse(darkHex, radix: 16) : lightValue;
+
+    return DesignToken.color(
+      id: id,
+      name: name,
+      lightValue: lightValue,
+      darkValue: darkValue,
+    );
+  }
+
+  DesignToken _createTypographyToken(String id, String name) {
+    final fontSize = double.tryParse(_fontSizeController.text) ?? 14.0;
+    final fontWeight = int.tryParse(_fontWeightController.text) ?? 400;
+    final lineHeight = double.tryParse(_lineHeightController.text) ?? 1.5;
+
+    return DesignToken.typography(
+      id: id,
+      name: name,
+      fontFamily: _fontFamilyController.text.isNotEmpty
+          ? _fontFamilyController.text
+          : null,
+      fontSize: fontSize,
+      fontWeight: fontWeight,
+      lineHeight: lineHeight,
+    );
+  }
+
+  DesignToken _createSpacingToken(String id, String name) {
+    final value = double.tryParse(_valueController.text);
+    if (value == null) {
+      setState(() => _valueError = 'Value is required');
+      throw Exception('Validation failed');
+    }
+    if (value < 0) {
+      setState(() => _valueError = 'Value must be positive');
+      throw Exception('Validation failed');
+    }
+
+    return DesignToken.spacing(
+      id: id,
+      name: name,
+      value: value,
+    );
+  }
+
+  DesignToken _createRadiusToken(String id, String name) {
+    final value = double.tryParse(_valueController.text);
+    if (value == null) {
+      setState(() => _valueError = 'Value is required');
+      throw Exception('Validation failed');
+    }
+    if (value < 0) {
+      setState(() => _valueError = 'Value must be positive');
+      throw Exception('Validation failed');
+    }
+
+    return DesignToken.radius(
+      id: id,
+      name: name,
+      value: value,
+    );
   }
 }
