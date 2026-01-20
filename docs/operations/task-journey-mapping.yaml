@@ -1,7 +1,7 @@
 # Task-Journey Mapping
 # Maps each task to user journey acceptance criteria for traceability
 
-version: "1.0"
+version: "2.0"
 last_updated: "2026-01-21"
 
 journeys:
@@ -26,6 +26,15 @@ journeys:
   J07:
     name: "Edit Operations"
     file: "../journeys/editor/edit-operations.md"
+  J08:
+    name: "Design System"
+    file: "../journeys/theming/design-system.md"
+  J09:
+    name: "Animation Studio"
+    file: "../journeys/animation/animation-studio.md"
+  J10:
+    name: "Project Management"
+    file: "../journeys/project/project-management.md"
 
 # Phase 1 Tasks (COMPLETE)
 phase_1:
@@ -103,11 +112,11 @@ phase_1:
       - "J01: First export achievable within 5 minutes"
       - "J01: 3-panel layout (palette, canvas, properties)"
 
-# Phase 2 Tasks (IN PROGRESS)
+# Phase 2 Tasks (COMPLETE)
 phase_2:
   - task_id: phase-2-task-01
     name: "Command Pattern Foundation"
-    status: PENDING
+    status: COMPLETE
     journey: J07
     stages: [S1, S2]
     requirements: [FR7.1]
@@ -115,17 +124,10 @@ phase_2:
       - "J07-CMD: Command has execute() and undo() methods"
       - "J07-CMD: Undo stack limit 100 actions"
       - "J07-CMD: Redo stack clears on new action"
-    deliverables:
-      - "lib/commands/command.dart"
-      - "lib/commands/command_processor.dart"
-      - "lib/commands/add_widget_command.dart"
-      - "lib/commands/delete_widget_command.dart"
-      - "lib/commands/property_change_command.dart"
-      - "lib/commands/move_widget_command.dart"
 
   - task_id: phase-2-task-02
     name: "Undo/Redo Provider Integration"
-    status: PENDING
+    status: COMPLETE
     journey: J07
     stages: [S1, S2]
     requirements: [FR7.1]
@@ -136,14 +138,10 @@ phase_2:
       - "J07-S1: Undo widget delete restores widget with children"
       - "J07-S2: Redo restores undone change"
       - "J07-S2: Menu shows 'Undo: [action]' label"
-    deliverables:
-      - "lib/providers/command_provider.dart"
-      - "Edit menu integration"
-      - "Keyboard shortcuts"
 
   - task_id: phase-2-task-03
     name: "Widget Tree Panel UI"
-    status: PENDING
+    status: COMPLETE
     journey: J04
     stages: [S1]
     requirements: [FR3.1, FR3.5]
@@ -153,13 +151,10 @@ phase_2:
       - "J04-S1: Expandable nodes show expand/collapse controls"
       - "J04-S1: Keyboard Right arrow expands, Left collapses"
       - "J04-S1: Tree render <50ms after state change"
-    deliverables:
-      - "lib/features/tree/widget_tree_panel.dart"
-      - "lib/features/tree/tree_node.dart"
 
   - task_id: phase-2-task-04
     name: "Widget Tree Selection Sync"
-    status: PENDING
+    status: COMPLETE
     journey: J04
     stages: [S2]
     requirements: [FR3.2]
@@ -170,14 +165,10 @@ phase_2:
       - "J04-S2: Canvas click highlights tree node"
       - "J04-S2: Collapsed parent auto-expands if child selected"
       - "J04-S2: Selection sync <16ms tree-to-canvas"
-    deliverables:
-      - "Selection sync integration"
-      - "Auto-expand logic"
-      - "Scroll-into-view"
 
   - task_id: phase-2-task-05
     name: "Widget Tree Drag Reorder"
-    status: PENDING
+    status: COMPLETE
     journey: J04
     stages: [S3]
     requirements: [FR3.3]
@@ -188,14 +179,10 @@ phase_2:
       - "J04-S3: Invalid target shows rejection with tooltip"
       - "J04-S3: Escape cancels drag"
       - "J04-S3: Uses MoveWidgetCommand for undo"
-    deliverables:
-      - "Tree drag-drop implementation"
-      - "Drop target validation"
-      - "Canvas sync after reorder"
 
   - task_id: phase-2-task-06
     name: "Widget Tree Context Menu"
-    status: PENDING
+    status: COMPLETE
     journey: J04
     stages: [S4]
     requirements: [FR3.4]
@@ -205,13 +192,10 @@ phase_2:
       - "J04-S4: Delete with children shows confirmation"
       - "J04-S4: Context menu shows Cut, Copy, Paste, Delete, Wrap in..."
       - "J04-S4: Uses DeleteWidgetCommand for undo"
-    deliverables:
-      - "lib/features/tree/tree_context_menu.dart"
-      - "Delete confirmation dialog"
 
   - task_id: phase-2-task-07
     name: "Multi-Level Nested Drop Zones"
-    status: PENDING
+    status: COMPLETE
     journey: J03
     stages: [S2]
     requirements: [FR2.3]
@@ -222,14 +206,10 @@ phase_2:
       - "J03-S2: Single-child container rejects if has child"
       - "J03-S2: Expanded rejected by non-Flex containers"
       - "J03-S2: Uses AddWidgetCommand for undo"
-    deliverables:
-      - "Enhanced NestedDropZone"
-      - "Insertion indicators"
-      - "Parent-child validation"
 
   - task_id: phase-2-task-08
     name: "Canvas Widget Reordering"
-    status: PENDING
+    status: COMPLETE
     journey: J03
     stages: [S4]
     requirements: [FR2.6]
@@ -239,81 +219,475 @@ phase_2:
       - "J03-S4: Siblings animate to show gap"
       - "J03-S4: Drop at original position is no-op"
       - "J03-S4: Uses MoveWidgetCommand for undo"
-    deliverables:
-      - "Canvas reorder drag handlers"
-      - "Animated gap preview"
 
   - task_id: phase-2-task-09
     name: "Widget Registry Expansion - Layout"
-    status: PENDING
+    status: COMPLETE
     journey: J02
     stages: [S1]
     requirements: [FR1.1]
     acceptance_criteria:
-      - "J02-S1: Stack, Expanded, Flexible, Padding, Center, Align registered"
-      - "J02-S1: Expanded/Flexible have Flex parent constraint"
+      - "J02-S1: Stack, Expanded, Flexible, Padding, Center, Align, Spacer registered"
+      - "J02-S1: Expanded/Flexible/Spacer have Flex parent constraint"
       - "J02-S1: Widgets appear in Layout category"
-    deliverables:
-      - "Stack widget definition"
-      - "Expanded widget definition"
-      - "Flexible widget definition"
-      - "Padding widget definition"
-      - "Center widget definition"
-      - "Align widget definition"
 
   - task_id: phase-2-task-10
     name: "Widget Registry Expansion - Content"
-    status: PENDING
+    status: COMPLETE
     journey: J02
     stages: [S1]
     requirements: [FR1.1]
     acceptance_criteria:
-      - "J02-S1: Icon, Image, Divider, Spacer registered"
-      - "J02-S1: Spacer has Flex parent constraint"
-    deliverables:
-      - "Icon widget definition"
-      - "Image widget definition"
-      - "Divider widget definition"
-      - "Spacer widget definition"
+      - "J02-S1: Icon, Image, Divider, VerticalDivider registered"
+      - "J02-S1: Content category widgets functional"
 
   - task_id: phase-2-task-11
     name: "Widget Registry Expansion - Input"
-    status: PENDING
+    status: COMPLETE
     journey: J02
     stages: [S1]
     requirements: [FR1.1]
     acceptance_criteria:
       - "J02-S1: ElevatedButton, TextButton, IconButton, Placeholder registered"
       - "J02-S1: Input category added to enum"
-    deliverables:
-      - "ElevatedButton widget definition"
-      - "TextButton widget definition"
-      - "IconButton widget definition"
-      - "Placeholder widget definition"
-      - "Input category"
 
   - task_id: phase-2-task-12
     name: "Code Generation Updates"
-    status: PENDING
+    status: COMPLETE
     journey: J06
     stages: [S1, S3]
     requirements: [FR5.1, FR5.2]
     depends_on: [phase-2-task-09, phase-2-task-10, phase-2-task-11]
     acceptance_criteria:
-      - "J06-S1: Valid Dart code for all 15+ widgets"
+      - "J06-S1: Valid Dart code for all 20 widgets"
       - "J06-S1: Proper import statements"
       - "J06-S3: Button callbacks generate as empty closures"
       - "J06-S3: Generation <500ms for 100 widgets"
-    deliverables:
-      - "Widget code generators for Phase 2 widgets"
-      - "Icon data generation"
-      - "Button callback generation"
+
+# Phase 3 Tasks (PENDING)
+phase_3:
+  - task_id: phase-3-task-01
+    name: "Design Token Model"
+    status: PENDING
+    journey: J08
+    stages: [S1]
+    requirements: [FR8.1]
+    acceptance_criteria:
+      - "J08-S1: Token has name, type, value(s)"
+      - "J08-S1: Color tokens support light and dark values"
+      - "J08-S1: Typography tokens have fontFamily, fontSize, fontWeight, lineHeight"
+      - "J08-S1: Spacing/radius tokens have numeric value"
+      - "J08-S1: Token name validation (camelCase, no duplicates)"
+
+  - task_id: phase-3-task-02
+    name: "Design System Panel UI"
+    status: PENDING
+    journey: J08
+    stages: [S1]
+    requirements: [FR8.1]
+    depends_on: [phase-3-task-01]
+    acceptance_criteria:
+      - "J08-S1: Panel shows Colors, Typography, Spacing, Radii categories"
+      - "J08-S1: Add Token button per category"
+      - "J08-S1: Token creation <100ms"
+      - "J08-S1: Color picker for color values"
+
+  - task_id: phase-3-task-03
+    name: "Semantic Token Aliasing"
+    status: PENDING
+    journey: J08
+    stages: [S2]
+    requirements: [FR8.2]
+    depends_on: [phase-3-task-01]
+    acceptance_criteria:
+      - "J08-S2: Alias token references base token"
+      - "J08-S2: Changes to base propagate to aliases"
+      - "J08-S2: Circular reference detection"
+      - "J08-S2: Convert to Value breaks alias"
+
+  - task_id: phase-3-task-04
+    name: "Theme Mode Toggle"
+    status: PENDING
+    journey: J08
+    stages: [S3]
+    requirements: [FR8.3]
+    depends_on: [phase-3-task-01]
+    acceptance_criteria:
+      - "J08-S3: Toggle between Light, Dark, High-Contrast"
+      - "J08-S3: Canvas updates within 16ms"
+      - "J08-S3: Token-based colors switch values"
+      - "J08-S3: Theme mode persists in project"
+
+  - task_id: phase-3-task-05
+    name: "Token Application to Widgets"
+    status: PENDING
+    journey: J08
+    stages: [S4]
+    requirements: [FR8.4]
+    depends_on: [phase-3-task-02, phase-3-task-04]
+    acceptance_criteria:
+      - "J08-S4: Property editor shows Use Token option"
+      - "J08-S4: Token picker filters by compatible type"
+      - "J08-S4: Token changes propagate to bound widgets"
+      - "J08-S4: Clear Token converts to literal"
+
+  - task_id: phase-3-task-06
+    name: "Style Presets"
+    status: PENDING
+    journey: J08
+    stages: [S5]
+    requirements: [FR8.4]
+    depends_on: [phase-3-task-05]
+    acceptance_criteria:
+      - "J08-S5: Create preset with multiple properties"
+      - "J08-S5: Apply preset to widget with one click"
+      - "J08-S5: Edit preset updates all widgets using it"
+      - "J08-S5: Override tracking for individual properties"
+
+  - task_id: phase-3-task-07
+    name: "ThemeExtension Export"
+    status: PENDING
+    journey: J08
+    stages: [S6]
+    requirements: [FR8.5]
+    depends_on: [phase-3-task-01]
+    acceptance_criteria:
+      - "J08-S6: Export generates valid ThemeExtension class"
+      - "J08-S6: Light and dark static instances"
+      - "J08-S6: copyWith and lerp methods"
+      - "J08-S6: Code formatted with dart_style"
+
+  - task_id: phase-3-task-08
+    name: "Animation Model and Track"
+    status: PENDING
+    journey: J09
+    stages: [S1]
+    requirements: [FR9.1]
+    acceptance_criteria:
+      - "J09-S1: Animation has type, duration, keyframes"
+      - "J09-S1: Animation types: Fade, Slide, Scale, Rotate, Custom"
+      - "J09-S1: Multiple animations per widget"
+      - "J09-S1: Animation indicator on canvas widget"
+
+  - task_id: phase-3-task-09
+    name: "Animation Panel and Timeline"
+    status: PENDING
+    journey: J09
+    stages: [S1, S2]
+    requirements: [FR9.1]
+    depends_on: [phase-3-task-08]
+    acceptance_criteria:
+      - "J09-S1: Panel shows animation tracks for selected widget"
+      - "J09-S2: Timeline shows time markers and keyframes"
+      - "J09-S2: Playhead draggable to scrub animation"
+      - "J09-S2: Canvas updates at 60fps during scrub"
+
+  - task_id: phase-3-task-10
+    name: "Property Keyframing"
+    status: PENDING
+    journey: J09
+    stages: [S3]
+    requirements: [FR9.2]
+    depends_on: [phase-3-task-09]
+    acceptance_criteria:
+      - "J09-S3: Keyframe created at playhead position"
+      - "J09-S3: Property value interpolates between keyframes"
+      - "J09-S3: Click keyframe to edit value"
+      - "J09-S3: Drag keyframe to change timing"
+
+  - task_id: phase-3-task-11
+    name: "Easing Editor"
+    status: PENDING
+    journey: J09
+    stages: [S4]
+    requirements: [FR9.3]
+    depends_on: [phase-3-task-10]
+    acceptance_criteria:
+      - "J09-S4: Easing presets available"
+      - "J09-S4: Custom cubic-bezier with draggable handles"
+      - "J09-S4: Preview shows animation with current easing"
+      - "J09-S4: Per-segment easing support"
+
+  - task_id: phase-3-task-12
+    name: "Animation Triggers"
+    status: PENDING
+    journey: J09
+    stages: [S5]
+    requirements: [FR9.4]
+    depends_on: [phase-3-task-08]
+    acceptance_criteria:
+      - "J09-S5: OnLoad trigger plays on widget mount"
+      - "J09-S5: OnTap trigger plays on widget tap"
+      - "J09-S5: OnVisible trigger plays when widget enters viewport"
+      - "J09-S5: Trigger delay configurable"
+
+  - task_id: phase-3-task-13
+    name: "Staggered Animation and Preview"
+    status: PENDING
+    journey: J09
+    stages: [S6, S7]
+    requirements: [FR9.5]
+    depends_on: [phase-3-task-09, phase-3-task-10]
+    acceptance_criteria:
+      - "J09-S6: Enable stagger on parent with child animations"
+      - "J09-S6: Stagger delay and order configurable"
+      - "J09-S7: Preview plays at 60fps"
+      - "J09-S7: Animation code generates using flutter_animate"
+
+# Phase 4 Tasks (PENDING)
+phase_4:
+  - task_id: phase-4-task-01
+    name: "Project Model and Serialization"
+    status: PENDING
+    journey: J10
+    stages: [S2]
+    requirements: [FR6.1]
+    acceptance_criteria:
+      - "J10-S2: Project serializes to .forge file"
+      - "J10-S2: .forge is ZIP archive with manifest.json, project.json"
+      - "J10-S2: All widget hierarchy preserved on save/load"
+      - "J10-S2: All properties, tokens, animations preserved"
+
+  - task_id: phase-4-task-02
+    name: "New Project Flow"
+    status: PENDING
+    journey: J10
+    stages: [S1]
+    requirements: [FR6.1]
+    depends_on: [phase-4-task-01]
+    acceptance_criteria:
+      - "J10-S1: File > New Project opens dialog"
+      - "J10-S1: Cmd/Ctrl+N triggers new project"
+      - "J10-S1: Unsaved changes prompt: Save/Don't Save/Cancel"
+      - "J10-S1: New project has empty canvas, empty tokens"
+
+  - task_id: phase-4-task-03
+    name: "Save and Save As"
+    status: PENDING
+    journey: J10
+    stages: [S2]
+    requirements: [FR6.1]
+    depends_on: [phase-4-task-01]
+    acceptance_criteria:
+      - "J10-S2: Cmd/Ctrl+S saves project"
+      - "J10-S2: First save opens file dialog"
+      - "J10-S2: Cmd/Ctrl+Shift+S opens Save As"
+      - "J10-S2: Save <500ms for typical project"
+
+  - task_id: phase-4-task-04
+    name: "Open Project"
+    status: PENDING
+    journey: J10
+    stages: [S3]
+    requirements: [FR6.2]
+    depends_on: [phase-4-task-01]
+    acceptance_criteria:
+      - "J10-S3: File > Open opens file dialog"
+      - "J10-S3: Filter shows .forge files only"
+      - "J10-S3: Load time <2s for typical project"
+      - "J10-S3: Corrupted file shows error message"
+
+  - task_id: phase-4-task-05
+    name: "Recent Projects"
+    status: PENDING
+    journey: J10
+    stages: [S4]
+    requirements: [FR6.3]
+    depends_on: [phase-4-task-04]
+    acceptance_criteria:
+      - "J10-S4: Recent Projects submenu shows up to 10 items"
+      - "J10-S4: Click opens project"
+      - "J10-S4: File not found shows error with locate/remove options"
+      - "J10-S4: Recent list persists across app restarts"
+
+  - task_id: phase-4-task-06
+    name: "Auto-Save and Recovery"
+    status: PENDING
+    journey: J10
+    stages: [S5]
+    requirements: [FR6.4]
+    depends_on: [phase-4-task-01]
+    acceptance_criteria:
+      - "J10-S5: Auto-save every 60 seconds"
+      - "J10-S5: Recovery dialog shows on relaunch after crash"
+      - "J10-S5: Recover restores project state"
+      - "J10-S5: Recovery data deleted after manual save"
+
+  - task_id: phase-4-task-07
+    name: "Multiple Screens"
+    status: PENDING
+    journey: J10
+    stages: [S6]
+    requirements: [FR6.5]
+    depends_on: [phase-4-task-01]
+    acceptance_criteria:
+      - "J10-S6: Add Screen creates new empty screen"
+      - "J10-S6: Click screen switches canvas to that screen"
+      - "J10-S6: Rename and delete screen operations"
+      - "J10-S6: Cannot delete last screen"
+
+  - task_id: phase-4-task-08
+    name: "Keyboard Shortcuts Consolidation"
+    status: PENDING
+    journey: multiple
+    stages: []
+    requirements: [NFR]
+    acceptance_criteria:
+      - "All shortcuts documented in help panel"
+      - "Cmd/Ctrl+? opens shortcuts help"
+      - "Platform-aware (macOS: Cmd, Windows/Linux: Ctrl)"
+      - "No conflicts between shortcuts"
+
+  - task_id: phase-4-task-09
+    name: "Copy/Paste Widgets"
+    status: PENDING
+    journey: J04
+    stages: [S4]
+    requirements: [FR3.4]
+    depends_on: [phase-2-task-01]
+    acceptance_criteria:
+      - "J04-S4: Cmd/Ctrl+C copies selected widget with children"
+      - "J04-S4: Cmd/Ctrl+V pastes at valid target"
+      - "J04-S4: Pasted widgets get new unique IDs"
+      - "J04-S4: Paste uses AddWidgetCommand for undo"
+
+  - task_id: phase-4-task-10
+    name: "Canvas Pan and Zoom"
+    status: PENDING
+    journey: J03
+    stages: []
+    requirements: [NFR]
+    acceptance_criteria:
+      - "J03: Cmd/Ctrl+scroll zooms canvas"
+      - "J03: Space+drag pans canvas"
+      - "J03: Zoom range: 25% to 400%"
+      - "J03: Fit to Window button resets view"
+
+# Phase 5 Tasks (PENDING)
+phase_5:
+  - task_id: phase-5-task-01
+    name: "Cross-Platform Testing - macOS"
+    status: PENDING
+    journey: all
+    stages: [all]
+    requirements: [NFR3.1]
+    acceptance_criteria:
+      - "All user journeys complete successfully on macOS"
+      - "Native dialogs work correctly"
+      - "Keyboard shortcuts use Cmd modifier"
+      - "Canvas renders at 60fps"
+
+  - task_id: phase-5-task-02
+    name: "Cross-Platform Testing - Windows"
+    status: PENDING
+    journey: all
+    stages: [all]
+    requirements: [NFR3.1]
+    acceptance_criteria:
+      - "All user journeys complete successfully on Windows"
+      - "Native dialogs work correctly"
+      - "Keyboard shortcuts use Ctrl modifier"
+      - "Canvas renders at 60fps"
+
+  - task_id: phase-5-task-03
+    name: "Cross-Platform Testing - Linux"
+    status: PENDING
+    journey: all
+    stages: [all]
+    requirements: [NFR3.1]
+    acceptance_criteria:
+      - "All user journeys complete successfully on Linux"
+      - "File dialogs work (GTK integration)"
+      - "Keyboard shortcuts use Ctrl modifier"
+
+  - task_id: phase-5-task-04
+    name: "Performance Optimization"
+    status: PENDING
+    journey: NFR
+    stages: []
+    requirements: [NFR1.1, NFR1.2, NFR1.3]
+    acceptance_criteria:
+      - "Canvas render <16ms for 50 widgets"
+      - "Property edit to canvas update <50ms"
+      - "Code generation <500ms for 100 widgets"
+      - "File save/load <2s for typical project"
+
+  - task_id: phase-5-task-05
+    name: "Documentation"
+    status: PENDING
+    journey: null
+    stages: []
+    requirements: []
+    acceptance_criteria:
+      - "User guide with screenshots"
+      - "Feature documentation per journey"
+      - "Keyboard shortcuts reference"
+      - "FAQ/troubleshooting guide"
+
+  - task_id: phase-5-task-06
+    name: "GitHub Actions CI/CD"
+    status: PENDING
+    journey: null
+    stages: []
+    requirements: [NFR4.1]
+    acceptance_criteria:
+      - "PRs run flutter analyze + flutter test"
+      - "Builds succeed on macOS, Windows, Linux"
+      - "Tagged releases auto-build and upload"
+
+  - task_id: phase-5-task-07
+    name: "Release Packaging - macOS"
+    status: PENDING
+    journey: null
+    stages: []
+    requirements: [NFR4.1]
+    acceptance_criteria:
+      - "DMG installs FlutterForge to Applications"
+      - "App is signed and notarized"
+      - "Universal binary runs on Intel and M-series Macs"
+
+  - task_id: phase-5-task-08
+    name: "Release Packaging - Windows/Linux"
+    status: PENDING
+    journey: null
+    stages: []
+    requirements: [NFR4.1]
+    acceptance_criteria:
+      - "Windows installer works on Windows 10/11"
+      - "Linux AppImage runs on Ubuntu 22.04+"
+      - "Icons display correctly"
 
 # Widget Inventory
 widget_inventory:
   phase_1_widgets: ["Container", "Text", "Row", "Column", "SizedBox"]
   phase_2_widgets:
     layout: ["Stack", "Expanded", "Flexible", "Padding", "Center", "Align", "Spacer"]
-    content: ["Icon", "Image", "Divider", "Placeholder"]
+    content: ["Icon", "Image", "Divider", "VerticalDivider", "Placeholder"]
     input: ["ElevatedButton", "TextButton", "IconButton"]
-  total_after_phase_2: 19
+  total_after_phase_2: 20
+
+# Summary
+summary:
+  phase_1:
+    status: COMPLETE
+    total_tasks: 7
+    completed_tasks: 7
+  phase_2:
+    status: COMPLETE
+    total_tasks: 12
+    completed_tasks: 12
+  phase_3:
+    status: PENDING
+    total_tasks: 13
+    completed_tasks: 0
+  phase_4:
+    status: PENDING
+    total_tasks: 10
+    completed_tasks: 0
+  phase_5:
+    status: PENDING
+    total_tasks: 8
+    completed_tasks: 0
+  overall:
+    total_tasks: 50
+    completed_tasks: 19
