@@ -1,0 +1,110 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., 1.0.0)'
+        required: true
+
+jobs:
+  build-release:
+    name: Build Release
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.x'
+          channel: 'stable'
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run tests
+        run: flutter test
+
+      - name: Build macOS Release
+        run: flutter build macos --release
+
+      - name: Get version
+        id: version
+        run: |
+          if [ -n "${{ github.event.inputs.version }}" ]; then
+            echo "VERSION=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create DMG
+        run: |
+          brew install create-dmg
+          cd build/macos/Build/Products/Release
+          create-dmg \
+            --volname "Flutter Forge" \
+            --volicon "flutter_forge.app/Contents/Resources/AppIcon.icns" \
+            --window-pos 200 120 \
+            --window-size 600 400 \
+            --icon-size 100 \
+            --icon "flutter_forge.app" 175 120 \
+            --hide-extension "flutter_forge.app" \
+            --app-drop-link 425 120 \
+            "FlutterForge-${{ steps.version.outputs.VERSION }}.dmg" \
+            "flutter_forge.app" || true
+
+      - name: Upload DMG
+        uses: actions/upload-artifact@v4
+        with:
+          name: flutter-forge-dmg
+          path: build/macos/Build/Products/Release/FlutterForge-*.dmg
+          retention-days: 30
+
+  create-release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    needs: build-release
+    if: startsWith(github.ref, 'refs/tags/v')
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: flutter-forge-dmg
+          path: artifacts/
+
+      - name: Get version
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Flutter Forge v${{ steps.version.outputs.VERSION }}
+          body: |
+            ## Flutter Forge v${{ steps.version.outputs.VERSION }}
+
+            ### Installation
+
+            1. Download `FlutterForge-${{ steps.version.outputs.VERSION }}.dmg`
+            2. Open the DMG and drag Flutter Forge to Applications
+            3. Launch Flutter Forge from Applications
+
+            ### Requirements
+
+            - macOS 13.0 or later
+
+            ### Changes
+
+            See [CHANGELOG.md](CHANGELOG.md) for details.
+          files: artifacts/*
+          draft: false
+          prerelease: false
