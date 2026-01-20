@@ -4,7 +4,7 @@
 
 ## Current Status
 
-Phase 1 implementation in progress. Widget Registry and Widget Palette complete.
+Phase 1 implementation in progress. Tasks 1.1, 1.2, and 1.3 complete.
 
 ## Completed
 
@@ -60,10 +60,29 @@ Phase 1 implementation in progress. Widget Registry and Widget Palette complete.
 - `test/unit/palette/widget_palette_test.dart`
 - `test/unit/palette/palette_drag_test.dart`
 
+#### Task 1.3: Basic Canvas (COMPLETE)
+
+- [x] Created `DesignCanvas` with drop zone for widget acceptance
+- [x] Created `DesignProxy` for event interception (click-to-select)
+- [x] Created `WidgetSelectionOverlay` for visual selection feedback
+- [x] Created `WidgetRenderer` for rendering WidgetNode trees as live Flutter widgets
+- [x] Widget renderer supports all 5 Phase 1 widgets with properties
+- [x] Selection overlay visible on selected widget
+- [x] Click-to-select identifies correct widget
+- [x] Empty state with drop zone indicator
+- [x] 15 unit tests covering all acceptance criteria
+
+**Files Created:**
+- `lib/features/canvas/design_canvas.dart`
+- `lib/features/canvas/design_proxy.dart`
+- `lib/features/canvas/widget_selection_overlay.dart`
+- `lib/features/canvas/widget_renderer.dart`
+- `lib/features/canvas/canvas.dart` (barrel export)
+- `test/unit/canvas/design_canvas_test.dart`
+
 ## Next Steps
 
 Phase 1: Foundation (remaining tasks)
-- [ ] Basic Canvas (phase-1-task-03)
 - [ ] Single-Level Widget Insertion (phase-1-task-04)
 - [ ] Properties Panel (phase-1-task-05)
 - [ ] Code Generation (phase-1-task-06)
@@ -88,5 +107,6 @@ Phase 1: Foundation (remaining tasks)
 |----------|-------|--------|
 | Widget Registry | 23 | PASS |
 | Widget Palette | 21 | PASS |
+| Design Canvas | 15 | PASS |
 | App Widget | 1 | PASS |
-| **Total** | **45** | **PASS** |
+| **Total** | **60** | **PASS** |
