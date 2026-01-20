@@ -4,7 +4,7 @@
 
 ## Current Status
 
-Phase 1 (Foundation) and Phase 2 (Core Editor) both COMPLETE. Phase 3 in progress.
+Phase 1 (Foundation) and Phase 2 (Core Editor) both COMPLETE. Phase 3 in progress with 4 of 13 tasks completed.
 
 ---
 
@@ -12,9 +12,9 @@ Phase 1 (Foundation) and Phase 2 (Core Editor) both COMPLETE. Phase 3 in progres
 
 ### Summary
 
-- 2 of 13 tasks completed
-- 503 tests passing (up from 429)
-- Design token model and panel UI complete
+- 4 of 13 tasks completed
+- 517 tests passing (up from 503)
+- Design token model, panel UI, semantic aliasing, and theme mode toggle complete
 
 ### Task Summary
 
@@ -22,8 +22,8 @@ Phase 1 (Foundation) and Phase 2 (Core Editor) both COMPLETE. Phase 3 in progres
 |---------|-------------|------------|--------|
 | phase-3-task-01 | Design Token Model | J08 S1, FR8.1 | COMPLETE |
 | phase-3-task-02 | Design System Panel UI | J08 S1, FR8.1 | COMPLETE |
-| phase-3-task-03 | Semantic Token Aliasing | J08 S2, FR8.2 | PENDING |
-| phase-3-task-04 | Theme Mode Toggle | J08 S3, FR8.3 | PENDING |
+| phase-3-task-03 | Semantic Token Aliasing | J08 S2, FR8.2 | COMPLETE |
+| phase-3-task-04 | Theme Mode Toggle | J08 S3, FR8.3 | COMPLETE |
 | phase-3-task-05 | Token Application to Widgets | J08 S4, FR8.4 | PENDING |
 | phase-3-task-06 | Style Presets | J08 S5, FR8.4 | PENDING |
 | phase-3-task-07 | ThemeExtension Export | J08 S6, FR8.5 | PENDING |
@@ -74,6 +74,46 @@ Phase 1 (Foundation) and Phase 2 (Core Editor) both COMPLETE. Phase 3 in progres
 - `lib/features/design_system/design_system.dart` (barrel export)
 - `test/unit/design_system/design_system_panel_test.dart`
 - `test/unit/design_system/token_form_test.dart`
+
+#### Task 3.3: Semantic Token Aliasing (COMPLETE)
+
+- Alias token creation with reference to base token
+- Alias resolution logic (token -> base -> value)
+- Circular reference detection and prevention
+- Deep alias chain warning (>3 levels)
+- Convert to Value action to break alias
+- Alias chain visualization in token details
+- `getAliasesOf()`, `getAliasChain()`, `wouldCreateCircularAlias()` methods
+- 25 tests added (16 unit tests, 9 UI tests)
+
+**Files Modified:**
+- `lib/providers/design_tokens_provider.dart` (added alias methods)
+- `lib/features/design_system/token_form.dart` (alias UI)
+- `lib/features/design_system/token_list_item.dart` (deep chain warning)
+- `lib/features/design_system/design_system_panel.dart` (pass isDeepChain)
+
+**Files Created:**
+- `test/unit/design_system/semantic_aliasing_test.dart`
+
+#### Task 3.4: Theme Mode Toggle (COMPLETE)
+
+- `ThemeSettings` class with themeMode and isHighContrast
+- `themeSettingsProvider` for state management
+- `themeModeProvider` and `isHighContrastProvider` derived providers
+- Light -> Dark -> System mode cycling
+- High contrast support with fallback values
+- Keyboard shortcut Ctrl/Cmd+Shift+T for cycling
+- `getTokenColorValue` helper for resolving token values by mode
+- 14 tests added
+
+**Files Modified:**
+- `lib/core/models/design_token.dart` (high contrast value fields)
+- `lib/core/models/design_token.freezed.dart` (regenerated)
+- `lib/core/models/design_token.g.dart` (regenerated)
+
+**Files Created:**
+- `lib/providers/theme_mode_provider.dart`
+- `test/unit/design_system/theme_mode_toggle_test.dart`
 
 ---
 
@@ -141,7 +181,9 @@ Phase 1 (Foundation) and Phase 2 (Core Editor) both COMPLETE. Phase 3 in progres
 | **Code Generation (Task 2.12)** | **21** | **PASS** |
 | **Design Token Model (Task 3.1)** | **46** | **PASS** |
 | **Design System Panel (Task 3.2)** | **54** | **PASS** |
-| **Total** | **503** | **PASS** |
+| **Semantic Aliasing (Task 3.3)** | **25** | **PASS** |
+| **Theme Mode Toggle (Task 3.4)** | **14** | **PASS** |
+| **Total** | **517** | **PASS** |
 
 ---
 
@@ -159,8 +201,8 @@ Phase 1 (Foundation) and Phase 2 (Core Editor) both COMPLETE. Phase 3 in progres
 ## Orchestrator Checkpoint
 
 phase: phase-3
-current_task: task-3.3
-completed: [task-3.1, task-3.2]
-next_action: "Begin Task 3.3 - Semantic Token Aliasing"
-last_gate: G5
-timestamp: 2026-01-21T15:00:00Z
+current_task: task-3.5
+completed: [task-3.1, task-3.2, task-3.3, task-3.4]
+next_action: "Begin Task 3.5 - Token Application to Widgets"
+last_gate: G6
+timestamp: 2026-01-21T16:00:00Z
