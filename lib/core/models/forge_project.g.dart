@@ -48,34 +48,6 @@ Map<String, dynamic> _$$ScreenDefinitionImplToJson(
       'nodes': instance.nodes,
     };
 
-_$DesignTokenImpl _$$DesignTokenImplFromJson(Map<String, dynamic> json) =>
-    _$DesignTokenImpl(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      type: $enumDecode(_$TokenTypeEnumMap, json['type']),
-      valueLight: json['valueLight'],
-      valueDark: json['valueDark'],
-      alias: json['alias'] as String?,
-    );
-
-Map<String, dynamic> _$$DesignTokenImplToJson(_$DesignTokenImpl instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
-      'type': _$TokenTypeEnumMap[instance.type]!,
-      'valueLight': instance.valueLight,
-      'valueDark': instance.valueDark,
-      'alias': instance.alias,
-    };
-
-const _$TokenTypeEnumMap = {
-  TokenType.color: 'color',
-  TokenType.typography: 'typography',
-  TokenType.spacing: 'spacing',
-  TokenType.radius: 'radius',
-  TokenType.shadow: 'shadow',
-};
-
 _$ProjectMetadataImpl _$$ProjectMetadataImplFromJson(
         Map<String, dynamic> json) =>
     _$ProjectMetadataImpl(

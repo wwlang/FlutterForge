@@ -1,3 +1,4 @@
+import 'package:flutter_forge/core/models/design_token.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'forge_project.freezed.dart';
@@ -53,54 +54,6 @@ class ScreenDefinition with _$ScreenDefinition {
 
   factory ScreenDefinition.fromJson(Map<String, dynamic> json) =>
       _$ScreenDefinitionFromJson(json);
-}
-
-/// Design token for theming system.
-///
-/// Supports light/dark mode values for each token.
-@freezed
-class DesignToken with _$DesignToken {
-  const factory DesignToken({
-    /// Unique token identifier (UUID).
-    required String id,
-
-    /// Token name (e.g., 'primaryColor', 'bodyText').
-    required String name,
-
-    /// Token type category.
-    required TokenType type,
-
-    /// Value for light theme mode.
-    required dynamic valueLight,
-
-    /// Value for dark theme mode.
-    required dynamic valueDark,
-
-    /// Optional semantic alias (e.g., 'blue-500' -> 'primaryBrand').
-    String? alias,
-  }) = _DesignToken;
-
-  factory DesignToken.fromJson(Map<String, dynamic> json) =>
-      _$DesignTokenFromJson(json);
-}
-
-/// Categories of design tokens.
-@JsonEnum()
-enum TokenType {
-  /// Color tokens (e.g., primary, secondary, surface).
-  color,
-
-  /// Typography tokens (e.g., headline, body, caption).
-  typography,
-
-  /// Spacing tokens (e.g., small, medium, large).
-  spacing,
-
-  /// Border radius tokens.
-  radius,
-
-  /// Shadow/elevation tokens.
-  shadow,
 }
 
 /// Project metadata for versioning and tracking.
