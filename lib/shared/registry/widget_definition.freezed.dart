@@ -48,6 +48,10 @@ mixin _$WidgetDefinition {
   /// Import package for code generation (defaults to 'material').
   String get import_ => throw _privateConstructorUsedError;
 
+  /// Parent type constraint (e.g., 'Flex' for Expanded/Flexible).
+  /// If set, this widget can only be a child of the specified parent type.
+  String? get parentConstraint => throw _privateConstructorUsedError;
+
   /// Serializes this WidgetDefinition to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
@@ -73,7 +77,8 @@ abstract class $WidgetDefinitionCopyWith<$Res> {
       List<PropertyDefinition> properties,
       String? iconName,
       String? description,
-      String import_});
+      String import_,
+      String? parentConstraint});
 }
 
 /// @nodoc
@@ -100,6 +105,7 @@ class _$WidgetDefinitionCopyWithImpl<$Res, $Val extends WidgetDefinition>
     Object? iconName = freezed,
     Object? description = freezed,
     Object? import_ = null,
+    Object? parentConstraint = freezed,
   }) {
     return _then(_value.copyWith(
       type: null == type
@@ -138,6 +144,10 @@ class _$WidgetDefinitionCopyWithImpl<$Res, $Val extends WidgetDefinition>
           ? _value.import_
           : import_ // ignore: cast_nullable_to_non_nullable
               as String,
+      parentConstraint: freezed == parentConstraint
+          ? _value.parentConstraint
+          : parentConstraint // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -159,7 +169,8 @@ abstract class _$$WidgetDefinitionImplCopyWith<$Res>
       List<PropertyDefinition> properties,
       String? iconName,
       String? description,
-      String import_});
+      String import_,
+      String? parentConstraint});
 }
 
 /// @nodoc
@@ -184,6 +195,7 @@ class __$$WidgetDefinitionImplCopyWithImpl<$Res>
     Object? iconName = freezed,
     Object? description = freezed,
     Object? import_ = null,
+    Object? parentConstraint = freezed,
   }) {
     return _then(_$WidgetDefinitionImpl(
       type: null == type
@@ -222,6 +234,10 @@ class __$$WidgetDefinitionImplCopyWithImpl<$Res>
           ? _value.import_
           : import_ // ignore: cast_nullable_to_non_nullable
               as String,
+      parentConstraint: freezed == parentConstraint
+          ? _value.parentConstraint
+          : parentConstraint // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -238,7 +254,8 @@ class _$WidgetDefinitionImpl extends _WidgetDefinition {
       required final List<PropertyDefinition> properties,
       this.iconName,
       this.description,
-      this.import_ = 'package:flutter/material.dart'})
+      this.import_ = 'package:flutter/material.dart',
+      this.parentConstraint})
       : _properties = properties,
         super._();
 
@@ -290,9 +307,14 @@ class _$WidgetDefinitionImpl extends _WidgetDefinition {
   @JsonKey()
   final String import_;
 
+  /// Parent type constraint (e.g., 'Flex' for Expanded/Flexible).
+  /// If set, this widget can only be a child of the specified parent type.
+  @override
+  final String? parentConstraint;
+
   @override
   String toString() {
-    return 'WidgetDefinition(type: $type, category: $category, displayName: $displayName, acceptsChildren: $acceptsChildren, maxChildren: $maxChildren, properties: $properties, iconName: $iconName, description: $description, import_: $import_)';
+    return 'WidgetDefinition(type: $type, category: $category, displayName: $displayName, acceptsChildren: $acceptsChildren, maxChildren: $maxChildren, properties: $properties, iconName: $iconName, description: $description, import_: $import_, parentConstraint: $parentConstraint)';
   }
 
   @override
@@ -315,7 +337,9 @@ class _$WidgetDefinitionImpl extends _WidgetDefinition {
                 other.iconName == iconName) &&
             (identical(other.description, description) ||
                 other.description == description) &&
-            (identical(other.import_, import_) || other.import_ == import_));
+            (identical(other.import_, import_) || other.import_ == import_) &&
+            (identical(other.parentConstraint, parentConstraint) ||
+                other.parentConstraint == parentConstraint));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -330,7 +354,8 @@ class _$WidgetDefinitionImpl extends _WidgetDefinition {
       const DeepCollectionEquality().hash(_properties),
       iconName,
       description,
-      import_);
+      import_,
+      parentConstraint);
 
   /// Create a copy of WidgetDefinition
   /// with the given fields replaced by the non-null parameter values.
@@ -359,7 +384,8 @@ abstract class _WidgetDefinition extends WidgetDefinition {
       required final List<PropertyDefinition> properties,
       final String? iconName,
       final String? description,
-      final String import_}) = _$WidgetDefinitionImpl;
+      final String import_,
+      final String? parentConstraint}) = _$WidgetDefinitionImpl;
   const _WidgetDefinition._() : super._();
 
   factory _WidgetDefinition.fromJson(Map<String, dynamic> json) =
@@ -401,6 +427,11 @@ abstract class _WidgetDefinition extends WidgetDefinition {
   /// Import package for code generation (defaults to 'material').
   @override
   String get import_;
+
+  /// Parent type constraint (e.g., 'Flex' for Expanded/Flexible).
+  /// If set, this widget can only be a child of the specified parent type.
+  @override
+  String? get parentConstraint;
 
   /// Create a copy of WidgetDefinition
   /// with the given fields replaced by the non-null parameter values.

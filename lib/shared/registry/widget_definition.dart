@@ -58,6 +58,10 @@ class WidgetDefinition with _$WidgetDefinition {
 
     /// Import package for code generation (defaults to 'material').
     @Default('package:flutter/material.dart') String import_,
+
+    /// Parent type constraint (e.g., 'Flex' for Expanded/Flexible).
+    /// If set, this widget can only be a child of the specified parent type.
+    String? parentConstraint,
   }) = _WidgetDefinition;
 
   const WidgetDefinition._();
@@ -73,4 +77,7 @@ class WidgetDefinition with _$WidgetDefinition {
 
   /// Whether this widget is a single-child container.
   bool get isSingleChild => acceptsChildren && maxChildren == 1;
+
+  /// Whether this widget has a parent constraint.
+  bool get hasParentConstraint => parentConstraint != null;
 }

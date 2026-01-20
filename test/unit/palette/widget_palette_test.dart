@@ -41,10 +41,14 @@ void main() {
       await tester.pumpWidget(buildTestWidget());
       await tester.pumpAndSettle();
 
-      // Layout: Container, Row, Column, SizedBox = 4 widgets
-      expect(find.text('4'), findsOneWidget);
+      // Layout has 11 widgets (Container, Row, Column, SizedBox, Stack,
+      // Expanded, Flexible, Padding, Center, Align, Spacer)
+      final layoutCount = registry.byCategory(WidgetCategory.layout).length;
+      expect(find.text('$layoutCount'), findsOneWidget);
+
       // Content: Text = 1 widget
-      expect(find.text('1'), findsOneWidget);
+      final contentCount = registry.byCategory(WidgetCategory.content).length;
+      expect(find.text('$contentCount'), findsOneWidget);
     });
 
     testWidgets('categories are collapsible', (WidgetTester tester) async {
@@ -101,6 +105,20 @@ void main() {
 
       // Content widget (may need to expand Content category)
       expect(find.text('Text'), findsOneWidget);
+    });
+
+    testWidgets('displays Phase 2 layout widgets', (WidgetTester tester) async {
+      await tester.pumpWidget(buildTestWidget());
+      await tester.pumpAndSettle();
+
+      // Phase 2 Task 9 widgets
+      expect(find.text('Stack'), findsOneWidget);
+      expect(find.text('Expanded'), findsOneWidget);
+      expect(find.text('Flexible'), findsOneWidget);
+      expect(find.text('Padding'), findsOneWidget);
+      expect(find.text('Center'), findsOneWidget);
+      expect(find.text('Align'), findsOneWidget);
+      expect(find.text('Spacer'), findsOneWidget);
     });
   });
 

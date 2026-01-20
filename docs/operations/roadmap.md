@@ -32,7 +32,7 @@ See `.claude/PROGRESS.md` for detailed Phase 1 completion records.
 
 **Milestone:** Widget tree panel, undo/redo, 15+ widgets, multi-level drag-drop
 
-**Progress:** 8/12 tasks | **Tests:** 257
+**Progress:** 9/12 tasks | **Tests:** 296
 
 ### Task 2.1: Command Pattern Foundation
 
@@ -230,7 +230,7 @@ See `.claude/PROGRESS.md` for detailed Phase 1 completion records.
 | Field | Value |
 |-------|-------|
 | ID | phase-2-task-07 |
-| Status | PENDING |
+| Status | COMPLETE |
 | Priority | P0 |
 | Journey AC | J03 (Design Canvas) S2 |
 | Requirements | FR2.3 |
@@ -238,23 +238,23 @@ See `.claude/PROGRESS.md` for detailed Phase 1 completion records.
 | Location | `lib/features/canvas/` |
 
 **Deliverables:**
-- [ ] Enhanced `NestedDropZone` for arbitrary nesting depth
-- [ ] Insertion indicators between children in multi-child containers
-- [ ] Parent-child compatibility validation during drag
-- [ ] Visual feedback for valid/invalid drop targets
-- [ ] Stack-specific z-ordering on drop
+- [x] Enhanced `NestedDropZone` for arbitrary nesting depth
+- [x] Insertion indicators between children in multi-child containers
+- [x] Parent-child compatibility validation during drag
+- [x] Visual feedback for valid/invalid drop targets
+- [x] Stack-specific z-ordering on drop
 
 **Acceptance Criteria (from J03 S2):**
-- [ ] Drop into nested containers works (depth 3+) (FR2.3)
-- [ ] Insertion indicators appear between children in Row/Column
-- [ ] Indicator shows exact insertion position
-- [ ] Single-child container rejects drop if already has child
-- [ ] Expanded widget rejected by non-Flex containers
-- [ ] Tooltip shows reason for rejection
-- [ ] Stack places dropped widget on top (highest z-index)
-- [ ] Nested zone appearance: <50ms after hover
-- [ ] Uses AddWidgetCommand for undo support
-- [ ] Tests: Multi-level nesting, insertion positions, validation
+- [x] Drop into nested containers works (depth 3+) (FR2.3)
+- [x] Insertion indicators appear between children in Row/Column
+- [x] Indicator shows exact insertion position
+- [x] Single-child container rejects drop if already has child
+- [x] Expanded widget rejected by non-Flex containers
+- [x] Tooltip shows reason for rejection
+- [x] Stack places dropped widget on top (highest z-index)
+- [x] Nested zone appearance: <50ms after hover
+- [x] Uses AddWidgetCommand for undo support
+- [x] Tests: Multi-level nesting, insertion positions, validation
 
 ---
 
@@ -263,7 +263,7 @@ See `.claude/PROGRESS.md` for detailed Phase 1 completion records.
 | Field | Value |
 |-------|-------|
 | ID | phase-2-task-08 |
-| Status | PENDING |
+| Status | COMPLETE |
 | Priority | P1 |
 | Journey AC | J03 (Design Canvas) S4 |
 | Requirements | FR2.6 |
@@ -271,21 +271,21 @@ See `.claude/PROGRESS.md` for detailed Phase 1 completion records.
 | Location | `lib/features/canvas/` |
 
 **Deliverables:**
-- [ ] Drag widget within parent to reorder
-- [ ] Animated gap preview showing insertion position
-- [ ] Drop threshold: 50% of sibling dimension
-- [ ] Same-position drop results in no-op
-- [ ] Escape cancels reorder
+- [x] Drag widget within parent to reorder
+- [x] Animated gap preview showing insertion position
+- [x] Drop threshold: 50% of sibling dimension
+- [x] Same-position drop results in no-op
+- [x] Escape cancels reorder
 
 **Acceptance Criteria (from J03 S4):**
-- [ ] Drag widget within Row/Column shows reorder indicators (FR2.6)
-- [ ] Siblings animate to show gap at insertion point
-- [ ] Row [A, B, C] + drag B after C = [A, C, B]
-- [ ] Drop at original position = no-op
-- [ ] Escape during drag cancels, preserves order
-- [ ] Animation: smooth sibling repositioning (200ms)
-- [ ] Uses MoveWidgetCommand for undo support
-- [ ] Tests: Reorder within parent, cancel behavior
+- [x] Drag widget within Row/Column shows reorder indicators (FR2.6)
+- [x] Siblings animate to show gap at insertion point
+- [x] Row [A, B, C] + drag B after C = [A, C, B]
+- [x] Drop at original position = no-op
+- [x] Escape during drag cancels, preserves order
+- [x] Animation: smooth sibling repositioning (200ms)
+- [x] Uses MoveWidgetCommand for undo support
+- [x] Tests: Reorder within parent, cancel behavior
 
 ---
 
@@ -294,21 +294,22 @@ See `.claude/PROGRESS.md` for detailed Phase 1 completion records.
 | Field | Value |
 |-------|-------|
 | ID | phase-2-task-09 |
-| Status | PENDING |
+| Status | COMPLETE |
 | Priority | P1 |
 | Journey AC | J02 (Widget Palette) S1 |
 | Requirements | FR1.1 |
 | Location | `lib/shared/registry/` |
 
 **Deliverables:**
-- [ ] Stack widget (multi-child, z-ordering)
-- [ ] Expanded widget (Flex child only constraint)
-- [ ] Flexible widget (Flex child only constraint)
-- [ ] Padding widget (single-child)
-- [ ] Center widget (single-child)
-- [ ] Align widget (single-child, alignment property)
+- [x] Stack widget (multi-child, z-ordering)
+- [x] Expanded widget (Flex child only constraint)
+- [x] Flexible widget (Flex child only constraint)
+- [x] Padding widget (single-child)
+- [x] Center widget (single-child)
+- [x] Align widget (single-child, alignment property)
+- [x] Spacer widget (Flex child only, leaf)
 
-**New Widgets (6):**
+**New Widgets (7):**
 | Widget | Category | Children | Constraint |
 |--------|----------|----------|------------|
 | Stack | Layout | Multi | None |
@@ -317,14 +318,15 @@ See `.claude/PROGRESS.md` for detailed Phase 1 completion records.
 | Padding | Layout | Single | None |
 | Center | Layout | Single | None |
 | Align | Layout | Single | None |
+| Spacer | Layout | None | Flex parent |
 
 **Acceptance Criteria:**
-- [ ] Each widget registered with type, category, properties
-- [ ] Expanded/Flexible have `parentConstraint: 'Flex'`
-- [ ] Stack has z-index-related properties
-- [ ] Align has alignment property
-- [ ] Widget palette shows new widgets in Layout category
-- [ ] Tests: Registration and constraints for each widget
+- [x] Each widget registered with type, category, properties
+- [x] Expanded/Flexible/Spacer have `parentConstraint: 'Flex'`
+- [x] Stack has alignment, fit, clipBehavior properties
+- [x] Align has alignment property
+- [x] Widget palette shows new widgets in Layout category
+- [x] Tests: Registration and constraints for each widget (38 tests)
 
 ---
 
@@ -343,21 +345,18 @@ See `.claude/PROGRESS.md` for detailed Phase 1 completion records.
 - [ ] Icon widget (icon property, size, color)
 - [ ] Image widget (placeholder for URL/asset)
 - [ ] Divider widget (orientation, thickness, color)
-- [ ] Spacer widget (Flex child only, flex property)
 
-**New Widgets (4):**
+**New Widgets (3):**
 | Widget | Category | Children | Constraint |
 |--------|----------|----------|------------|
 | Icon | Content | None | None |
 | Image | Content | None | None |
 | Divider | Content | None | None |
-| Spacer | Layout | None | Flex parent |
 
 **Acceptance Criteria:**
 - [ ] Icon has icon data, size, color properties
 - [ ] Image has placeholder and fit properties
 - [ ] Divider has thickness, color, indent properties
-- [ ] Spacer has flex property, requires Flex parent
 - [ ] Tests: Registration and rendering for each widget
 
 ---
@@ -435,12 +434,12 @@ See `.claude/PROGRESS.md` for detailed Phase 1 completion records.
 - [x] Widget tree panel with selection sync
 - [x] Tree drag-reorder with canvas sync
 - [x] Context menu for tree operations
-- [ ] Multi-level nested drop zones (3+ depth)
-- [ ] Canvas widget reordering
-- [ ] 15+ widgets in registry (from 5)
+- [x] Multi-level nested drop zones (3+ depth)
+- [x] Canvas widget reordering
+- [ ] 15+ widgets in registry (currently 12)
 - [ ] Code generation for all widgets
 - [ ] `flutter analyze` passes
-- [ ] `flutter test` passes (target: 180+ tests)
+- [ ] `flutter test` passes (target: 180+ tests, current: 296)
 - [ ] Demo: Complex layout with undo/redo, tree reorder
 
 ---
@@ -455,9 +454,9 @@ See `.claude/PROGRESS.md` for detailed Phase 1 completion records.
 | phase-2-task-04 | J04 Widget Tree | S2 | COMPLETE |
 | phase-2-task-05 | J04 Widget Tree | S3 | COMPLETE |
 | phase-2-task-06 | J04 Widget Tree | S4 | COMPLETE |
-| phase-2-task-07 | J03 Design Canvas | S2 | PENDING |
-| phase-2-task-08 | J03 Design Canvas | S4 | PENDING |
-| phase-2-task-09 | J02 Widget Palette | S1 | PENDING |
+| phase-2-task-07 | J03 Design Canvas | S2 | COMPLETE |
+| phase-2-task-08 | J03 Design Canvas | S4 | COMPLETE |
+| phase-2-task-09 | J02 Widget Palette | S1 | COMPLETE |
 | phase-2-task-10 | J02 Widget Palette | S1 | PENDING |
 | phase-2-task-11 | J02 Widget Palette | S1 | PENDING |
 | phase-2-task-12 | J06 Code Generation | S1, S3 | PENDING |

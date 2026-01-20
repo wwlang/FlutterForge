@@ -183,18 +183,25 @@ void main() {
       expect(sizedBox.maxChildren, 1);
     });
 
-    test('should register exactly 5 basic widgets for Phase 1', () {
+    test('should include all Phase 1 basic widgets', () {
       final registry = DefaultWidgetRegistry();
       final all = registry.all;
+      final widgetTypes = all.map((w) => w.type).toSet();
 
-      expect(all.length, 5);
-      expect(all.map((w) => w.type).toSet(), {
-        'Container',
-        'Text',
-        'Row',
-        'Column',
-        'SizedBox',
-      });
+      // Phase 1 widgets must be present
+      expect(
+        widgetTypes,
+        containsAll({
+          'Container',
+          'Text',
+          'Row',
+          'Column',
+          'SizedBox',
+        }),
+      );
+
+      // Registry can have additional widgets from later phases
+      expect(all.length, greaterThanOrEqualTo(5));
     });
 
     test('should have Layout and Content categories populated', () {
@@ -203,8 +210,11 @@ void main() {
       final layout = registry.byCategory(WidgetCategory.layout);
       final content = registry.byCategory(WidgetCategory.content);
 
-      expect(layout.length, 4); // Container, Row, Column, SizedBox
-      expect(content.length, 1); // Text
+      // Phase 1: Container, Row, Column, SizedBox (4 layout)
+      // Phase 2 Task 9: Stack, Expanded, Flexible, Padding, Center, Align, Spacer (7 more layout)
+      expect(layout.length, greaterThanOrEqualTo(4));
+      // Content: Text (at minimum)
+      expect(content.length, greaterThanOrEqualTo(1));
     });
 
     test('Container should have width, height, color, padding properties', () {

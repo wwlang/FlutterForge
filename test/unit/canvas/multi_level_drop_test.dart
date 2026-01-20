@@ -126,9 +126,10 @@ void main() {
         // Find and trigger the container's drop zone
         for (final target in dragTargets) {
           final willAccept = target.onWillAcceptWithDetails?.call(
-            DragTargetDetails<String>(data: 'Text', offset: Offset.zero),
-          );
-          if (willAccept == true) {
+                DragTargetDetails<String>(data: 'Text', offset: Offset.zero),
+              ) ??
+              false;
+          if (willAccept) {
             target.onAcceptWithDetails?.call(
               DragTargetDetails<String>(data: 'Text', offset: Offset.zero),
             );
@@ -224,9 +225,10 @@ void main() {
         var foundReject = false;
         for (final target in dragTargets) {
           final willAccept = target.onWillAcceptWithDetails?.call(
-            DragTargetDetails<String>(data: 'Text', offset: Offset.zero),
-          );
-          if (willAccept == false) {
+                DragTargetDetails<String>(data: 'Text', offset: Offset.zero),
+              ) ??
+              false;
+          if (!willAccept) {
             foundReject = true;
           }
         }
@@ -258,9 +260,10 @@ void main() {
         var foundAccept = false;
         for (final target in dragTargets) {
           final willAccept = target.onWillAcceptWithDetails?.call(
-            DragTargetDetails<String>(data: 'Text', offset: Offset.zero),
-          );
-          if (willAccept == true) {
+                DragTargetDetails<String>(data: 'Text', offset: Offset.zero),
+              ) ??
+              false;
+          if (willAccept) {
             foundAccept = true;
           }
         }
@@ -305,9 +308,10 @@ void main() {
         var foundAccept = false;
         for (final target in dragTargets) {
           final willAccept = target.onWillAcceptWithDetails?.call(
-            DragTargetDetails<String>(data: 'Text', offset: Offset.zero),
-          );
-          if (willAccept == true) {
+                DragTargetDetails<String>(data: 'Text', offset: Offset.zero),
+              ) ??
+              false;
+          if (willAccept) {
             foundAccept = true;
           }
         }
@@ -375,9 +379,10 @@ void main() {
         var foundAccept = false;
         for (final target in dragTargets) {
           final willAccept = target.onWillAcceptWithDetails?.call(
-            DragTargetDetails<String>(data: 'Text', offset: Offset.zero),
-          );
-          if (willAccept == true) {
+                DragTargetDetails<String>(data: 'Text', offset: Offset.zero),
+              ) ??
+              false;
+          if (willAccept) {
             foundAccept = true;
           }
         }
@@ -413,9 +418,11 @@ void main() {
         var anyAccepted = false;
         for (final target in dragTargets) {
           final willAccept = target.onWillAcceptWithDetails?.call(
-            DragTargetDetails<String>(data: 'Container', offset: Offset.zero),
-          );
-          if (willAccept == true) {
+                DragTargetDetails<String>(
+                    data: 'Container', offset: Offset.zero),
+              ) ??
+              false;
+          if (willAccept) {
             anyAccepted = true;
           }
         }
@@ -516,9 +523,10 @@ void main() {
 
         for (final target in dragTargets) {
           final willAccept = target.onWillAcceptWithDetails?.call(
-            DragTargetDetails<String>(data: 'Text', offset: Offset.zero),
-          );
-          if (willAccept == true) {
+                DragTargetDetails<String>(data: 'Text', offset: Offset.zero),
+              ) ??
+              false;
+          if (willAccept) {
             target.onAcceptWithDetails?.call(
               DragTargetDetails<String>(data: 'Text', offset: Offset.zero),
             );
@@ -566,9 +574,10 @@ void main() {
 
         for (final target in dragTargets) {
           final willAccept = target.onWillAcceptWithDetails?.call(
-            DragTargetDetails<String>(data: 'Text', offset: Offset.zero),
-          );
-          if (willAccept == true) {
+                DragTargetDetails<String>(data: 'Text', offset: Offset.zero),
+              ) ??
+              false;
+          if (willAccept) {
             target.onAcceptWithDetails?.call(
               DragTargetDetails<String>(data: 'Text', offset: Offset.zero),
             );
@@ -658,9 +667,10 @@ void main() {
         var acceptCount = 0;
         for (final target in dragTargets) {
           final willAccept = target.onWillAcceptWithDetails?.call(
-            DragTargetDetails<String>(data: 'Text', offset: Offset.zero),
-          );
-          if (willAccept == true) {
+                DragTargetDetails<String>(data: 'Text', offset: Offset.zero),
+              ) ??
+              false;
+          if (willAccept) {
             acceptCount++;
           }
         }
@@ -702,9 +712,11 @@ void main() {
         var allRejected = true;
         for (final target in dragTargets) {
           final willAccept = target.onWillAcceptWithDetails?.call(
-            DragTargetDetails<String>(data: 'Container', offset: Offset.zero),
-          );
-          if (willAccept == true) {
+                DragTargetDetails<String>(
+                    data: 'Container', offset: Offset.zero),
+              ) ??
+              false;
+          if (willAccept) {
             allRejected = false;
           }
         }
@@ -735,9 +747,10 @@ void main() {
         var foundAccept = false;
         for (final target in dragTargets) {
           final willAccept = target.onWillAcceptWithDetails?.call(
-            DragTargetDetails<String>(data: 'Text', offset: Offset.zero),
-          );
-          if (willAccept == true) {
+                DragTargetDetails<String>(data: 'Text', offset: Offset.zero),
+              ) ??
+              false;
+          if (willAccept) {
             foundAccept = true;
           }
         }

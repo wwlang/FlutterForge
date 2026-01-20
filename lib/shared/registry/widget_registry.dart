@@ -42,17 +42,28 @@ class WidgetRegistry {
   }
 }
 
-/// Default widget registry with Phase 1 widgets.
+/// Default widget registry with Phase 1 and Phase 2 widgets.
 ///
-/// Includes: Container, Text, Row, Column, SizedBox
+/// Phase 1: Container, Text, Row, Column, SizedBox
+/// Phase 2 Task 9: Stack, Expanded, Flexible, Padding, Center, Align, Spacer
 class DefaultWidgetRegistry extends WidgetRegistry {
-  /// Creates the default registry with Phase 1 widgets.
+  /// Creates the default registry with all widgets.
   DefaultWidgetRegistry() {
+    // Phase 1 widgets
     _registerContainerWidget();
     _registerTextWidget();
     _registerRowWidget();
     _registerColumnWidget();
     _registerSizedBoxWidget();
+
+    // Phase 2 Task 9: Layout widgets
+    _registerStackWidget();
+    _registerExpandedWidget();
+    _registerFlexibleWidget();
+    _registerPaddingWidget();
+    _registerCenterWidget();
+    _registerAlignWidget();
+    _registerSpacerWidget();
   }
 
   void _registerContainerWidget() {
@@ -368,6 +379,252 @@ class DefaultWidgetRegistry extends WidgetRegistry {
             category: 'Size',
             description: 'Height in logical pixels',
             min: 0,
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Phase 2 Task 9: Layout widgets
+
+  void _registerStackWidget() {
+    register(
+      const WidgetDefinition(
+        type: 'Stack',
+        category: WidgetCategory.layout,
+        displayName: 'Stack',
+        acceptsChildren: true,
+        maxChildren: null, // unlimited
+        iconName: 'layers',
+        description: 'A widget that positions children relative to its edges',
+        properties: [
+          PropertyDefinition(
+            name: 'alignment',
+            type: PropertyType.alignment,
+            displayName: 'Alignment',
+            nullable: true,
+            category: 'Layout',
+            description: 'How to align non-positioned children',
+          ),
+          PropertyDefinition(
+            name: 'fit',
+            type: PropertyType.enum_,
+            displayName: 'Fit',
+            nullable: true,
+            category: 'Layout',
+            description: 'How to size non-positioned children',
+            enumValues: [
+              'StackFit.loose',
+              'StackFit.expand',
+              'StackFit.passthrough',
+            ],
+          ),
+          PropertyDefinition(
+            name: 'clipBehavior',
+            type: PropertyType.enum_,
+            displayName: 'Clip Behavior',
+            nullable: true,
+            category: 'Layout',
+            description: 'How to clip children that overflow',
+            enumValues: [
+              'Clip.none',
+              'Clip.hardEdge',
+              'Clip.antiAlias',
+              'Clip.antiAliasWithSaveLayer',
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _registerExpandedWidget() {
+    register(
+      const WidgetDefinition(
+        type: 'Expanded',
+        category: WidgetCategory.layout,
+        displayName: 'Expanded',
+        acceptsChildren: true,
+        maxChildren: 1,
+        iconName: 'expand',
+        description: 'Expands a child of Row/Column to fill available space',
+        parentConstraint: 'Flex',
+        properties: [
+          PropertyDefinition(
+            name: 'flex',
+            type: PropertyType.int_,
+            displayName: 'Flex',
+            nullable: true,
+            defaultValue: 1,
+            category: 'Layout',
+            description: 'Flex factor for space distribution',
+            min: 1,
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _registerFlexibleWidget() {
+    register(
+      const WidgetDefinition(
+        type: 'Flexible',
+        category: WidgetCategory.layout,
+        displayName: 'Flexible',
+        acceptsChildren: true,
+        maxChildren: 1,
+        iconName: 'swap_horiz',
+        description: 'Gives a child flexibility to expand in Row/Column',
+        parentConstraint: 'Flex',
+        properties: [
+          PropertyDefinition(
+            name: 'flex',
+            type: PropertyType.int_,
+            displayName: 'Flex',
+            nullable: true,
+            defaultValue: 1,
+            category: 'Layout',
+            description: 'Flex factor for space distribution',
+            min: 1,
+          ),
+          PropertyDefinition(
+            name: 'fit',
+            type: PropertyType.enum_,
+            displayName: 'Fit',
+            nullable: true,
+            category: 'Layout',
+            description: 'How the child fills available space',
+            enumValues: [
+              'FlexFit.tight',
+              'FlexFit.loose',
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _registerPaddingWidget() {
+    register(
+      const WidgetDefinition(
+        type: 'Padding',
+        category: WidgetCategory.layout,
+        displayName: 'Padding',
+        acceptsChildren: true,
+        maxChildren: 1,
+        iconName: 'padding',
+        description: 'Insets its child by the given padding',
+        properties: [
+          PropertyDefinition(
+            name: 'padding',
+            type: PropertyType.edgeInsets,
+            displayName: 'Padding',
+            nullable: false,
+            category: 'Spacing',
+            description: 'The amount of space to inset the child',
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _registerCenterWidget() {
+    register(
+      const WidgetDefinition(
+        type: 'Center',
+        category: WidgetCategory.layout,
+        displayName: 'Center',
+        acceptsChildren: true,
+        maxChildren: 1,
+        iconName: 'center_focus_strong',
+        description: 'Centers its child within itself',
+        properties: [
+          PropertyDefinition(
+            name: 'widthFactor',
+            type: PropertyType.double_,
+            displayName: 'Width Factor',
+            nullable: true,
+            category: 'Size',
+            description: 'Multiply child width to determine own width',
+            min: 0,
+          ),
+          PropertyDefinition(
+            name: 'heightFactor',
+            type: PropertyType.double_,
+            displayName: 'Height Factor',
+            nullable: true,
+            category: 'Size',
+            description: 'Multiply child height to determine own height',
+            min: 0,
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _registerAlignWidget() {
+    register(
+      const WidgetDefinition(
+        type: 'Align',
+        category: WidgetCategory.layout,
+        displayName: 'Align',
+        acceptsChildren: true,
+        maxChildren: 1,
+        iconName: 'format_align_center',
+        description: 'Aligns its child within itself',
+        properties: [
+          PropertyDefinition(
+            name: 'alignment',
+            type: PropertyType.alignment,
+            displayName: 'Alignment',
+            nullable: true,
+            category: 'Layout',
+            description: 'How to align the child',
+          ),
+          PropertyDefinition(
+            name: 'widthFactor',
+            type: PropertyType.double_,
+            displayName: 'Width Factor',
+            nullable: true,
+            category: 'Size',
+            description: 'Multiply child width to determine own width',
+            min: 0,
+          ),
+          PropertyDefinition(
+            name: 'heightFactor',
+            type: PropertyType.double_,
+            displayName: 'Height Factor',
+            nullable: true,
+            category: 'Size',
+            description: 'Multiply child height to determine own height',
+            min: 0,
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _registerSpacerWidget() {
+    register(
+      const WidgetDefinition(
+        type: 'Spacer',
+        category: WidgetCategory.layout,
+        displayName: 'Spacer',
+        acceptsChildren: false,
+        maxChildren: 0,
+        iconName: 'space_bar',
+        description: 'Takes up space proportional to its flex value',
+        parentConstraint: 'Flex',
+        properties: [
+          PropertyDefinition(
+            name: 'flex',
+            type: PropertyType.int_,
+            displayName: 'Flex',
+            nullable: true,
+            defaultValue: 1,
+            category: 'Layout',
+            description: 'Flex factor for space distribution',
+            min: 1,
           ),
         ],
       ),

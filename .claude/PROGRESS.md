@@ -5,15 +5,15 @@
 ## Orchestrator Checkpoint
 
 phase: phase-2
-current_task: phase-2-task-09
-completed: [phase-2-task-01, phase-2-task-02, phase-2-task-03, phase-2-task-04, phase-2-task-05, phase-2-task-06, phase-2-task-07, phase-2-task-08]
-next_action: "Continue with phase-2-task-09 (Widget Registry Expansion - Layout)"
+current_task: phase-2-task-10
+completed: [phase-2-task-01, phase-2-task-02, phase-2-task-03, phase-2-task-04, phase-2-task-05, phase-2-task-06, phase-2-task-07, phase-2-task-08, phase-2-task-09]
+next_action: "Continue with phase-2-task-10 (Widget Registry Expansion - Content)"
 last_gate: G5
-timestamp: 2026-01-21T22:30:00Z
+timestamp: 2026-01-21T23:00:00Z
 
 ## Current Status
 
-Phase 1 (Foundation) COMPLETE. Phase 2 (Core Editor) in progress - 8 of 12 tasks complete.
+Phase 1 (Foundation) COMPLETE. Phase 2 (Core Editor) in progress - 9 of 12 tasks complete.
 
 ---
 
@@ -31,7 +31,7 @@ Phase 1 (Foundation) COMPLETE. Phase 2 (Core Editor) in progress - 8 of 12 tasks
 | phase-2-task-06 | Widget Tree Context Menu | J04 S4, FR3.4 | COMPLETE |
 | phase-2-task-07 | Multi-Level Nested Drop Zones | J03 S2, FR2.3 | COMPLETE |
 | phase-2-task-08 | Canvas Widget Reordering | J03 S4, FR2.6 | COMPLETE |
-| phase-2-task-09 | Widget Registry Expansion (Layout) | J02 S1, FR1.1 | PENDING |
+| phase-2-task-09 | Widget Registry Expansion (Layout) | J02 S1, FR1.1 | COMPLETE |
 | phase-2-task-10 | Widget Registry Expansion (Content) | J02 S1, FR1.1 | PENDING |
 | phase-2-task-11 | Widget Registry Expansion (Input) | J02 S1, FR1.1 | PENDING |
 | phase-2-task-12 | Code Generation Updates | J06, FR5.1 | PENDING |
@@ -176,6 +176,31 @@ Phase 1 (Foundation) COMPLETE. Phase 2 (Core Editor) in progress - 8 of 12 tasks
 **Files Updated:**
 - `lib/features/canvas/canvas.dart` (added canvas_reorder_target export)
 
+#### Task 2.9: Widget Registry Expansion - Layout (COMPLETE)
+
+- [x] Stack widget (multi-child, alignment, fit, clipBehavior)
+- [x] Expanded widget (single-child, flex, Flex parent constraint)
+- [x] Flexible widget (single-child, flex, fit, Flex parent constraint)
+- [x] Padding widget (single-child, padding property)
+- [x] Center widget (single-child, widthFactor, heightFactor)
+- [x] Align widget (single-child, alignment, widthFactor, heightFactor)
+- [x] Spacer widget (leaf, flex, Flex parent constraint)
+- [x] parentConstraint field added to WidgetDefinition for Flex-child validation
+- [x] 38 unit tests covering all new layout widgets
+
+**Files Modified:**
+- `lib/shared/registry/widget_definition.dart` (added parentConstraint)
+- `lib/shared/registry/widget_definition.freezed.dart` (regenerated)
+- `lib/shared/registry/widget_definition.g.dart` (regenerated)
+- `lib/shared/registry/widget_registry.dart` (added 7 new widgets)
+
+**Files Created:**
+- `test/unit/registry/layout_widgets_test.dart`
+
+**Files Updated:**
+- `test/unit/registry/widget_registry_test.dart` (updated counts)
+- `test/unit/palette/widget_palette_test.dart` (added Phase 2 widget tests)
+
 ---
 
 ## Phase 1: Foundation (COMPLETE - 2026-01-21)
@@ -194,7 +219,7 @@ Phase 1 (Foundation) COMPLETE. Phase 2 (Core Editor) in progress - 8 of 12 tasks
 | Category | Tests | Status |
 |----------|-------|--------|
 | Widget Registry | 23 | PASS |
-| Widget Palette | 21 | PASS |
+| Widget Palette | 22 | PASS |
 | Design Canvas | 15 | PASS |
 | Widget Insertion | 19 | PASS |
 | Properties Panel | 14 | PASS |
@@ -208,4 +233,5 @@ Phase 1 (Foundation) COMPLETE. Phase 2 (Core Editor) in progress - 8 of 12 tasks
 | **Widget Tree Context Menu** | **16** | **PASS** |
 | **Multi-Level Drop Zones** | **19** | **PASS** |
 | **Canvas Reordering** | **10** | **PASS** |
-| **Total** | **257** | **PASS** |
+| **Layout Widgets (Task 2.9)** | **38** | **PASS** |
+| **Total** | **296** | **PASS** |

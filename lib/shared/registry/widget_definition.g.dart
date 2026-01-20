@@ -20,6 +20,7 @@ _$WidgetDefinitionImpl _$$WidgetDefinitionImplFromJson(
       iconName: json['iconName'] as String?,
       description: json['description'] as String?,
       import_: json['import_'] as String? ?? 'package:flutter/material.dart',
+      parentConstraint: json['parentConstraint'] as String?,
     );
 
 Map<String, dynamic> _$$WidgetDefinitionImplToJson(
@@ -34,6 +35,7 @@ Map<String, dynamic> _$$WidgetDefinitionImplToJson(
       'iconName': instance.iconName,
       'description': instance.description,
       'import_': instance.import_,
+      'parentConstraint': instance.parentConstraint,
     };
 
 const _$WidgetCategoryEnumMap = {
