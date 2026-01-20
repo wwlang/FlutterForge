@@ -1,0 +1,111 @@
+# FlutterForge Journey Registry
+# Last updated: 2026-01-21
+
+project:
+  name: FlutterForge
+  description: Visual Flutter UI designer with clean code export
+  platform: desktop
+  locales: [en]  # MVP: English only
+
+personas:
+  pragmatic_developer:
+    description: Flutter developer (2-5 years experience) seeking to speed up UI development
+    goals:
+      - Scaffold UI in minutes, not hours
+      - Experiment with layouts visually
+      - Get clean, maintainable code output
+
+journeys:
+  # Phase 1: Foundation (P0)
+  - id: J01
+    name: First-Time Export
+    path: core/first-time-export.md
+    priority: P0
+    phase: 1
+    requirements: [NFR3.1, FR1, FR2, FR4, FR5]
+    description: New user achieves first code export within 5 minutes
+
+  - id: J02
+    name: Widget Palette
+    path: editor/widget-palette.md
+    priority: P0
+    phase: 1
+    requirements: [FR1.1, FR1.2, FR1.3, FR1.4]
+    description: Browse, search, and drag widgets to canvas
+
+  - id: J03
+    name: Design Canvas
+    path: editor/design-canvas.md
+    priority: P0
+    phase: 1
+    requirements: [FR2.1, FR2.2, FR2.3, FR2.4, FR2.5, FR2.6, FR2.7, FR2.8]
+    description: Drop widgets, nested insertion, selection, reordering
+
+  - id: J04
+    name: Widget Tree
+    path: editor/widget-tree.md
+    priority: P0
+    phase: 1
+    requirements: [FR3.1, FR3.2, FR3.3, FR3.4, FR3.5]
+    description: View hierarchy, select, reorder, delete via tree
+
+  - id: J05
+    name: Properties Panel
+    path: editor/properties-panel.md
+    priority: P0
+    phase: 1
+    requirements: [FR4.1, FR4.2, FR4.3, FR4.4, FR4.5, FR4.6, FR4.7]
+    description: Edit widget properties with live preview
+
+  - id: J06
+    name: Code Generation
+    path: export/code-generation.md
+    priority: P0
+    phase: 1
+    requirements: [FR5.1, FR5.2, FR5.3, FR5.4, FR5.5, FR5.6, FR5.7, FR5.8]
+    description: Generate, preview, copy, and export Dart code
+
+  # Phase 2: Core Editor (P1)
+  - id: J07
+    name: Project Management
+    path: project/project-management.md
+    priority: P1
+    phase: 2
+    requirements: [FR6.1, FR6.2, FR6.3, FR6.4, FR6.5]
+    description: Create, save, open, and manage projects
+
+  - id: J08
+    name: Edit Operations
+    path: editor/edit-operations.md
+    priority: P1
+    phase: 2
+    requirements: [FR7.1, FR7.2, FR7.3, FR7.4]
+    description: Undo/redo, delete, duplicate, copy/paste
+
+  # Phase 3: Design System & Animation (P1-P2)
+  - id: J09
+    name: Design System
+    path: theming/design-system.md
+    priority: P1
+    phase: 3
+    requirements: [FR8.1, FR8.2, FR8.3, FR8.4, FR8.5]
+    description: Create tokens, apply to widgets, export ThemeExtension
+
+  - id: J10
+    name: Animation Studio
+    path: animation/animation-studio.md
+    priority: P2
+    phase: 3
+    requirements: [FR9.1, FR9.2, FR9.3, FR9.4, FR9.5]
+    description: Add animations, configure timeline, preview, export
+
+cross_references:
+  # Entry points mapping
+  first_launch: [J01]
+  palette_to_canvas: [J02, J03]
+  canvas_to_tree: [J03, J04]
+  tree_to_properties: [J04, J05]
+  design_to_export: [J03, J06]
+  project_to_editor: [J07, J03]
+  theming_to_canvas: [J09, J03]
+  animation_to_export: [J10, J06]

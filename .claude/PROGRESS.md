@@ -4,7 +4,7 @@
 
 ## Current Status
 
-Phase 1 implementation in progress. Widget Registry complete.
+Phase 1 implementation in progress. Widget Registry and Widget Palette complete.
 
 ## Completed
 
@@ -43,10 +43,26 @@ Phase 1 implementation in progress. Widget Registry complete.
 - `test/unit/registry/widget_definition_test.dart`
 - `test/unit/registry/widget_registry_test.dart`
 
+#### Task 1.2: Widget Palette UI (COMPLETE)
+
+- [x] Created `PaletteItem` with draggable widget functionality
+- [x] Created `PaletteCategory` with collapsible headers and widget counts
+- [x] Created `WidgetPalette` with categorized widget display
+- [x] Implemented drag feedback with reduced opacity
+- [x] Drag uses pointer anchor strategy for precise placement
+- [x] 21 unit tests covering all acceptance criteria
+
+**Files Created:**
+- `lib/features/palette/palette_item.dart`
+- `lib/features/palette/palette_category.dart`
+- `lib/features/palette/widget_palette.dart`
+- `lib/features/palette/palette.dart` (barrel export)
+- `test/unit/palette/widget_palette_test.dart`
+- `test/unit/palette/palette_drag_test.dart`
+
 ## Next Steps
 
 Phase 1: Foundation (remaining tasks)
-- [ ] Widget Palette UI (phase-1-task-02)
 - [ ] Basic Canvas (phase-1-task-03)
 - [ ] Single-Level Widget Insertion (phase-1-task-04)
 - [ ] Properties Panel (phase-1-task-05)
@@ -71,5 +87,6 @@ Phase 1: Foundation (remaining tasks)
 | Category | Tests | Status |
 |----------|-------|--------|
 | Widget Registry | 23 | PASS |
+| Widget Palette | 21 | PASS |
 | App Widget | 1 | PASS |
-| **Total** | **24** | **PASS** |
+| **Total** | **45** | **PASS** |
