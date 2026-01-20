@@ -23,8 +23,9 @@ mixin _$ProjectState {
   /// All widget nodes keyed by ID for O(1) lookup.
   Map<String, WidgetNode> get nodes => throw _privateConstructorUsedError;
 
-  /// ID of the root node in the widget tree.
-  String get rootNodeId => throw _privateConstructorUsedError;
+  /// IDs of root-level nodes in the widget tree.
+  /// Supports multiple root widgets for Phase 1 simplicity.
+  List<String> get rootIds => throw _privateConstructorUsedError;
 
   /// Currently selected node IDs.
   Set<String> get selection => throw _privateConstructorUsedError;
@@ -54,7 +55,7 @@ abstract class $ProjectStateCopyWith<$Res> {
   @useResult
   $Res call(
       {Map<String, WidgetNode> nodes,
-      String rootNodeId,
+      List<String> rootIds,
       Set<String> selection,
       double zoomLevel,
       @OffsetConverter() Offset panOffset});
@@ -76,7 +77,7 @@ class _$ProjectStateCopyWithImpl<$Res, $Val extends ProjectState>
   @override
   $Res call({
     Object? nodes = null,
-    Object? rootNodeId = null,
+    Object? rootIds = null,
     Object? selection = null,
     Object? zoomLevel = null,
     Object? panOffset = null,
@@ -86,10 +87,10 @@ class _$ProjectStateCopyWithImpl<$Res, $Val extends ProjectState>
           ? _value.nodes
           : nodes // ignore: cast_nullable_to_non_nullable
               as Map<String, WidgetNode>,
-      rootNodeId: null == rootNodeId
-          ? _value.rootNodeId
-          : rootNodeId // ignore: cast_nullable_to_non_nullable
-              as String,
+      rootIds: null == rootIds
+          ? _value.rootIds
+          : rootIds // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       selection: null == selection
           ? _value.selection
           : selection // ignore: cast_nullable_to_non_nullable
@@ -116,7 +117,7 @@ abstract class _$$ProjectStateImplCopyWith<$Res>
   @useResult
   $Res call(
       {Map<String, WidgetNode> nodes,
-      String rootNodeId,
+      List<String> rootIds,
       Set<String> selection,
       double zoomLevel,
       @OffsetConverter() Offset panOffset});
@@ -136,7 +137,7 @@ class __$$ProjectStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? nodes = null,
-    Object? rootNodeId = null,
+    Object? rootIds = null,
     Object? selection = null,
     Object? zoomLevel = null,
     Object? panOffset = null,
@@ -146,10 +147,10 @@ class __$$ProjectStateImplCopyWithImpl<$Res>
           ? _value._nodes
           : nodes // ignore: cast_nullable_to_non_nullable
               as Map<String, WidgetNode>,
-      rootNodeId: null == rootNodeId
-          ? _value.rootNodeId
-          : rootNodeId // ignore: cast_nullable_to_non_nullable
-              as String,
+      rootIds: null == rootIds
+          ? _value._rootIds
+          : rootIds // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       selection: null == selection
           ? _value._selection
           : selection // ignore: cast_nullable_to_non_nullable
@@ -170,12 +171,13 @@ class __$$ProjectStateImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ProjectStateImpl implements _ProjectState {
   const _$ProjectStateImpl(
-      {required final Map<String, WidgetNode> nodes,
-      required this.rootNodeId,
+      {final Map<String, WidgetNode> nodes = const <String, WidgetNode>{},
+      final List<String> rootIds = const <String>[],
       final Set<String> selection = const <String>{},
       this.zoomLevel = 1.0,
       @OffsetConverter() this.panOffset = Offset.zero})
       : _nodes = nodes,
+        _rootIds = rootIds,
         _selection = selection;
 
   factory _$ProjectStateImpl.fromJson(Map<String, dynamic> json) =>
@@ -186,15 +188,26 @@ class _$ProjectStateImpl implements _ProjectState {
 
   /// All widget nodes keyed by ID for O(1) lookup.
   @override
+  @JsonKey()
   Map<String, WidgetNode> get nodes {
     if (_nodes is EqualUnmodifiableMapView) return _nodes;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableMapView(_nodes);
   }
 
-  /// ID of the root node in the widget tree.
+  /// IDs of root-level nodes in the widget tree.
+  /// Supports multiple root widgets for Phase 1 simplicity.
+  final List<String> _rootIds;
+
+  /// IDs of root-level nodes in the widget tree.
+  /// Supports multiple root widgets for Phase 1 simplicity.
   @override
-  final String rootNodeId;
+  @JsonKey()
+  List<String> get rootIds {
+    if (_rootIds is EqualUnmodifiableListView) return _rootIds;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_rootIds);
+  }
 
   /// Currently selected node IDs.
   final Set<String> _selection;
@@ -221,7 +234,7 @@ class _$ProjectStateImpl implements _ProjectState {
 
   @override
   String toString() {
-    return 'ProjectState(nodes: $nodes, rootNodeId: $rootNodeId, selection: $selection, zoomLevel: $zoomLevel, panOffset: $panOffset)';
+    return 'ProjectState(nodes: $nodes, rootIds: $rootIds, selection: $selection, zoomLevel: $zoomLevel, panOffset: $panOffset)';
   }
 
   @override
@@ -230,8 +243,7 @@ class _$ProjectStateImpl implements _ProjectState {
         (other.runtimeType == runtimeType &&
             other is _$ProjectStateImpl &&
             const DeepCollectionEquality().equals(other._nodes, _nodes) &&
-            (identical(other.rootNodeId, rootNodeId) ||
-                other.rootNodeId == rootNodeId) &&
+            const DeepCollectionEquality().equals(other._rootIds, _rootIds) &&
             const DeepCollectionEquality()
                 .equals(other._selection, _selection) &&
             (identical(other.zoomLevel, zoomLevel) ||
@@ -245,7 +257,7 @@ class _$ProjectStateImpl implements _ProjectState {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(_nodes),
-      rootNodeId,
+      const DeepCollectionEquality().hash(_rootIds),
       const DeepCollectionEquality().hash(_selection),
       zoomLevel,
       panOffset);
@@ -268,8 +280,8 @@ class _$ProjectStateImpl implements _ProjectState {
 
 abstract class _ProjectState implements ProjectState {
   const factory _ProjectState(
-      {required final Map<String, WidgetNode> nodes,
-      required final String rootNodeId,
+      {final Map<String, WidgetNode> nodes,
+      final List<String> rootIds,
       final Set<String> selection,
       final double zoomLevel,
       @OffsetConverter() final Offset panOffset}) = _$ProjectStateImpl;
@@ -281,9 +293,10 @@ abstract class _ProjectState implements ProjectState {
   @override
   Map<String, WidgetNode> get nodes;
 
-  /// ID of the root node in the widget tree.
+  /// IDs of root-level nodes in the widget tree.
+  /// Supports multiple root widgets for Phase 1 simplicity.
   @override
-  String get rootNodeId;
+  List<String> get rootIds;
 
   /// Currently selected node IDs.
   @override

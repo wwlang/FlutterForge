@@ -8,10 +8,15 @@ part of 'project_state.dart';
 
 _$ProjectStateImpl _$$ProjectStateImplFromJson(Map<String, dynamic> json) =>
     _$ProjectStateImpl(
-      nodes: (json['nodes'] as Map<String, dynamic>).map(
-        (k, e) => MapEntry(k, WidgetNode.fromJson(e as Map<String, dynamic>)),
-      ),
-      rootNodeId: json['rootNodeId'] as String,
+      nodes: (json['nodes'] as Map<String, dynamic>?)?.map(
+            (k, e) =>
+                MapEntry(k, WidgetNode.fromJson(e as Map<String, dynamic>)),
+          ) ??
+          const <String, WidgetNode>{},
+      rootIds: (json['rootIds'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const <String>[],
       selection: (json['selection'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toSet() ??
@@ -26,7 +31,7 @@ _$ProjectStateImpl _$$ProjectStateImplFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$ProjectStateImplToJson(_$ProjectStateImpl instance) =>
     <String, dynamic>{
       'nodes': instance.nodes,
-      'rootNodeId': instance.rootNodeId,
+      'rootIds': instance.rootIds,
       'selection': instance.selection.toList(),
       'zoomLevel': instance.zoomLevel,
       'panOffset': const OffsetConverter().toJson(instance.panOffset),

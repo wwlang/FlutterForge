@@ -32,10 +32,11 @@ class OffsetConverter implements JsonConverter<Offset, Map<String, dynamic>> {
 class ProjectState with _$ProjectState {
   const factory ProjectState({
     /// All widget nodes keyed by ID for O(1) lookup.
-    required Map<String, WidgetNode> nodes,
+    @Default(<String, WidgetNode>{}) Map<String, WidgetNode> nodes,
 
-    /// ID of the root node in the widget tree.
-    required String rootNodeId,
+    /// IDs of root-level nodes in the widget tree.
+    /// Supports multiple root widgets for Phase 1 simplicity.
+    @Default(<String>[]) List<String> rootIds,
 
     /// Currently selected node IDs.
     @Default(<String>{}) Set<String> selection,
@@ -44,9 +45,7 @@ class ProjectState with _$ProjectState {
     @Default(1.0) double zoomLevel,
 
     /// Current pan offset from origin.
-    @OffsetConverter()
-    @Default(Offset.zero)
-    Offset panOffset,
+    @OffsetConverter() @Default(Offset.zero) Offset panOffset,
   }) = _ProjectState;
 
   factory ProjectState.fromJson(Map<String, dynamic> json) =>
