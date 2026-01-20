@@ -1,6 +1,7 @@
 /// Design Canvas feature - render and edit widget trees.
 library;
 
+export 'canvas_reorder_target.dart';
 export 'design_canvas.dart';
 export 'design_proxy.dart';
 export 'nested_drop_zone.dart';

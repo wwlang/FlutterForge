@@ -32,7 +32,7 @@ See `.claude/PROGRESS.md` for detailed Phase 1 completion records.
 
 **Milestone:** Widget tree panel, undo/redo, 15+ widgets, multi-level drag-drop
 
-**Progress:** 7/12 tasks | **Tests:** 247
+**Progress:** 8/12 tasks | **Tests:** 257
 
 ### Task 2.1: Command Pattern Foundation
 
