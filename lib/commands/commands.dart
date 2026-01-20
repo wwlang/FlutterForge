@@ -12,3 +12,4 @@ export 'command_processor.dart';
 export 'delete_widget_command.dart';
 export 'move_widget_command.dart';
 export 'property_change_command.dart';
+export 'wrap_widget_command.dart';

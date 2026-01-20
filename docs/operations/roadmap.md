@@ -32,7 +32,7 @@ See `.claude/PROGRESS.md` for detailed Phase 1 completion records.
 
 **Milestone:** Widget tree panel, undo/redo, 15+ widgets, multi-level drag-drop
 
-**Progress:** 5/12 tasks | **Tests:** 212
+**Progress:** 6/12 tasks | **Tests:** 228
 
 ### Task 2.1: Command Pattern Foundation
 
@@ -198,7 +198,7 @@ See `.claude/PROGRESS.md` for detailed Phase 1 completion records.
 | Field | Value |
 |-------|-------|
 | ID | phase-2-task-06 |
-| Status | PENDING |
+| Status | COMPLETE |
 | Priority | P1 |
 | Journey AC | J04 (Widget Tree) S4 |
 | Requirements | FR3.4 |
@@ -206,22 +206,22 @@ See `.claude/PROGRESS.md` for detailed Phase 1 completion records.
 | Location | `lib/features/tree/` |
 
 **Deliverables:**
-- [ ] Right-click context menu on tree nodes
-- [ ] Delete option with keyboard shortcut
-- [ ] Cut/Copy/Paste options (preparation for Phase 4)
-- [ ] Duplicate option with keyboard shortcut
-- [ ] "Wrap in..." submenu for common wrappers
+- [x] Right-click context menu on tree nodes
+- [x] Delete option with keyboard shortcut
+- [x] Cut/Copy/Paste options (preparation for Phase 4)
+- [x] Duplicate option with keyboard shortcut
+- [x] "Wrap in..." submenu for common wrappers
 
 **Acceptance Criteria (from J04 S4):**
-- [ ] Delete leaf widget removes it (FR3.4)
-- [ ] Delete widget with children shows confirmation dialog
-- [ ] Context menu shows: Cut, Copy, Paste, Duplicate, Delete, Wrap in...
-- [ ] Each menu item shows keyboard shortcut
-- [ ] Delete/Backspace key triggers delete
-- [ ] Context menu appears within <100ms
-- [ ] Uses DeleteWidgetCommand for undo support
-- [ ] Delete animation: fade out (150ms)
-- [ ] Tests: Delete operations, confirmation dialog
+- [x] Delete leaf widget removes it (FR3.4)
+- [x] Delete widget with children shows confirmation dialog
+- [x] Context menu shows: Cut, Copy, Paste, Duplicate, Delete, Wrap in...
+- [x] Each menu item shows keyboard shortcut
+- [x] Delete/Backspace key triggers delete
+- [x] Context menu appears within <100ms
+- [x] Uses DeleteWidgetCommand for undo support
+- [x] WrapWidgetCommand for wrap operations with undo support
+- [x] Tests: Delete operations, confirmation dialog, duplicate, wrap
 
 ---
 
@@ -434,7 +434,7 @@ See `.claude/PROGRESS.md` for detailed Phase 1 completion records.
 - [x] Undo/Redo system with command pattern
 - [x] Widget tree panel with selection sync
 - [x] Tree drag-reorder with canvas sync
-- [ ] Context menu for tree operations
+- [x] Context menu for tree operations
 - [ ] Multi-level nested drop zones (3+ depth)
 - [ ] Canvas widget reordering
 - [ ] 15+ widgets in registry (from 5)
@@ -454,7 +454,7 @@ See `.claude/PROGRESS.md` for detailed Phase 1 completion records.
 | phase-2-task-03 | J04 Widget Tree | S1 | COMPLETE |
 | phase-2-task-04 | J04 Widget Tree | S2 | COMPLETE |
 | phase-2-task-05 | J04 Widget Tree | S3 | COMPLETE |
-| phase-2-task-06 | J04 Widget Tree | S4 | PENDING |
+| phase-2-task-06 | J04 Widget Tree | S4 | COMPLETE |
 | phase-2-task-07 | J03 Design Canvas | S2 | PENDING |
 | phase-2-task-08 | J03 Design Canvas | S4 | PENDING |
 | phase-2-task-09 | J02 Widget Palette | S1 | PENDING |

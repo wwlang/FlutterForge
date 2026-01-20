@@ -5,15 +5,15 @@
 ## Orchestrator Checkpoint
 
 phase: phase-2
-current_task: phase-2-task-06
-completed: [phase-2-task-01, phase-2-task-02, phase-2-task-03, phase-2-task-04, phase-2-task-05]
-next_action: "Continue with phase-2-task-06 (Widget Tree Context Menu)"
+current_task: phase-2-task-07
+completed: [phase-2-task-01, phase-2-task-02, phase-2-task-03, phase-2-task-04, phase-2-task-05, phase-2-task-06]
+next_action: "Continue with phase-2-task-07 (Multi-Level Nested Drop Zones)"
 last_gate: G5
-timestamp: 2026-01-21T21:00:00Z
+timestamp: 2026-01-21T21:30:00Z
 
 ## Current Status
 
-Phase 1 (Foundation) COMPLETE. Phase 2 (Core Editor) in progress - 5 of 12 tasks complete.
+Phase 1 (Foundation) COMPLETE. Phase 2 (Core Editor) in progress - 6 of 12 tasks complete.
 
 ---
 
@@ -28,7 +28,7 @@ Phase 1 (Foundation) COMPLETE. Phase 2 (Core Editor) in progress - 5 of 12 tasks
 | phase-2-task-03 | Widget Tree Panel UI | J04 S1, FR3.1, FR3.5 | COMPLETE |
 | phase-2-task-04 | Widget Tree Selection Sync | J04 S2, FR3.2 | COMPLETE |
 | phase-2-task-05 | Widget Tree Drag Reorder | J04 S3, FR3.3 | COMPLETE |
-| phase-2-task-06 | Widget Tree Context Menu | J04 S4, FR3.4 | PENDING |
+| phase-2-task-06 | Widget Tree Context Menu | J04 S4, FR3.4 | COMPLETE |
 | phase-2-task-07 | Multi-Level Nested Drop Zones | J03 S2, FR2.3 | PENDING |
 | phase-2-task-08 | Canvas Widget Reordering | J03 S4, FR2.6 | PENDING |
 | phase-2-task-09 | Widget Registry Expansion (Layout) | J02 S1, FR1.1 | PENDING |
@@ -117,6 +117,29 @@ Phase 1 (Foundation) COMPLETE. Phase 2 (Core Editor) in progress - 5 of 12 tasks
 - `test/unit/tree/widget_tree_panel_test.dart`
 - `test/unit/tree/widget_tree_selection_test.dart`
 
+#### Task 2.6: Widget Tree Context Menu (COMPLETE)
+
+- [x] Right-click context menu on tree nodes
+- [x] Delete option with keyboard shortcut (Delete/Backspace)
+- [x] Cut/Copy/Paste options visible (placeholders for Phase 4)
+- [x] Duplicate option using AddWidgetCommand.withNode
+- [x] "Wrap in..." submenu for common wrappers
+- [x] WrapWidgetCommand for wrapping operations with undo support
+- [x] Delete confirmation dialog for nodes with children
+- [x] Keyboard listener for Delete/Backspace keys
+- [x] 16 unit tests covering all context menu operations
+
+**Files Created:**
+- `lib/features/tree/widget_tree_context_menu.dart`
+- `lib/commands/wrap_widget_command.dart`
+- `test/unit/tree/widget_tree_context_menu_test.dart`
+
+**Files Updated:**
+- `lib/commands/add_widget_command.dart` (added withNode constructor)
+- `lib/commands/commands.dart` (added wrap_widget_command export)
+- `lib/features/tree/widget_tree_panel.dart` (added context menu + keyboard)
+- `lib/features/tree/tree.dart` (added context_menu export)
+
 ---
 
 ## Phase 1: Foundation (COMPLETE - 2026-01-21)
@@ -146,4 +169,5 @@ Phase 1 (Foundation) COMPLETE. Phase 2 (Core Editor) in progress - 5 of 12 tasks
 | **Command Provider** | **23** | **PASS** |
 | **Widget Tree Selection** | **9** | **PASS** |
 | **Widget Tree Drag** | **15** | **PASS** |
-| **Total** | **212** | **PASS** |
+| **Widget Tree Context Menu** | **16** | **PASS** |
+| **Total** | **228** | **PASS** |

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_forge/commands/delete_widget_command.dart';
 import 'package:flutter_forge/commands/move_widget_command.dart';
 import 'package:flutter_forge/core/models/project_state.dart';
 import 'package:flutter_forge/features/tree/draggable_tree_item.dart';
+import 'package:flutter_forge/features/tree/widget_tree_context_menu.dart';
 import 'package:flutter_forge/providers/providers.dart';
 import 'package:flutter_forge/shared/registry/widget_registry.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,7 +13,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 ///
 /// Shows all widgets in the project as a tree structure with
 /// expand/collapse support, selection highlighting, widget icons,
-/// and drag-to-reorder functionality.
+/// drag-to-reorder functionality, and context menu operations.
 class WidgetTreePanel extends ConsumerStatefulWidget {
   const WidgetTreePanel({super.key});
 
@@ -25,6 +28,15 @@ class _WidgetTreePanelState extends ConsumerState<WidgetTreePanel> {
   /// Previous selection for detecting changes.
   String? _previousSelection;
 
+  /// Focus node for keyboard handling.
+  final FocusNode _focusNode = FocusNode();
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final projectState = ref.watch(projectProvider);
@@ -36,18 +48,81 @@ class _WidgetTreePanelState extends ConsumerState<WidgetTreePanel> {
     }
     _previousSelection = selectedId;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        _buildHeader(context),
-        const Divider(height: 1),
-        Expanded(
-          child: projectState.rootIds.isEmpty
-              ? _buildEmptyState(context)
-              : _buildTree(context, projectState, selectedId),
-        ),
-      ],
+    return KeyboardListener(
+      focusNode: _focusNode,
+      onKeyEvent: (event) => _handleKeyEvent(event, selectedId),
+      autofocus: true,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _buildHeader(context),
+          const Divider(height: 1),
+          Expanded(
+            child: projectState.rootIds.isEmpty
+                ? _buildEmptyState(context)
+                : _buildTree(context, projectState, selectedId),
+          ),
+        ],
+      ),
     );
+  }
+
+  /// Handles keyboard events for delete shortcuts.
+  void _handleKeyEvent(KeyEvent event, String? selectedId) {
+    if (event is! KeyDownEvent) return;
+    if (selectedId == null) return;
+
+    // Handle Delete and Backspace keys
+    if (event.logicalKey == LogicalKeyboardKey.delete ||
+        event.logicalKey == LogicalKeyboardKey.backspace) {
+      _deleteSelectedWidget(selectedId);
+    }
+  }
+
+  /// Deletes the selected widget.
+  void _deleteSelectedWidget(String nodeId) {
+    final projectState = ref.read(projectProvider);
+    final node = projectState.nodes[nodeId];
+    if (node == null) return;
+
+    // For nodes with children, show confirmation dialog
+    if (node.childrenIds.isNotEmpty) {
+      _showDeleteConfirmation(nodeId, projectState);
+      return;
+    }
+
+    // For leaf nodes, delete immediately
+    final command = DeleteWidgetCommand(nodeId: nodeId);
+    ref.read(commandProvider.notifier).execute(command);
+  }
+
+  /// Shows delete confirmation dialog for nodes with children.
+  Future<void> _showDeleteConfirmation(
+    String nodeId,
+    ProjectState projectState,
+  ) async {
+    final childCount = _countDescendants(nodeId, projectState);
+    final confirmed = await showDeleteConfirmationDialog(
+      context: context,
+      childCount: childCount,
+    );
+
+    if ((confirmed ?? false) && mounted) {
+      final command = DeleteWidgetCommand(nodeId: nodeId);
+      ref.read(commandProvider.notifier).execute(command);
+    }
+  }
+
+  /// Counts all descendants of a node.
+  int _countDescendants(String nodeId, ProjectState state) {
+    final node = state.nodes[nodeId];
+    if (node == null) return 0;
+
+    var count = node.childrenIds.length;
+    for (final childId in node.childrenIds) {
+      count += _countDescendants(childId, state);
+    }
+    return count;
   }
 
   Widget _buildHeader(BuildContext context) {
@@ -138,29 +213,39 @@ class _WidgetTreePanelState extends ConsumerState<WidgetTreePanel> {
     final isCollapsed = _collapsedNodes.contains(nodeId);
 
     final widgets = <Widget>[
-      DraggableTreeItem(
-        key: ValueKey(nodeId),
-        nodeId: nodeId,
-        widgetType: node.type,
-        depth: depth,
-        hasChildren: hasChildren,
-        isExpanded: !isCollapsed,
-        isSelected: nodeId == selectedId,
-        parentId: parentId,
-        currentIndex: indexInParent,
-        onToggleExpanded: hasChildren ? () => _toggleExpanded(nodeId) : null,
-        onTap: () => _selectNode(nodeId),
-        onDropValidation: (data, targetId) => _validateDrop(
-          projectState,
-          registry,
-          data,
-          targetId,
+      GestureDetector(
+        onSecondaryTapDown: (details) => _showContextMenu(
+          context,
+          details.globalPosition,
+          nodeId,
         ),
-        onDrop: (data, validation) => _handleDrop(
-          projectState,
-          data,
-          validation,
-          targetId: nodeId,
+        child: DraggableTreeItem(
+          key: ValueKey(nodeId),
+          nodeId: nodeId,
+          widgetType: node.type,
+          depth: depth,
+          hasChildren: hasChildren,
+          isExpanded: !isCollapsed,
+          isSelected: nodeId == selectedId,
+          parentId: parentId,
+          currentIndex: indexInParent,
+          onToggleExpanded: hasChildren ? () => _toggleExpanded(nodeId) : null,
+          onTap: () {
+            _selectNode(nodeId);
+            _focusNode.requestFocus();
+          },
+          onDropValidation: (data, targetId) => _validateDrop(
+            projectState,
+            registry,
+            data,
+            targetId,
+          ),
+          onDrop: (data, validation) => _handleDrop(
+            projectState,
+            data,
+            validation,
+            targetId: nodeId,
+          ),
         ),
       ),
     ];
@@ -184,6 +269,32 @@ class _WidgetTreePanelState extends ConsumerState<WidgetTreePanel> {
     }
 
     return widgets;
+  }
+
+  /// Shows the context menu for a node.
+  Future<void> _showContextMenu(
+    BuildContext context,
+    Offset position,
+    String nodeId,
+  ) async {
+    // Select the node first
+    _selectNode(nodeId);
+
+    final action = await showWidgetTreeContextMenu(
+      context: context,
+      position: position,
+      nodeId: nodeId,
+      ref: ref,
+    );
+
+    if (action != null && context.mounted) {
+      await handleContextMenuAction(
+        context: context,
+        action: action,
+        nodeId: nodeId,
+        ref: ref,
+      );
+    }
   }
 
   /// Validates a drop operation.
