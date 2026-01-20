@@ -16,6 +16,11 @@ _$WidgetNodeImpl _$$WidgetNodeImplFromJson(Map<String, dynamic> json) =>
               .toList() ??
           const <String>[],
       parentId: json['parentId'] as String?,
+      appliedPresetId: json['appliedPresetId'] as String?,
+      propertyOverrides: (json['propertyOverrides'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const <String>[],
     );
 
 Map<String, dynamic> _$$WidgetNodeImplToJson(_$WidgetNodeImpl instance) =>
@@ -25,4 +30,6 @@ Map<String, dynamic> _$$WidgetNodeImplToJson(_$WidgetNodeImpl instance) =>
       'properties': instance.properties,
       'childrenIds': instance.childrenIds,
       'parentId': instance.parentId,
+      'appliedPresetId': instance.appliedPresetId,
+      'propertyOverrides': instance.propertyOverrides,
     };

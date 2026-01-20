@@ -32,6 +32,14 @@ class WidgetNode with _$WidgetNode {
 
     /// ID of parent node, null for root.
     String? parentId,
+
+    /// ID of the style preset applied to this widget.
+    /// Null if no preset is applied.
+    String? appliedPresetId,
+
+    /// List of property names that have been overridden from the preset.
+    /// Only meaningful when appliedPresetId is set.
+    @Default(<String>[]) List<String> propertyOverrides,
   }) = _WidgetNode;
 
   factory WidgetNode.fromJson(Map<String, dynamic> json) =>

@@ -38,6 +38,14 @@ mixin _$WidgetNode {
   /// ID of parent node, null for root.
   String? get parentId => throw _privateConstructorUsedError;
 
+  /// ID of the style preset applied to this widget.
+  /// Null if no preset is applied.
+  String? get appliedPresetId => throw _privateConstructorUsedError;
+
+  /// List of property names that have been overridden from the preset.
+  /// Only meaningful when appliedPresetId is set.
+  List<String> get propertyOverrides => throw _privateConstructorUsedError;
+
   /// Serializes this WidgetNode to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
@@ -59,7 +67,9 @@ abstract class $WidgetNodeCopyWith<$Res> {
       String type,
       Map<String, dynamic> properties,
       List<String> childrenIds,
-      String? parentId});
+      String? parentId,
+      String? appliedPresetId,
+      List<String> propertyOverrides});
 }
 
 /// @nodoc
@@ -82,6 +92,8 @@ class _$WidgetNodeCopyWithImpl<$Res, $Val extends WidgetNode>
     Object? properties = null,
     Object? childrenIds = null,
     Object? parentId = freezed,
+    Object? appliedPresetId = freezed,
+    Object? propertyOverrides = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -104,6 +116,14 @@ class _$WidgetNodeCopyWithImpl<$Res, $Val extends WidgetNode>
           ? _value.parentId
           : parentId // ignore: cast_nullable_to_non_nullable
               as String?,
+      appliedPresetId: freezed == appliedPresetId
+          ? _value.appliedPresetId
+          : appliedPresetId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      propertyOverrides: null == propertyOverrides
+          ? _value.propertyOverrides
+          : propertyOverrides // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ) as $Val);
   }
 }
@@ -121,7 +141,9 @@ abstract class _$$WidgetNodeImplCopyWith<$Res>
       String type,
       Map<String, dynamic> properties,
       List<String> childrenIds,
-      String? parentId});
+      String? parentId,
+      String? appliedPresetId,
+      List<String> propertyOverrides});
 }
 
 /// @nodoc
@@ -142,6 +164,8 @@ class __$$WidgetNodeImplCopyWithImpl<$Res>
     Object? properties = null,
     Object? childrenIds = null,
     Object? parentId = freezed,
+    Object? appliedPresetId = freezed,
+    Object? propertyOverrides = null,
   }) {
     return _then(_$WidgetNodeImpl(
       id: null == id
@@ -164,6 +188,14 @@ class __$$WidgetNodeImplCopyWithImpl<$Res>
           ? _value.parentId
           : parentId // ignore: cast_nullable_to_non_nullable
               as String?,
+      appliedPresetId: freezed == appliedPresetId
+          ? _value.appliedPresetId
+          : appliedPresetId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      propertyOverrides: null == propertyOverrides
+          ? _value._propertyOverrides
+          : propertyOverrides // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ));
   }
 }
@@ -176,9 +208,12 @@ class _$WidgetNodeImpl implements _WidgetNode {
       required this.type,
       required final Map<String, dynamic> properties,
       final List<String> childrenIds = const <String>[],
-      this.parentId})
+      this.parentId,
+      this.appliedPresetId,
+      final List<String> propertyOverrides = const <String>[]})
       : _properties = properties,
-        _childrenIds = childrenIds;
+        _childrenIds = childrenIds,
+        _propertyOverrides = propertyOverrides;
 
   factory _$WidgetNodeImpl.fromJson(Map<String, dynamic> json) =>
       _$$WidgetNodeImplFromJson(json);
@@ -223,9 +258,29 @@ class _$WidgetNodeImpl implements _WidgetNode {
   @override
   final String? parentId;
 
+  /// ID of the style preset applied to this widget.
+  /// Null if no preset is applied.
+  @override
+  final String? appliedPresetId;
+
+  /// List of property names that have been overridden from the preset.
+  /// Only meaningful when appliedPresetId is set.
+  final List<String> _propertyOverrides;
+
+  /// List of property names that have been overridden from the preset.
+  /// Only meaningful when appliedPresetId is set.
+  @override
+  @JsonKey()
+  List<String> get propertyOverrides {
+    if (_propertyOverrides is EqualUnmodifiableListView)
+      return _propertyOverrides;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_propertyOverrides);
+  }
+
   @override
   String toString() {
-    return 'WidgetNode(id: $id, type: $type, properties: $properties, childrenIds: $childrenIds, parentId: $parentId)';
+    return 'WidgetNode(id: $id, type: $type, properties: $properties, childrenIds: $childrenIds, parentId: $parentId, appliedPresetId: $appliedPresetId, propertyOverrides: $propertyOverrides)';
   }
 
   @override
@@ -240,7 +295,11 @@ class _$WidgetNodeImpl implements _WidgetNode {
             const DeepCollectionEquality()
                 .equals(other._childrenIds, _childrenIds) &&
             (identical(other.parentId, parentId) ||
-                other.parentId == parentId));
+                other.parentId == parentId) &&
+            (identical(other.appliedPresetId, appliedPresetId) ||
+                other.appliedPresetId == appliedPresetId) &&
+            const DeepCollectionEquality()
+                .equals(other._propertyOverrides, _propertyOverrides));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -251,7 +310,9 @@ class _$WidgetNodeImpl implements _WidgetNode {
       type,
       const DeepCollectionEquality().hash(_properties),
       const DeepCollectionEquality().hash(_childrenIds),
-      parentId);
+      parentId,
+      appliedPresetId,
+      const DeepCollectionEquality().hash(_propertyOverrides));
 
   /// Create a copy of WidgetNode
   /// with the given fields replaced by the non-null parameter values.
@@ -275,7 +336,9 @@ abstract class _WidgetNode implements WidgetNode {
       required final String type,
       required final Map<String, dynamic> properties,
       final List<String> childrenIds,
-      final String? parentId}) = _$WidgetNodeImpl;
+      final String? parentId,
+      final String? appliedPresetId,
+      final List<String> propertyOverrides}) = _$WidgetNodeImpl;
 
   factory _WidgetNode.fromJson(Map<String, dynamic> json) =
       _$WidgetNodeImpl.fromJson;
@@ -302,6 +365,16 @@ abstract class _WidgetNode implements WidgetNode {
   /// ID of parent node, null for root.
   @override
   String? get parentId;
+
+  /// ID of the style preset applied to this widget.
+  /// Null if no preset is applied.
+  @override
+  String? get appliedPresetId;
+
+  /// List of property names that have been overridden from the preset.
+  /// Only meaningful when appliedPresetId is set.
+  @override
+  List<String> get propertyOverrides;
 
   /// Create a copy of WidgetNode
   /// with the given fields replaced by the non-null parameter values.
