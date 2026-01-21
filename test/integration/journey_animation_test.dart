@@ -4,7 +4,6 @@ import 'package:flutter_forge/features/animation/timeline_editor.dart';
 import 'package:flutter_forge/features/workbench/workbench.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:integration_test/integration_test.dart';
 
 import 'test_utils.dart';
 
@@ -19,7 +18,7 @@ import 'test_utils.dart';
 /// - Stagger: children stagger in Column
 /// - Export: StatefulWidget generation
 void main() {
-  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+  TestWidgetsFlutterBinding.ensureInitialized();
 
   group('Journey J10: Animation Studio', () {
     // =========================================================================

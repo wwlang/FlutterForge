@@ -144,10 +144,11 @@ void main() {
           '32',
         );
 
-        // Tap on dropdown and select 700
+        // Tap on dropdown and select 700 (shortened label)
         await tester.tap(find.byKey(const Key('font_weight_field')));
         await tester.pumpAndSettle();
-        await tester.tap(find.text('700 - Bold').last);
+        // Dropdown now shows just numeric values like '700' instead of '700 - Bold'
+        await tester.tap(find.text('700').last);
         await tester.pumpAndSettle();
 
         await tester.tap(find.text('Create'));

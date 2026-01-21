@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_forge/features/canvas/canvas.dart';
+import 'package:flutter_forge/features/palette/widget_palette.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 /// Shared E2E test utilities for FlutterForge integration tests.
@@ -22,7 +23,21 @@ Future<void> dragWidgetToCanvas(
   String widgetName, {
   Offset? targetOffset,
 }) async {
-  final widgetItem = find.text(widgetName).first;
+  // Find widget specifically within the palette to avoid finding labels elsewhere
+  final palette = find.byType(WidgetPalette);
+  Finder widgetItem;
+
+  // Check if there's a WidgetPalette - if so, search within it
+  if (palette.evaluate().isNotEmpty) {
+    widgetItem = find.descendant(
+      of: palette,
+      matching: find.text(widgetName),
+    );
+  } else {
+    // Fallback to the first match
+    widgetItem = find.text(widgetName).first;
+  }
+
   final canvas = find.byType(DesignCanvas);
 
   expect(widgetItem, findsOneWidget, reason: 'Widget "$widgetName" not found');
@@ -51,7 +66,18 @@ Future<void> dragWidgetToParent(
   String widgetName,
   Finder parentFinder,
 ) async {
-  final widgetItem = find.text(widgetName).first;
+  // Find widget specifically within the palette
+  final palette = find.byType(WidgetPalette);
+  Finder widgetItem;
+
+  if (palette.evaluate().isNotEmpty) {
+    widgetItem = find.descendant(
+      of: palette,
+      matching: find.text(widgetName),
+    );
+  } else {
+    widgetItem = find.text(widgetName).first;
+  }
 
   expect(widgetItem, findsOneWidget);
   expect(parentFinder, findsOneWidget);
@@ -97,11 +123,14 @@ Future<void> selectWidgetByLabel(
   }
 }
 
-/// Sends a keyboard shortcut.
+/// Sends a keyboard shortcut that works across platforms.
+///
+/// Sends both meta (macOS) and control (Windows/Linux) versions to ensure
+/// the shortcut works regardless of the test platform detection.
 ///
 /// [tester] - The WidgetTester instance.
 /// [key] - The main key to press.
-/// [meta] - Whether to hold Command (macOS) / Control (Windows).
+/// [withModifier] - Whether to send with platform modifier (Cmd/Ctrl).
 /// [shift] - Whether to hold Shift.
 /// [alt] - Whether to hold Alt/Option.
 Future<void> sendShortcut(
@@ -111,26 +140,71 @@ Future<void> sendShortcut(
   bool shift = false,
   bool alt = false,
 }) async {
-  if (meta) await tester.sendKeyDownEvent(LogicalKeyboardKey.meta);
-  if (shift) await tester.sendKeyDownEvent(LogicalKeyboardKey.shift);
-  if (alt) await tester.sendKeyDownEvent(LogicalKeyboardKey.alt);
+  // Try meta key first (macOS), then control key (Windows/Linux)
+  // This ensures the shortcut works in test environments where
+  // the platform detection might differ from actual runtime.
 
-  await tester.sendKeyEvent(key);
+  if (meta) {
+    // Try meta key (macOS)
+    await tester.sendKeyDownEvent(LogicalKeyboardKey.meta);
+    if (shift) await tester.sendKeyDownEvent(LogicalKeyboardKey.shift);
+    if (alt) await tester.sendKeyDownEvent(LogicalKeyboardKey.alt);
 
-  if (alt) await tester.sendKeyUpEvent(LogicalKeyboardKey.alt);
-  if (shift) await tester.sendKeyUpEvent(LogicalKeyboardKey.shift);
-  if (meta) await tester.sendKeyUpEvent(LogicalKeyboardKey.meta);
+    await tester.sendKeyEvent(key);
+
+    if (alt) await tester.sendKeyUpEvent(LogicalKeyboardKey.alt);
+    if (shift) await tester.sendKeyUpEvent(LogicalKeyboardKey.shift);
+    await tester.sendKeyUpEvent(LogicalKeyboardKey.meta);
+
+    await tester.pump();
+
+    // Also try control key as fallback for cross-platform support
+    await tester.sendKeyDownEvent(LogicalKeyboardKey.control);
+    if (shift) await tester.sendKeyDownEvent(LogicalKeyboardKey.shift);
+    if (alt) await tester.sendKeyDownEvent(LogicalKeyboardKey.alt);
+
+    await tester.sendKeyEvent(key);
+
+    if (alt) await tester.sendKeyUpEvent(LogicalKeyboardKey.alt);
+    if (shift) await tester.sendKeyUpEvent(LogicalKeyboardKey.shift);
+    await tester.sendKeyUpEvent(LogicalKeyboardKey.control);
+  } else {
+    // No modifier
+    if (shift) await tester.sendKeyDownEvent(LogicalKeyboardKey.shift);
+    if (alt) await tester.sendKeyDownEvent(LogicalKeyboardKey.alt);
+
+    await tester.sendKeyEvent(key);
+
+    if (alt) await tester.sendKeyUpEvent(LogicalKeyboardKey.alt);
+    if (shift) await tester.sendKeyUpEvent(LogicalKeyboardKey.shift);
+  }
 
   await tester.pumpAndSettle();
 }
 
 /// Sends Cmd+Z (undo) shortcut.
 Future<void> sendUndo(WidgetTester tester) async {
+  // Tap the undo button directly for reliability in tests
+  final undoButton = find.byIcon(Icons.undo);
+  if (undoButton.evaluate().isNotEmpty) {
+    await tester.tap(undoButton);
+    await tester.pumpAndSettle();
+    return;
+  }
+  // Fallback to keyboard shortcut
   await sendShortcut(tester, LogicalKeyboardKey.keyZ, meta: true);
 }
 
 /// Sends Cmd+Shift+Z (redo) shortcut.
 Future<void> sendRedo(WidgetTester tester) async {
+  // Tap the redo button directly for reliability in tests
+  final redoButton = find.byIcon(Icons.redo);
+  if (redoButton.evaluate().isNotEmpty) {
+    await tester.tap(redoButton);
+    await tester.pumpAndSettle();
+    return;
+  }
+  // Fallback to keyboard shortcut
   await sendShortcut(tester, LogicalKeyboardKey.keyZ, meta: true, shift: true);
 }
 

@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 
+/// Minimum hit area size for drop zones.
+///
+/// Ensures drop zones are large enough to be easily targeted
+/// even when the child widget is small or invisible.
+const double kMinDropZoneSize = 60;
+
 /// A drop zone for accepting nested widget drops.
 ///
 /// Wraps child widgets in containers that accept children,
@@ -48,39 +54,45 @@ class NestedDropZone extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DragTarget<String>(
-      onWillAcceptWithDetails: (details) => _canAcceptMore,
-      onAcceptWithDetails: (details) {
-        if (_canAcceptMore) {
-          onWidgetDropped(details.data, parentId);
-        }
-      },
-      builder: (context, candidateData, rejectedData) {
-        final isHovering = candidateData.isNotEmpty && _canAcceptMore;
+    return ConstrainedBox(
+      constraints: const BoxConstraints(
+        minWidth: kMinDropZoneSize,
+        minHeight: kMinDropZoneSize,
+      ),
+      child: DragTarget<String>(
+        onWillAcceptWithDetails: (details) => _canAcceptMore,
+        onAcceptWithDetails: (details) {
+          if (_canAcceptMore) {
+            onWidgetDropped(details.data, parentId);
+          }
+        },
+        builder: (context, candidateData, rejectedData) {
+          final isHovering = candidateData.isNotEmpty && _canAcceptMore;
 
-        return Stack(
-          children: [
-            child,
-            if (isHovering)
-              Positioned.fill(
-                child: IgnorePointer(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Theme.of(context).colorScheme.primary,
-                        width: 2,
+          return Stack(
+            children: [
+              child,
+              if (isHovering)
+                Positioned.fill(
+                  child: IgnorePointer(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Theme.of(context).colorScheme.primary,
+                          width: 2,
+                        ),
+                        color: Theme.of(context)
+                            .colorScheme
+                            .primary
+                            .withValues(alpha: 0.1),
                       ),
-                      color: Theme.of(context)
-                          .colorScheme
-                          .primary
-                          .withValues(alpha: 0.1),
                     ),
                   ),
                 ),
-              ),
-          ],
-        );
-      },
+            ],
+          );
+        },
+      ),
     );
   }
 }

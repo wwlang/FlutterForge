@@ -5,7 +5,6 @@ import 'package:flutter_forge/features/properties/properties.dart';
 import 'package:flutter_forge/features/workbench/workbench.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:integration_test/integration_test.dart';
 
 /// App smoke test - G5 validation gate requirement.
 ///
@@ -14,7 +13,7 @@ import 'package:integration_test/integration_test.dart';
 /// - Main workbench UI is visible
 /// - All three panels are rendered
 void main() {
-  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+  TestWidgetsFlutterBinding.ensureInitialized();
 
   group('App Smoke Test (G5 Validation)', () {
     testWidgets('App launches and shows workbench with 3 panels', (

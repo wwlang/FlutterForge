@@ -24,11 +24,30 @@ class PaletteItem extends StatelessWidget {
   /// Maps icon name strings to Material Icons.
   static IconData _getIconData(String? iconName) {
     const iconMap = {
+      // Phase 1 widgets
       'crop_square': Icons.crop_square,
       'text_fields': Icons.text_fields,
       'view_column': Icons.view_column,
       'view_agenda': Icons.view_agenda,
       'crop_din': Icons.crop_din,
+      // Phase 2 Task 9: Layout widgets
+      'layers': Icons.layers,
+      'expand': Icons.expand,
+      'swap_horiz': Icons.swap_horiz,
+      'padding': Icons.padding,
+      'center_focus_strong': Icons.center_focus_strong,
+      'format_align_center': Icons.format_align_center,
+      'space_bar': Icons.space_bar,
+      // Phase 2 Task 10: Content widgets
+      'star': Icons.star,
+      'image': Icons.image,
+      'horizontal_rule': Icons.horizontal_rule,
+      'more_vert': Icons.more_vert,
+      // Phase 2 Task 11: Input widgets
+      'smart_button': Icons.smart_button,
+      'touch_app': Icons.touch_app,
+      'radio_button_checked': Icons.radio_button_checked,
+      'crop_free': Icons.crop_free,
     };
     return iconMap[iconName] ?? Icons.widgets;
   }

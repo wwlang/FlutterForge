@@ -1,7 +1,10 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_forge/commands/commands.dart';
 import 'package:flutter_forge/core/models/forge_project.dart';
+import 'package:flutter_forge/core/models/project_state.dart';
+import 'package:flutter_forge/core/models/widget_node.dart';
 import 'package:flutter_forge/features/animation/animation.dart';
 import 'package:flutter_forge/features/canvas/canvas.dart';
 import 'package:flutter_forge/features/design_system/design_system.dart';
@@ -13,6 +16,7 @@ import 'package:flutter_forge/providers/providers.dart';
 import 'package:flutter_forge/services/services.dart';
 import 'package:flutter_forge/shared/registry/registry.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:uuid/uuid.dart';
 
 /// Tabs for the right panel.
 enum RightPanelTab { properties, designSystem, animation, code }
@@ -21,6 +25,9 @@ enum RightPanelTab { properties, designSystem, animation, code }
 final rightPanelTabProvider = StateProvider<RightPanelTab>((ref) {
   return RightPanelTab.properties;
 });
+
+/// Provider for the widget clipboard (stores copied widget data).
+final widgetClipboardProvider = StateProvider<WidgetNode?>((ref) => null);
 
 /// The main workbench layout with multi-panel design.
 ///
@@ -48,6 +55,8 @@ class _WorkbenchState extends ConsumerState<Workbench>
   late final ThemeExtensionGenerator _themeGenerator;
   late final ProjectService _projectService;
   late final TabController _rightPanelController;
+
+  static const _uuid = Uuid();
 
   /// Current project file path (null if never saved).
   String? _currentFilePath;
@@ -80,13 +89,13 @@ class _WorkbenchState extends ConsumerState<Workbench>
   }
 
   void _handleWidgetDropped(String widgetType, String? parentId) {
-    final notifier = ref.read(projectProvider.notifier);
-
-    if (parentId == null) {
-      notifier.addWidget(type: widgetType);
-    } else {
-      notifier.addChildWidget(parentId: parentId, type: widgetType);
-    }
+    // Use command system for undo/redo support
+    final command = AddWidgetCommand(
+      widgetType: widgetType,
+      properties: const {},
+      parentId: parentId,
+    );
+    ref.read(commandProvider.notifier).execute(command);
     _markUnsaved();
   }
 
@@ -98,11 +107,15 @@ class _WorkbenchState extends ConsumerState<Workbench>
     final selectedId = ref.read(selectionProvider);
     if (selectedId == null) return;
 
-    ref.read(projectProvider.notifier).updateProperty(
-          nodeId: selectedId,
-          propertyName: propertyName,
-          value: value,
-        );
+    // Use command system for undo/redo support
+    final command = PropertyChangeCommand(
+      nodeId: selectedId,
+      propertyName: propertyName,
+      newValue: value,
+      oldValue:
+          ref.read(projectProvider).nodes[selectedId]?.properties[propertyName],
+    );
+    ref.read(commandProvider.notifier).execute(command);
     _markUnsaved();
   }
 
@@ -274,6 +287,96 @@ class _WorkbenchState extends ConsumerState<Workbench>
     _markUnsaved();
   }
 
+  void _handleDelete() {
+    final selectedId = ref.read(selectionProvider);
+    if (selectedId == null || selectedId.isEmpty) return;
+
+    final command = DeleteWidgetCommand(nodeId: selectedId);
+    ref.read(commandProvider.notifier).execute(command);
+    ref.read(selectionProvider.notifier).state = null;
+    _markUnsaved();
+  }
+
+  void _handleCopy() {
+    final selectedId = ref.read(selectionProvider);
+    if (selectedId == null || selectedId.isEmpty) return;
+
+    final projectState = ref.read(projectProvider);
+    final node = projectState.nodes[selectedId];
+    if (node == null) return;
+
+    // Deep copy the node and its children
+    ref.read(widgetClipboardProvider.notifier).state =
+        _deepCopyNode(node, projectState);
+  }
+
+  void _handlePaste() {
+    final clipboardNode = ref.read(widgetClipboardProvider);
+    if (clipboardNode == null) return;
+
+    // Create a new copy with a new ID
+    final newNode = _createNodeCopy(clipboardNode);
+
+    final command = AddWidgetCommand.withNode(
+      nodeId: newNode.id,
+      node: newNode,
+      parentId: null, // Paste at root level
+    );
+    ref.read(commandProvider.notifier).execute(command);
+    _markUnsaved();
+  }
+
+  void _handleCut() {
+    _handleCopy();
+    _handleDelete();
+  }
+
+  void _handleDuplicate() {
+    final selectedId = ref.read(selectionProvider);
+    if (selectedId == null || selectedId.isEmpty) return;
+
+    final projectState = ref.read(projectProvider);
+    final node = projectState.nodes[selectedId];
+    if (node == null) return;
+
+    // Deep copy the node
+    final copiedNode = _deepCopyNode(node, projectState);
+    final newNode = _createNodeCopy(copiedNode);
+
+    final command = AddWidgetCommand.withNode(
+      nodeId: newNode.id,
+      node: newNode,
+      parentId: node.parentId, // Same parent as original
+    );
+    ref.read(commandProvider.notifier).execute(command);
+    _markUnsaved();
+  }
+
+  /// Deep copies a node and all its children.
+  WidgetNode _deepCopyNode(WidgetNode node, ProjectState state) {
+    final children = <WidgetNode>[];
+    for (final childId in node.childrenIds) {
+      final child = state.nodes[childId];
+      if (child != null) {
+        children.add(_deepCopyNode(child, state));
+      }
+    }
+
+    // Create a copy without children IDs (they'll be regenerated)
+    return node.copyWith(
+      childrenIds: node.childrenIds, // Keep the structure info
+    );
+  }
+
+  /// Creates a new copy of a node with a new ID.
+  WidgetNode _createNodeCopy(WidgetNode node) {
+    return node.copyWith(
+      id: _uuid.v4(),
+      parentId: null, // Will be set by command
+      childrenIds: [], // Children not supported in simple copy yet
+    );
+  }
+
   Future<void> _handleExportCode() async {
     final projectState = ref.read(projectProvider);
 
@@ -366,56 +469,81 @@ class _WorkbenchState extends ConsumerState<Workbench>
         ? 'FlutterForge - $title *'
         : 'FlutterForge - $title';
 
+    final isMac = Theme.of(context).platform == TargetPlatform.macOS;
+
     return CallbackShortcuts(
       bindings: {
         // File shortcuts
         SingleActivator(
           LogicalKeyboardKey.keyN,
-          meta: Theme.of(context).platform == TargetPlatform.macOS,
-          control: Theme.of(context).platform != TargetPlatform.macOS,
+          meta: isMac,
+          control: !isMac,
         ): _handleNewProject,
         SingleActivator(
           LogicalKeyboardKey.keyO,
-          meta: Theme.of(context).platform == TargetPlatform.macOS,
-          control: Theme.of(context).platform != TargetPlatform.macOS,
+          meta: isMac,
+          control: !isMac,
         ): _handleOpenProject,
         SingleActivator(
           LogicalKeyboardKey.keyS,
-          meta: Theme.of(context).platform == TargetPlatform.macOS,
-          control: Theme.of(context).platform != TargetPlatform.macOS,
+          meta: isMac,
+          control: !isMac,
         ): _handleSaveProject,
         // Edit shortcuts
         SingleActivator(
           LogicalKeyboardKey.keyZ,
-          meta: Theme.of(context).platform == TargetPlatform.macOS,
-          control: Theme.of(context).platform != TargetPlatform.macOS,
+          meta: isMac,
+          control: !isMac,
         ): _handleUndo,
         SingleActivator(
           LogicalKeyboardKey.keyZ,
-          meta: Theme.of(context).platform == TargetPlatform.macOS,
-          control: Theme.of(context).platform != TargetPlatform.macOS,
+          meta: isMac,
+          control: !isMac,
           shift: true,
         ): _handleRedo,
+        // Widget shortcuts
+        SingleActivator(
+          LogicalKeyboardKey.keyC,
+          meta: isMac,
+          control: !isMac,
+        ): _handleCopy,
+        SingleActivator(
+          LogicalKeyboardKey.keyV,
+          meta: isMac,
+          control: !isMac,
+        ): _handlePaste,
+        SingleActivator(
+          LogicalKeyboardKey.keyX,
+          meta: isMac,
+          control: !isMac,
+        ): _handleCut,
+        SingleActivator(
+          LogicalKeyboardKey.keyD,
+          meta: isMac,
+          control: !isMac,
+        ): _handleDuplicate,
+        const SingleActivator(LogicalKeyboardKey.delete): _handleDelete,
+        const SingleActivator(LogicalKeyboardKey.backspace): _handleDelete,
         // View shortcuts - switch tabs
         SingleActivator(
           LogicalKeyboardKey.digit1,
-          meta: Theme.of(context).platform == TargetPlatform.macOS,
-          control: Theme.of(context).platform != TargetPlatform.macOS,
+          meta: isMac,
+          control: !isMac,
         ): () => _switchToTab(RightPanelTab.properties),
         SingleActivator(
           LogicalKeyboardKey.digit2,
-          meta: Theme.of(context).platform == TargetPlatform.macOS,
-          control: Theme.of(context).platform != TargetPlatform.macOS,
+          meta: isMac,
+          control: !isMac,
         ): () => _switchToTab(RightPanelTab.designSystem),
         SingleActivator(
           LogicalKeyboardKey.digit3,
-          meta: Theme.of(context).platform == TargetPlatform.macOS,
-          control: Theme.of(context).platform != TargetPlatform.macOS,
+          meta: isMac,
+          control: !isMac,
         ): () => _switchToTab(RightPanelTab.animation),
         SingleActivator(
           LogicalKeyboardKey.digit4,
-          meta: Theme.of(context).platform == TargetPlatform.macOS,
-          control: Theme.of(context).platform != TargetPlatform.macOS,
+          meta: isMac,
+          control: !isMac,
         ): () => _switchToTab(RightPanelTab.code),
       },
       child: Focus(
@@ -514,7 +642,7 @@ class _WorkbenchState extends ConsumerState<Workbench>
                         ),
                         Tab(
                           icon: Icon(Icons.palette_outlined, size: 18),
-                          text: 'Design',
+                          text: 'Design System',
                         ),
                         Tab(
                           icon: Icon(Icons.animation, size: 18),

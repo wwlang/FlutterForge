@@ -102,14 +102,15 @@ void main() {
     });
 
     group('Right panel tabs', () {
-      testWidgets('displays four tabs: Properties, Design, Animation, Code', (
+      testWidgets(
+          'displays four tabs: Properties, Design System, Animation, Code', (
         WidgetTester tester,
       ) async {
         await tester.pumpWidget(buildTestApp());
         await tester.pumpAndSettle();
 
         expect(find.text('Properties'), findsOneWidget);
-        expect(find.text('Design'), findsOneWidget);
+        expect(find.text('Design System'), findsOneWidget);
         expect(find.text('Animation'), findsOneWidget);
         expect(find.text('Code'), findsOneWidget);
       });

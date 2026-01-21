@@ -157,15 +157,20 @@ class AnimationPanel extends ConsumerWidget {
       padding: const EdgeInsets.all(12),
       child: Row(
         children: [
-          Text(
-            'Animations',
-            style: Theme.of(context).textTheme.titleMedium,
+          Expanded(
+            child: Text(
+              'Animations',
+              style: Theme.of(context).textTheme.titleMedium,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
-          const Spacer(),
-          FilledButton.icon(
-            onPressed: () => _showAddAnimationDialog(context, ref, widgetId),
-            icon: const Icon(Icons.add, size: 18),
-            label: const Text('Add Animation'),
+          const SizedBox(width: 8),
+          Flexible(
+            child: FilledButton.icon(
+              onPressed: () => _showAddAnimationDialog(context, ref, widgetId),
+              icon: const Icon(Icons.add, size: 18),
+              label: const Text('Add Animation'),
+            ),
           ),
         ],
       ),
@@ -295,18 +300,20 @@ class _AnimationTrackItem extends StatelessWidget {
         children: [
           Icon(_typeIcon, size: 18, color: theme.colorScheme.primary),
           const SizedBox(width: 8),
-          Text(
-            _typeLabel,
-            style: theme.textTheme.bodyMedium,
+          Expanded(
+            child: Text(
+              _typeLabel,
+              style: theme.textTheme.bodyMedium,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: 4),
           Text(
             '${animation.durationMs}ms',
             style: theme.textTheme.bodySmall?.copyWith(
               color: theme.colorScheme.outline,
             ),
           ),
-          const Spacer(),
           PopupMenuButton<String>(
             key: Key('track-menu-${animation.id}'),
             icon: const Icon(Icons.more_vert, size: 18),

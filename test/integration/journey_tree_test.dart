@@ -3,7 +3,6 @@ import 'package:flutter_forge/features/canvas/canvas.dart';
 import 'package:flutter_forge/features/tree/tree.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:integration_test/integration_test.dart';
 
 /// E2E Journey tests for Widget Tree navigation.
 ///
@@ -13,7 +12,7 @@ import 'package:integration_test/integration_test.dart';
 /// - Tree updates after canvas changes
 /// - Expanding/collapsing tree nodes
 void main() {
-  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+  TestWidgetsFlutterBinding.ensureInitialized();
 
   Future<void> dragWidgetToCanvas(
     WidgetTester tester,

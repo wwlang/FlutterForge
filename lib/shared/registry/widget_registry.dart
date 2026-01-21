@@ -40,6 +40,39 @@ class WidgetRegistry {
   Set<WidgetCategory> get categories {
     return _definitions.values.map((def) => def.category).toSet();
   }
+
+  /// Check if a parent widget can accept a child widget.
+  ///
+  /// Returns true if:
+  /// - Parent widget accepts children
+  /// - Child widget has no parent constraint, or its constraint matches parent
+  ///
+  /// Returns false if:
+  /// - Parent widget type is not registered
+  /// - Parent widget doesn't accept children
+  /// - Child has a parent constraint that doesn't match parent type
+  bool canAcceptChild(String parentType, String childType) {
+    final parentDef = _definitions[parentType];
+    if (parentDef == null) return false;
+    if (!parentDef.acceptsChildren) return false;
+
+    final childDef = _definitions[childType];
+    if (childDef == null) {
+      // Unknown child type - allow if parent accepts children
+      return parentDef.acceptsChildren;
+    }
+
+    // Check if child has a parent constraint
+    if (childDef.parentConstraint != null) {
+      // 'Flex' constraint matches Row and Column
+      if (childDef.parentConstraint == 'Flex') {
+        return parentType == 'Row' || parentType == 'Column';
+      }
+      return parentType == childDef.parentConstraint;
+    }
+
+    return true;
+  }
 }
 
 /// Default widget registry with Phase 1 and Phase 2 widgets.

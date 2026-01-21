@@ -562,12 +562,16 @@ class _TokenFormState extends ConsumerState<TokenForm> {
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.colorize, color: Colors.grey.shade600),
-            const SizedBox(width: 8),
-            Text(
-              'Open Color Picker',
-              style: TextStyle(color: Colors.grey.shade600),
+            Icon(Icons.colorize, color: Colors.grey.shade600, size: 18),
+            const SizedBox(width: 4),
+            Flexible(
+              child: Text(
+                'Pick Color',
+                style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
           ],
         ),
@@ -641,21 +645,22 @@ class _TokenFormState extends ConsumerState<TokenForm> {
         const SizedBox(height: 4),
         DropdownButtonFormField<String>(
           key: const Key('font_weight_field'),
+          isExpanded: true, // Prevent overflow
           decoration: const InputDecoration(
             isDense: true,
             border: OutlineInputBorder(),
             contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
           ),
           items: const [
-            DropdownMenuItem(value: '100', child: Text('100 - Thin')),
-            DropdownMenuItem(value: '200', child: Text('200 - Extra Light')),
-            DropdownMenuItem(value: '300', child: Text('300 - Light')),
-            DropdownMenuItem(value: '400', child: Text('400 - Regular')),
-            DropdownMenuItem(value: '500', child: Text('500 - Medium')),
-            DropdownMenuItem(value: '600', child: Text('600 - Semi Bold')),
-            DropdownMenuItem(value: '700', child: Text('700 - Bold')),
-            DropdownMenuItem(value: '800', child: Text('800 - Extra Bold')),
-            DropdownMenuItem(value: '900', child: Text('900 - Black')),
+            DropdownMenuItem(value: '100', child: Text('100')),
+            DropdownMenuItem(value: '200', child: Text('200')),
+            DropdownMenuItem(value: '300', child: Text('300')),
+            DropdownMenuItem(value: '400', child: Text('400')),
+            DropdownMenuItem(value: '500', child: Text('500')),
+            DropdownMenuItem(value: '600', child: Text('600')),
+            DropdownMenuItem(value: '700', child: Text('700')),
+            DropdownMenuItem(value: '800', child: Text('800')),
+            DropdownMenuItem(value: '900', child: Text('900')),
           ],
           value: _fontWeightController.text.isEmpty
               ? '400'
