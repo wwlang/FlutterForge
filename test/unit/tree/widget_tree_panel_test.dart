@@ -52,7 +52,7 @@ void main() {
         );
 
         expect(
-          find.text('Drag widgets from the palette to get started'),
+          find.text('Drag from palette'),
           findsOneWidget,
         );
       });

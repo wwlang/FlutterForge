@@ -89,8 +89,84 @@ void main() {
         await tester.pumpWidget(buildTestApp());
         await tester.pumpAndSettle();
 
-        // Export button should be in the toolbar
-        expect(find.byIcon(Icons.code), findsOneWidget);
+        // Export button should be in the toolbar (also in Code tab)
+        // Find the IconButton with code icon in the AppBar
+        expect(
+          find.descendant(
+            of: find.byType(AppBar),
+            matching: find.byIcon(Icons.code),
+          ),
+          findsOneWidget,
+        );
+      });
+    });
+
+    group('Right panel tabs', () {
+      testWidgets('displays four tabs: Properties, Design, Animation, Code', (
+        WidgetTester tester,
+      ) async {
+        await tester.pumpWidget(buildTestApp());
+        await tester.pumpAndSettle();
+
+        expect(find.text('Properties'), findsOneWidget);
+        expect(find.text('Design'), findsOneWidget);
+        expect(find.text('Animation'), findsOneWidget);
+        expect(find.text('Code'), findsOneWidget);
+      });
+    });
+
+    group('Toolbar actions', () {
+      testWidgets('displays file actions (New, Open, Save)', (
+        WidgetTester tester,
+      ) async {
+        await tester.pumpWidget(buildTestApp());
+        await tester.pumpAndSettle();
+
+        // Find file action icons in the AppBar
+        expect(
+          find.descendant(
+            of: find.byType(AppBar),
+            matching: find.byIcon(Icons.create_new_folder_outlined),
+          ),
+          findsOneWidget,
+        );
+        expect(
+          find.descendant(
+            of: find.byType(AppBar),
+            matching: find.byIcon(Icons.folder_open_outlined),
+          ),
+          findsOneWidget,
+        );
+        expect(
+          find.descendant(
+            of: find.byType(AppBar),
+            matching: find.byIcon(Icons.save_outlined),
+          ),
+          findsOneWidget,
+        );
+      });
+
+      testWidgets('displays edit actions (Undo, Redo)', (
+        WidgetTester tester,
+      ) async {
+        await tester.pumpWidget(buildTestApp());
+        await tester.pumpAndSettle();
+
+        // Find undo/redo icons in the AppBar
+        expect(
+          find.descendant(
+            of: find.byType(AppBar),
+            matching: find.byIcon(Icons.undo),
+          ),
+          findsOneWidget,
+        );
+        expect(
+          find.descendant(
+            of: find.byType(AppBar),
+            matching: find.byIcon(Icons.redo),
+          ),
+          findsOneWidget,
+        );
       });
     });
   });

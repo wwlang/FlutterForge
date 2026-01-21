@@ -22,6 +22,31 @@ class ProjectNotifier extends StateNotifier<ProjectState> {
     state = newState;
   }
 
+  /// Loads project state from a map of nodes and root IDs.
+  ///
+  /// Used when opening a saved project file.
+  void loadFromMap({
+    required Map<String, dynamic> nodes,
+    required List<String> rootIds,
+  }) {
+    // Convert dynamic map to WidgetNode map
+    final convertedNodes = <String, WidgetNode>{};
+    for (final entry in nodes.entries) {
+      if (entry.value is Map<String, dynamic>) {
+        convertedNodes[entry.key] = WidgetNode.fromJson(
+          entry.value as Map<String, dynamic>,
+        );
+      } else if (entry.value is WidgetNode) {
+        convertedNodes[entry.key] = entry.value as WidgetNode;
+      }
+    }
+
+    state = ProjectState(
+      nodes: convertedNodes,
+      rootIds: rootIds,
+    );
+  }
+
   /// Adds a widget to the project at the root level.
   void addWidget({
     required String type,
