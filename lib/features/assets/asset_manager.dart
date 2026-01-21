@@ -196,6 +196,14 @@ class AssetManager {
     return asset;
   }
 
+  /// Restores an asset from saved data.
+  ///
+  /// Used when loading a project from a .forge file.
+  /// The asset is added with its original ID, fileName, and assetPath.
+  void restoreAsset(ProjectAsset asset) {
+    _addAsset(asset);
+  }
+
   void _addAsset(ProjectAsset asset) {
     _assets.add(asset);
     _byId[asset.id] = asset;
