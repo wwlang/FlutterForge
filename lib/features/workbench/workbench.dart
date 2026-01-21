@@ -7,6 +7,7 @@ import 'package:flutter_forge/core/models/project_state.dart';
 import 'package:flutter_forge/core/models/widget_node.dart';
 import 'package:flutter_forge/features/animation/animation.dart';
 import 'package:flutter_forge/features/canvas/canvas.dart';
+import 'package:flutter_forge/features/code_preview/code_preview.dart';
 import 'package:flutter_forge/features/design_system/design_system.dart';
 import 'package:flutter_forge/features/palette/palette.dart';
 import 'package:flutter_forge/features/properties/properties.dart';
@@ -670,8 +671,8 @@ class _WorkbenchState extends ConsumerState<Workbench>
                           const DesignSystemPanel(),
                           // Animation tab
                           const AnimationPanel(),
-                          // Code preview tab
-                          _CodePreviewPanel(
+                          // Code preview tab with syntax highlighting
+                          CodePreviewPanel(
                             generator: _generator,
                             themeGenerator: _themeGenerator,
                           ),
@@ -682,157 +683,6 @@ class _WorkbenchState extends ConsumerState<Workbench>
                 ),
               ),
             ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Code preview panel showing generated Dart code.
-class _CodePreviewPanel extends ConsumerWidget {
-  const _CodePreviewPanel({
-    required this.generator,
-    required this.themeGenerator,
-  });
-
-  final DartGenerator generator;
-  final ThemeExtensionGenerator themeGenerator;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final projectState = ref.watch(projectProvider);
-    final designTokens = ref.watch(designTokensProvider);
-    final theme = Theme.of(context);
-
-    if (projectState.rootIds.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.code_off,
-              size: 48,
-              color: theme.colorScheme.outline,
-            ),
-            const SizedBox(height: 16),
-            Text(
-              'No widgets to generate',
-              style: theme.textTheme.bodyLarge?.copyWith(
-                color: theme.colorScheme.outline,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Add widgets to see generated code',
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.outline,
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
-    String widgetCode;
-    try {
-      widgetCode = generator.generate(
-        nodes: projectState.nodes,
-        rootId: projectState.rootIds.first,
-        className: 'GeneratedWidget',
-      );
-    } catch (e) {
-      widgetCode = '// Error generating code: $e';
-    }
-
-    String? themeCode;
-    if (designTokens.isNotEmpty) {
-      try {
-        themeCode = themeGenerator.generate(
-          tokens: designTokens,
-          extensionName: 'AppDesignTokens',
-        );
-      } catch (e) {
-        themeCode = '// Error generating theme: $e';
-      }
-    }
-
-    return DefaultTabController(
-      length: themeCode != null ? 2 : 1,
-      child: Column(
-        children: [
-          if (themeCode != null)
-            TabBar(
-              tabs: const [
-                Tab(text: 'Widget'),
-                Tab(text: 'Theme'),
-              ],
-              labelPadding: const EdgeInsets.symmetric(horizontal: 16),
-            ),
-          Expanded(
-            child: themeCode != null
-                ? TabBarView(
-                    children: [
-                      _CodeView(code: widgetCode),
-                      _CodeView(code: themeCode),
-                    ],
-                  )
-                : _CodeView(code: widgetCode),
-          ),
-          // Copy button
-          Padding(
-            padding: const EdgeInsets.all(8),
-            child: Row(
-              children: [
-                Expanded(
-                  child: FilledButton.icon(
-                    onPressed: () async {
-                      final code = themeCode != null
-                          ? '$widgetCode\n\n$themeCode'
-                          : widgetCode;
-                      await Clipboard.setData(ClipboardData(text: code));
-                      if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Code copied to clipboard'),
-                          ),
-                        );
-                      }
-                    },
-                    icon: const Icon(Icons.copy, size: 18),
-                    label: const Text('Copy All'),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-/// Displays code with basic formatting.
-class _CodeView extends StatelessWidget {
-  const _CodeView({required this.code});
-
-  final String code;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Container(
-      color: theme.colorScheme.surfaceContainerLowest,
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(12),
-        child: SelectableText(
-          code,
-          style: TextStyle(
-            fontFamily: 'monospace',
-            fontSize: 12,
-            color: theme.colorScheme.onSurface,
-            height: 1.5,
           ),
         ),
       ),
