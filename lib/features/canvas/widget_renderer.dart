@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_forge/core/models/widget_node.dart';
+import 'package:flutter_forge/features/assets/asset_manager.dart';
 import 'package:flutter_forge/features/canvas/design_proxy.dart';
+import 'package:flutter_forge/features/canvas/image_preview.dart';
 import 'package:flutter_forge/features/canvas/nested_drop_zone.dart';
 import 'package:flutter_forge/features/canvas/widget_selection_overlay.dart';
 import 'package:flutter_forge/shared/registry/registry.dart';
@@ -19,6 +21,7 @@ class WidgetRenderer extends StatelessWidget {
     required this.selectedWidgetId,
     required this.onWidgetSelected,
     this.onWidgetDropped,
+    this.assetManager,
     super.key,
   });
 
@@ -39,6 +42,9 @@ class WidgetRenderer extends StatelessWidget {
 
   /// Callback when a widget is dropped into a nested container.
   final void Function(String widgetType, String parentId)? onWidgetDropped;
+
+  /// Asset manager for loading images.
+  final AssetManager? assetManager;
 
   @override
   Widget build(BuildContext context) {
@@ -192,6 +198,7 @@ class WidgetRenderer extends StatelessWidget {
         selectedWidgetId: selectedWidgetId,
         onWidgetSelected: onWidgetSelected,
         onWidgetDropped: onWidgetDropped,
+        assetManager: assetManager,
       );
     }
 
@@ -298,6 +305,7 @@ class WidgetRenderer extends StatelessWidget {
         selectedWidgetId: selectedWidgetId,
         onWidgetSelected: onWidgetSelected,
         onWidgetDropped: onWidgetDropped,
+        assetManager: assetManager,
       );
     }
 
@@ -434,6 +442,7 @@ class WidgetRenderer extends StatelessWidget {
         selectedWidgetId: selectedWidgetId,
         onWidgetSelected: onWidgetSelected,
         onWidgetDropped: onWidgetDropped,
+        assetManager: assetManager,
       );
     }
 
@@ -460,6 +469,7 @@ class WidgetRenderer extends StatelessWidget {
         selectedWidgetId: selectedWidgetId,
         onWidgetSelected: onWidgetSelected,
         onWidgetDropped: onWidgetDropped,
+        assetManager: assetManager,
       );
     }
 
@@ -500,6 +510,7 @@ class WidgetRenderer extends StatelessWidget {
         selectedWidgetId: selectedWidgetId,
         onWidgetSelected: onWidgetSelected,
         onWidgetDropped: onWidgetDropped,
+        assetManager: assetManager,
       );
     }
 
@@ -525,6 +536,7 @@ class WidgetRenderer extends StatelessWidget {
         selectedWidgetId: selectedWidgetId,
         onWidgetSelected: onWidgetSelected,
         onWidgetDropped: onWidgetDropped,
+        assetManager: assetManager,
       );
     }
 
@@ -549,6 +561,7 @@ class WidgetRenderer extends StatelessWidget {
         selectedWidgetId: selectedWidgetId,
         onWidgetSelected: onWidgetSelected,
         onWidgetDropped: onWidgetDropped,
+        assetManager: assetManager,
       );
     }
 
@@ -571,10 +584,24 @@ class WidgetRenderer extends StatelessWidget {
   // Phase 2 Task 10: Content widgets
 
   Widget _buildImage(WidgetNode node) {
+    final assetPath = node.properties['assetPath'] as String?;
     final width = node.properties['width'] as double?;
     final height = node.properties['height'] as double?;
+    final fitStr = node.properties['fit'] as String?;
+    final fit = _parseBoxFit(fitStr);
 
-    // Image widget needs a placeholder since we don't have actual images
+    // If we have an asset manager, use it to render the image
+    if (assetManager != null) {
+      return buildImageFromAsset(
+        assetPath: assetPath,
+        assetManager: assetManager!,
+        width: width,
+        height: height,
+        fit: fit,
+      );
+    }
+
+    // Fallback: show a placeholder when no asset manager is available
     return Container(
       width: width ?? 100,
       height: height ?? 100,
@@ -583,6 +610,27 @@ class WidgetRenderer extends StatelessWidget {
         child: Icon(Icons.image, size: 48),
       ),
     );
+  }
+
+  BoxFit _parseBoxFit(String? value) {
+    switch (value) {
+      case 'BoxFit.contain':
+        return BoxFit.contain;
+      case 'BoxFit.cover':
+        return BoxFit.cover;
+      case 'BoxFit.fill':
+        return BoxFit.fill;
+      case 'BoxFit.fitWidth':
+        return BoxFit.fitWidth;
+      case 'BoxFit.fitHeight':
+        return BoxFit.fitHeight;
+      case 'BoxFit.none':
+        return BoxFit.none;
+      case 'BoxFit.scaleDown':
+        return BoxFit.scaleDown;
+      default:
+        return BoxFit.contain;
+    }
   }
 
   Widget _buildDivider(WidgetNode node) {
@@ -631,6 +679,7 @@ class WidgetRenderer extends StatelessWidget {
         selectedWidgetId: selectedWidgetId,
         onWidgetSelected: onWidgetSelected,
         onWidgetDropped: onWidgetDropped,
+        assetManager: assetManager,
       );
     } else {
       child = const Text('Button');
@@ -654,6 +703,7 @@ class WidgetRenderer extends StatelessWidget {
         selectedWidgetId: selectedWidgetId,
         onWidgetSelected: onWidgetSelected,
         onWidgetDropped: onWidgetDropped,
+        assetManager: assetManager,
       );
     } else {
       child = const Text('Button');
@@ -750,7 +800,7 @@ class WidgetRenderer extends StatelessWidget {
   Widget _buildSwitch(WidgetNode node) {
     final value = node.properties['value'] as bool? ?? false;
     final activeColorValue = node.properties['activeColor'] as int?;
-    final activeColor =
+    final activeThumbColor =
         activeColorValue != null ? Color(activeColorValue) : null;
     final activeTrackColorValue = node.properties['activeTrackColor'] as int?;
     final activeTrackColor =
@@ -766,7 +816,7 @@ class WidgetRenderer extends StatelessWidget {
 
     return Switch(
       value: value,
-      activeColor: activeColor,
+      activeThumbColor: activeThumbColor,
       activeTrackColor: activeTrackColor,
       inactiveThumbColor: inactiveThumbColor,
       inactiveTrackColor: inactiveTrackColor,
@@ -871,6 +921,7 @@ class WidgetRenderer extends StatelessWidget {
         selectedWidgetId: selectedWidgetId,
         onWidgetSelected: onWidgetSelected,
         onWidgetDropped: onWidgetDropped,
+        assetManager: assetManager,
       );
     }
 
@@ -911,6 +962,7 @@ class WidgetRenderer extends StatelessWidget {
         selectedWidgetId: selectedWidgetId,
         onWidgetSelected: onWidgetSelected,
         onWidgetDropped: onWidgetDropped,
+        assetManager: assetManager,
       );
     }
 
@@ -1011,6 +1063,7 @@ class WidgetRenderer extends StatelessWidget {
         selectedWidgetId: selectedWidgetId,
         onWidgetSelected: onWidgetSelected,
         onWidgetDropped: onWidgetDropped,
+        assetManager: assetManager,
       );
     }
 
@@ -1080,6 +1133,7 @@ class WidgetRenderer extends StatelessWidget {
         selectedWidgetId: selectedWidgetId,
         onWidgetSelected: onWidgetSelected,
         onWidgetDropped: onWidgetDropped,
+        assetManager: assetManager,
       );
     }).toList();
   }
@@ -1189,11 +1243,7 @@ class _DesignTimePlaceholder extends StatelessWidget {
       width: width,
       height: height,
       decoration: BoxDecoration(
-        border: Border.all(
-          color: borderColor,
-          width: 1,
-          strokeAlign: BorderSide.strokeAlignInside,
-        ),
+        border: Border.all(color: borderColor),
         borderRadius: BorderRadius.circular(4),
         color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
       ),

@@ -777,6 +777,14 @@ class DefaultWidgetRegistry extends WidgetRegistry {
         description: 'Displays an image',
         properties: [
           PropertyDefinition(
+            name: 'assetPath',
+            type: PropertyType.string,
+            displayName: 'Asset Path',
+            nullable: true,
+            category: 'Content',
+            description: 'Path to the image asset (e.g., assets/logo.png)',
+          ),
+          PropertyDefinition(
             name: 'width',
             type: PropertyType.double_,
             displayName: 'Width',
