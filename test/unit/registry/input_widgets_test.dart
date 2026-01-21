@@ -192,21 +192,37 @@ void main() {
     });
 
     group('Registry Statistics after Input Widgets', () {
-      test('has 20 widgets after Task 2.11', () {
-        // Phase 1 (5) + Task 2.9 (7) + Task 2.10 (4) + Task 2.11 (4) = 20
-        expect(registry.all.length, equals(20));
+      test('has all registered widgets including Phase 6', () {
+        // Phase 1 (5) + Task 2.9 (7) + Task 2.10 (4) + Task 2.11 (4) = 20 (Phase 2)
+        // + Phase 6: 4 form inputs + 3 scrolling + 5 structural = 12
+        // Total: 32 widgets
+        expect(registry.all.length, equals(32));
       });
 
-      test('input category has 3 widgets', () {
+      test('input category has 7 widgets including Phase 6', () {
         final inputWidgets = registry.byCategory(WidgetCategory.input);
-        // ElevatedButton, TextButton, IconButton = 3
-        expect(inputWidgets.length, equals(3));
+        // Phase 2: ElevatedButton, TextButton, IconButton = 3
+        // Phase 6: TextField, Checkbox, Switch, Slider = 4
+        // Total: 7
+        expect(inputWidgets.length, equals(7));
       });
 
-      test('content category has 6 widgets', () {
+      test('content category has 7 widgets including Phase 6', () {
         final contentWidgets = registry.byCategory(WidgetCategory.content);
-        // Text + Icon, Image, Divider, VerticalDivider + Placeholder = 6
-        expect(contentWidgets.length, equals(6));
+        // Phase 2: Text, Icon, Image, Divider, VerticalDivider, Placeholder = 6
+        // Phase 6: ListTile = 1
+        // Total: 7
+        expect(contentWidgets.length, equals(7));
+      });
+
+      test('layout category has 18 widgets including Phase 6', () {
+        final layoutWidgets = registry.byCategory(WidgetCategory.layout);
+        // Phase 1-2: Container, Row, Column, SizedBox, Stack, Expanded,
+        //            Flexible, Padding, Center, Align, Spacer = 11
+        // Phase 6: ListView, GridView, SingleChildScrollView, Card,
+        //          AppBar, Scaffold, Wrap = 7
+        // Total: 18
+        expect(layoutWidgets.length, equals(18));
       });
     });
   });

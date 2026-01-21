@@ -75,12 +75,14 @@ class WidgetRegistry {
   }
 }
 
-/// Default widget registry with Phase 1 and Phase 2 widgets.
+/// Default widget registry with Phase 1, Phase 2, and Phase 6 widgets.
 ///
 /// Phase 1: Container, Text, Row, Column, SizedBox
 /// Phase 2 Task 9: Stack, Expanded, Flexible, Padding, Center, Align, Spacer
 /// Phase 2 Task 10: Icon, Image, Divider, VerticalDivider
 /// Phase 2 Task 11: ElevatedButton, TextButton, IconButton, Placeholder
+/// Phase 6: TextField, Checkbox, Switch, Slider, ListView, GridView,
+///          SingleChildScrollView, Card, ListTile, AppBar, Scaffold, Wrap
 class DefaultWidgetRegistry extends WidgetRegistry {
   /// Creates the default registry with all widgets.
   DefaultWidgetRegistry() {
@@ -111,6 +113,24 @@ class DefaultWidgetRegistry extends WidgetRegistry {
     _registerTextButtonWidget();
     _registerIconButtonWidget();
     _registerPlaceholderWidget();
+
+    // Phase 6: Form Input widgets
+    _registerTextFieldWidget();
+    _registerCheckboxWidget();
+    _registerSwitchWidget();
+    _registerSliderWidget();
+
+    // Phase 6: Scrolling widgets
+    _registerListViewWidget();
+    _registerGridViewWidget();
+    _registerSingleChildScrollViewWidget();
+
+    // Phase 6: Structural widgets
+    _registerCardWidget();
+    _registerListTileWidget();
+    _registerAppBarWidget();
+    _registerScaffoldWidget();
+    _registerWrapWidget();
   }
 
   void _registerContainerWidget() {
@@ -1126,6 +1146,843 @@ class DefaultWidgetRegistry extends WidgetRegistry {
             category: 'Style',
             description: 'Width of the placeholder lines',
             min: 0,
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Phase 6: Form Input widgets
+
+  void _registerTextFieldWidget() {
+    register(
+      const WidgetDefinition(
+        type: 'TextField',
+        category: WidgetCategory.input,
+        displayName: 'Text Field',
+        acceptsChildren: false,
+        maxChildren: 0,
+        iconName: 'text_format',
+        description: 'A text input field with Material Design styling',
+        properties: [
+          PropertyDefinition(
+            name: 'labelText',
+            type: PropertyType.string,
+            displayName: 'Label',
+            nullable: true,
+            category: 'Decoration',
+            description: 'Label text displayed above the input',
+          ),
+          PropertyDefinition(
+            name: 'hintText',
+            type: PropertyType.string,
+            displayName: 'Hint',
+            nullable: true,
+            category: 'Decoration',
+            description: 'Hint text displayed when field is empty',
+          ),
+          PropertyDefinition(
+            name: 'helperText',
+            type: PropertyType.string,
+            displayName: 'Helper',
+            nullable: true,
+            category: 'Decoration',
+            description: 'Helper text displayed below the input',
+          ),
+          PropertyDefinition(
+            name: 'errorText',
+            type: PropertyType.string,
+            displayName: 'Error',
+            nullable: true,
+            category: 'Decoration',
+            description: 'Error text displayed below the input',
+          ),
+          PropertyDefinition(
+            name: 'prefixIcon',
+            type: PropertyType.enum_,
+            displayName: 'Prefix Icon',
+            nullable: true,
+            category: 'Decoration',
+            description: 'Icon displayed at the start of the input',
+            enumValues: [
+              'Icons.email',
+              'Icons.phone',
+              'Icons.person',
+              'Icons.lock',
+              'Icons.search',
+              'Icons.location_on',
+              'Icons.calendar_today',
+              'Icons.access_time',
+            ],
+          ),
+          PropertyDefinition(
+            name: 'suffixIcon',
+            type: PropertyType.enum_,
+            displayName: 'Suffix Icon',
+            nullable: true,
+            category: 'Decoration',
+            description: 'Icon displayed at the end of the input',
+            enumValues: [
+              'Icons.visibility',
+              'Icons.visibility_off',
+              'Icons.clear',
+              'Icons.check',
+              'Icons.arrow_drop_down',
+            ],
+          ),
+          PropertyDefinition(
+            name: 'obscureText',
+            type: PropertyType.bool_,
+            displayName: 'Obscure Text',
+            nullable: true,
+            defaultValue: false,
+            category: 'Behavior',
+            description: 'Hide text for password fields',
+          ),
+          PropertyDefinition(
+            name: 'enabled',
+            type: PropertyType.bool_,
+            displayName: 'Enabled',
+            nullable: true,
+            defaultValue: true,
+            category: 'Behavior',
+            description: 'Whether the field accepts input',
+          ),
+          PropertyDefinition(
+            name: 'maxLines',
+            type: PropertyType.int_,
+            displayName: 'Max Lines',
+            nullable: true,
+            defaultValue: 1,
+            category: 'Layout',
+            description: 'Maximum number of lines',
+            min: 1,
+          ),
+          PropertyDefinition(
+            name: 'keyboardType',
+            type: PropertyType.enum_,
+            displayName: 'Keyboard Type',
+            nullable: true,
+            category: 'Behavior',
+            description: 'Type of keyboard to display',
+            enumValues: [
+              'TextInputType.text',
+              'TextInputType.number',
+              'TextInputType.emailAddress',
+              'TextInputType.phone',
+              'TextInputType.multiline',
+              'TextInputType.url',
+              'TextInputType.visiblePassword',
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _registerCheckboxWidget() {
+    register(
+      const WidgetDefinition(
+        type: 'Checkbox',
+        category: WidgetCategory.input,
+        displayName: 'Checkbox',
+        acceptsChildren: false,
+        maxChildren: 0,
+        iconName: 'check_box',
+        description: 'A Material Design checkbox',
+        properties: [
+          PropertyDefinition(
+            name: 'value',
+            type: PropertyType.bool_,
+            displayName: 'Value',
+            nullable: true,
+            defaultValue: false,
+            category: 'State',
+            description: 'Whether the checkbox is checked',
+          ),
+          PropertyDefinition(
+            name: 'tristate',
+            type: PropertyType.bool_,
+            displayName: 'Tristate',
+            nullable: true,
+            defaultValue: false,
+            category: 'Behavior',
+            description: 'Allow null (indeterminate) state',
+          ),
+          PropertyDefinition(
+            name: 'activeColor',
+            type: PropertyType.color,
+            displayName: 'Active Color',
+            nullable: true,
+            category: 'Style',
+            description: 'Color when checked',
+          ),
+          PropertyDefinition(
+            name: 'checkColor',
+            type: PropertyType.color,
+            displayName: 'Check Color',
+            nullable: true,
+            category: 'Style',
+            description: 'Color of the check icon',
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _registerSwitchWidget() {
+    register(
+      const WidgetDefinition(
+        type: 'Switch',
+        category: WidgetCategory.input,
+        displayName: 'Switch',
+        acceptsChildren: false,
+        maxChildren: 0,
+        iconName: 'toggle_on',
+        description: 'A Material Design toggle switch',
+        properties: [
+          PropertyDefinition(
+            name: 'value',
+            type: PropertyType.bool_,
+            displayName: 'Value',
+            nullable: false,
+            defaultValue: false,
+            category: 'State',
+            description: 'Whether the switch is on',
+          ),
+          PropertyDefinition(
+            name: 'activeColor',
+            type: PropertyType.color,
+            displayName: 'Active Color',
+            nullable: true,
+            category: 'Style',
+            description: 'Thumb color when on',
+          ),
+          PropertyDefinition(
+            name: 'activeTrackColor',
+            type: PropertyType.color,
+            displayName: 'Active Track Color',
+            nullable: true,
+            category: 'Style',
+            description: 'Track color when on',
+          ),
+          PropertyDefinition(
+            name: 'inactiveThumbColor',
+            type: PropertyType.color,
+            displayName: 'Inactive Thumb Color',
+            nullable: true,
+            category: 'Style',
+            description: 'Thumb color when off',
+          ),
+          PropertyDefinition(
+            name: 'inactiveTrackColor',
+            type: PropertyType.color,
+            displayName: 'Inactive Track Color',
+            nullable: true,
+            category: 'Style',
+            description: 'Track color when off',
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _registerSliderWidget() {
+    register(
+      const WidgetDefinition(
+        type: 'Slider',
+        category: WidgetCategory.input,
+        displayName: 'Slider',
+        acceptsChildren: false,
+        maxChildren: 0,
+        iconName: 'linear_scale',
+        description: 'A Material Design slider for selecting a value',
+        properties: [
+          PropertyDefinition(
+            name: 'value',
+            type: PropertyType.double_,
+            displayName: 'Value',
+            nullable: false,
+            defaultValue: 0.5,
+            category: 'State',
+            description: 'Current value',
+            min: 0,
+            max: 1,
+          ),
+          PropertyDefinition(
+            name: 'min',
+            type: PropertyType.double_,
+            displayName: 'Minimum',
+            nullable: true,
+            defaultValue: 0.0,
+            category: 'Range',
+            description: 'Minimum value',
+          ),
+          PropertyDefinition(
+            name: 'max',
+            type: PropertyType.double_,
+            displayName: 'Maximum',
+            nullable: true,
+            defaultValue: 1.0,
+            category: 'Range',
+            description: 'Maximum value',
+          ),
+          PropertyDefinition(
+            name: 'divisions',
+            type: PropertyType.int_,
+            displayName: 'Divisions',
+            nullable: true,
+            category: 'Behavior',
+            description: 'Number of discrete divisions',
+            min: 1,
+          ),
+          PropertyDefinition(
+            name: 'label',
+            type: PropertyType.string,
+            displayName: 'Label',
+            nullable: true,
+            category: 'Display',
+            description: 'Label shown above the slider',
+          ),
+          PropertyDefinition(
+            name: 'activeColor',
+            type: PropertyType.color,
+            displayName: 'Active Color',
+            nullable: true,
+            category: 'Style',
+            description: 'Color of the active portion',
+          ),
+          PropertyDefinition(
+            name: 'inactiveColor',
+            type: PropertyType.color,
+            displayName: 'Inactive Color',
+            nullable: true,
+            category: 'Style',
+            description: 'Color of the inactive portion',
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Phase 6: Scrolling widgets
+
+  void _registerListViewWidget() {
+    register(
+      const WidgetDefinition(
+        type: 'ListView',
+        category: WidgetCategory.layout,
+        displayName: 'List View',
+        acceptsChildren: true,
+        maxChildren: null,
+        iconName: 'view_list',
+        description: 'A scrollable list of widgets',
+        properties: [
+          PropertyDefinition(
+            name: 'scrollDirection',
+            type: PropertyType.enum_,
+            displayName: 'Scroll Direction',
+            nullable: true,
+            category: 'Layout',
+            description: 'Direction of scrolling',
+            enumValues: [
+              'Axis.vertical',
+              'Axis.horizontal',
+            ],
+          ),
+          PropertyDefinition(
+            name: 'reverse',
+            type: PropertyType.bool_,
+            displayName: 'Reverse',
+            nullable: true,
+            defaultValue: false,
+            category: 'Layout',
+            description: 'Reverse scroll direction',
+          ),
+          PropertyDefinition(
+            name: 'shrinkWrap',
+            type: PropertyType.bool_,
+            displayName: 'Shrink Wrap',
+            nullable: true,
+            defaultValue: false,
+            category: 'Layout',
+            description: 'Shrink to content size',
+          ),
+          PropertyDefinition(
+            name: 'padding',
+            type: PropertyType.edgeInsets,
+            displayName: 'Padding',
+            nullable: true,
+            category: 'Spacing',
+            description: 'Padding around the list',
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _registerGridViewWidget() {
+    register(
+      const WidgetDefinition(
+        type: 'GridView',
+        category: WidgetCategory.layout,
+        displayName: 'Grid View',
+        acceptsChildren: true,
+        maxChildren: null,
+        iconName: 'grid_view',
+        description: 'A scrollable 2D grid of widgets',
+        properties: [
+          PropertyDefinition(
+            name: 'crossAxisCount',
+            type: PropertyType.int_,
+            displayName: 'Columns',
+            nullable: true,
+            defaultValue: 2,
+            category: 'Layout',
+            description: 'Number of columns',
+            min: 1,
+          ),
+          PropertyDefinition(
+            name: 'mainAxisSpacing',
+            type: PropertyType.double_,
+            displayName: 'Main Axis Spacing',
+            nullable: true,
+            defaultValue: 0.0,
+            category: 'Spacing',
+            description: 'Spacing along main axis',
+            min: 0,
+          ),
+          PropertyDefinition(
+            name: 'crossAxisSpacing',
+            type: PropertyType.double_,
+            displayName: 'Cross Axis Spacing',
+            nullable: true,
+            defaultValue: 0.0,
+            category: 'Spacing',
+            description: 'Spacing along cross axis',
+            min: 0,
+          ),
+          PropertyDefinition(
+            name: 'childAspectRatio',
+            type: PropertyType.double_,
+            displayName: 'Child Aspect Ratio',
+            nullable: true,
+            defaultValue: 1.0,
+            category: 'Layout',
+            description: 'Width to height ratio of children',
+            min: 0.1,
+          ),
+          PropertyDefinition(
+            name: 'shrinkWrap',
+            type: PropertyType.bool_,
+            displayName: 'Shrink Wrap',
+            nullable: true,
+            defaultValue: false,
+            category: 'Layout',
+            description: 'Shrink to content size',
+          ),
+          PropertyDefinition(
+            name: 'padding',
+            type: PropertyType.edgeInsets,
+            displayName: 'Padding',
+            nullable: true,
+            category: 'Spacing',
+            description: 'Padding around the grid',
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _registerSingleChildScrollViewWidget() {
+    register(
+      const WidgetDefinition(
+        type: 'SingleChildScrollView',
+        category: WidgetCategory.layout,
+        displayName: 'Scroll View',
+        acceptsChildren: true,
+        maxChildren: 1,
+        iconName: 'unfold_more',
+        description: 'Makes a single child scrollable',
+        properties: [
+          PropertyDefinition(
+            name: 'scrollDirection',
+            type: PropertyType.enum_,
+            displayName: 'Scroll Direction',
+            nullable: true,
+            category: 'Layout',
+            description: 'Direction of scrolling',
+            enumValues: [
+              'Axis.vertical',
+              'Axis.horizontal',
+            ],
+          ),
+          PropertyDefinition(
+            name: 'reverse',
+            type: PropertyType.bool_,
+            displayName: 'Reverse',
+            nullable: true,
+            defaultValue: false,
+            category: 'Layout',
+            description: 'Reverse scroll direction',
+          ),
+          PropertyDefinition(
+            name: 'padding',
+            type: PropertyType.edgeInsets,
+            displayName: 'Padding',
+            nullable: true,
+            category: 'Spacing',
+            description: 'Padding around the content',
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Phase 6: Structural widgets
+
+  void _registerCardWidget() {
+    register(
+      const WidgetDefinition(
+        type: 'Card',
+        category: WidgetCategory.layout,
+        displayName: 'Card',
+        acceptsChildren: true,
+        maxChildren: 1,
+        iconName: 'credit_card',
+        description: 'A Material Design card with elevation',
+        properties: [
+          PropertyDefinition(
+            name: 'elevation',
+            type: PropertyType.double_,
+            displayName: 'Elevation',
+            nullable: true,
+            defaultValue: 1.0,
+            category: 'Style',
+            description: 'Shadow elevation',
+            min: 0,
+          ),
+          PropertyDefinition(
+            name: 'color',
+            type: PropertyType.color,
+            displayName: 'Color',
+            nullable: true,
+            category: 'Style',
+            description: 'Background color',
+          ),
+          PropertyDefinition(
+            name: 'shadowColor',
+            type: PropertyType.color,
+            displayName: 'Shadow Color',
+            nullable: true,
+            category: 'Style',
+            description: 'Color of the shadow',
+          ),
+          PropertyDefinition(
+            name: 'margin',
+            type: PropertyType.edgeInsets,
+            displayName: 'Margin',
+            nullable: true,
+            category: 'Spacing',
+            description: 'Outer margin',
+          ),
+          PropertyDefinition(
+            name: 'borderRadius',
+            type: PropertyType.double_,
+            displayName: 'Border Radius',
+            nullable: true,
+            defaultValue: 12.0,
+            category: 'Style',
+            description: 'Corner radius',
+            min: 0,
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _registerListTileWidget() {
+    register(
+      const WidgetDefinition(
+        type: 'ListTile',
+        category: WidgetCategory.content,
+        displayName: 'List Tile',
+        acceptsChildren: false,
+        maxChildren: 0,
+        iconName: 'view_headline',
+        description: 'A single fixed-height row for lists',
+        properties: [
+          PropertyDefinition(
+            name: 'title',
+            type: PropertyType.string,
+            displayName: 'Title',
+            nullable: true,
+            defaultValue: 'Title',
+            category: 'Content',
+            description: 'Primary text',
+          ),
+          PropertyDefinition(
+            name: 'subtitle',
+            type: PropertyType.string,
+            displayName: 'Subtitle',
+            nullable: true,
+            category: 'Content',
+            description: 'Secondary text',
+          ),
+          PropertyDefinition(
+            name: 'leadingIcon',
+            type: PropertyType.enum_,
+            displayName: 'Leading Icon',
+            nullable: true,
+            category: 'Content',
+            description: 'Icon at the start',
+            enumValues: [
+              'Icons.person',
+              'Icons.email',
+              'Icons.phone',
+              'Icons.location_on',
+              'Icons.star',
+              'Icons.folder',
+              'Icons.settings',
+              'Icons.info',
+            ],
+          ),
+          PropertyDefinition(
+            name: 'trailingIcon',
+            type: PropertyType.enum_,
+            displayName: 'Trailing Icon',
+            nullable: true,
+            category: 'Content',
+            description: 'Icon at the end',
+            enumValues: [
+              'Icons.chevron_right',
+              'Icons.arrow_forward',
+              'Icons.more_vert',
+              'Icons.check',
+              'Icons.close',
+            ],
+          ),
+          PropertyDefinition(
+            name: 'dense',
+            type: PropertyType.bool_,
+            displayName: 'Dense',
+            nullable: true,
+            defaultValue: false,
+            category: 'Layout',
+            description: 'Reduce height',
+          ),
+          PropertyDefinition(
+            name: 'enabled',
+            type: PropertyType.bool_,
+            displayName: 'Enabled',
+            nullable: true,
+            defaultValue: true,
+            category: 'Behavior',
+            description: 'Whether tappable',
+          ),
+          PropertyDefinition(
+            name: 'selected',
+            type: PropertyType.bool_,
+            displayName: 'Selected',
+            nullable: true,
+            defaultValue: false,
+            category: 'State',
+            description: 'Whether selected',
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _registerAppBarWidget() {
+    register(
+      const WidgetDefinition(
+        type: 'AppBar',
+        category: WidgetCategory.layout,
+        displayName: 'App Bar',
+        acceptsChildren: false,
+        maxChildren: 0,
+        iconName: 'web_asset',
+        description: 'A Material Design app bar',
+        properties: [
+          PropertyDefinition(
+            name: 'title',
+            type: PropertyType.string,
+            displayName: 'Title',
+            nullable: true,
+            defaultValue: 'App Bar',
+            category: 'Content',
+            description: 'Title text',
+          ),
+          PropertyDefinition(
+            name: 'centerTitle',
+            type: PropertyType.bool_,
+            displayName: 'Center Title',
+            nullable: true,
+            defaultValue: false,
+            category: 'Layout',
+            description: 'Center the title',
+          ),
+          PropertyDefinition(
+            name: 'leadingIcon',
+            type: PropertyType.enum_,
+            displayName: 'Leading Icon',
+            nullable: true,
+            category: 'Content',
+            description: 'Icon at the start',
+            enumValues: [
+              'Icons.menu',
+              'Icons.arrow_back',
+              'Icons.close',
+            ],
+          ),
+          PropertyDefinition(
+            name: 'backgroundColor',
+            type: PropertyType.color,
+            displayName: 'Background Color',
+            nullable: true,
+            category: 'Style',
+            description: 'Background color',
+          ),
+          PropertyDefinition(
+            name: 'foregroundColor',
+            type: PropertyType.color,
+            displayName: 'Foreground Color',
+            nullable: true,
+            category: 'Style',
+            description: 'Text and icon color',
+          ),
+          PropertyDefinition(
+            name: 'elevation',
+            type: PropertyType.double_,
+            displayName: 'Elevation',
+            nullable: true,
+            defaultValue: 4.0,
+            category: 'Style',
+            description: 'Shadow elevation',
+            min: 0,
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _registerScaffoldWidget() {
+    register(
+      const WidgetDefinition(
+        type: 'Scaffold',
+        category: WidgetCategory.layout,
+        displayName: 'Scaffold',
+        acceptsChildren: true,
+        maxChildren: 1, // body only for now
+        iconName: 'dashboard',
+        description: 'Material Design visual layout structure',
+        properties: [
+          PropertyDefinition(
+            name: 'backgroundColor',
+            type: PropertyType.color,
+            displayName: 'Background Color',
+            nullable: true,
+            category: 'Style',
+            description: 'Background color',
+          ),
+          PropertyDefinition(
+            name: 'extendBody',
+            type: PropertyType.bool_,
+            displayName: 'Extend Body',
+            nullable: true,
+            defaultValue: false,
+            category: 'Layout',
+            description: 'Extend body behind bottom nav',
+          ),
+          PropertyDefinition(
+            name: 'extendBodyBehindAppBar',
+            type: PropertyType.bool_,
+            displayName: 'Extend Body Behind AppBar',
+            nullable: true,
+            defaultValue: false,
+            category: 'Layout',
+            description: 'Extend body behind app bar',
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _registerWrapWidget() {
+    register(
+      const WidgetDefinition(
+        type: 'Wrap',
+        category: WidgetCategory.layout,
+        displayName: 'Wrap',
+        acceptsChildren: true,
+        maxChildren: null,
+        iconName: 'wrap_text',
+        description: 'A widget that wraps children to multiple lines',
+        properties: [
+          PropertyDefinition(
+            name: 'direction',
+            type: PropertyType.enum_,
+            displayName: 'Direction',
+            nullable: true,
+            category: 'Layout',
+            description: 'Direction of children flow',
+            enumValues: [
+              'Axis.horizontal',
+              'Axis.vertical',
+            ],
+          ),
+          PropertyDefinition(
+            name: 'alignment',
+            type: PropertyType.enum_,
+            displayName: 'Alignment',
+            nullable: true,
+            category: 'Layout',
+            description: 'How to align children within a run',
+            enumValues: [
+              'WrapAlignment.start',
+              'WrapAlignment.center',
+              'WrapAlignment.end',
+              'WrapAlignment.spaceBetween',
+              'WrapAlignment.spaceAround',
+              'WrapAlignment.spaceEvenly',
+            ],
+          ),
+          PropertyDefinition(
+            name: 'spacing',
+            type: PropertyType.double_,
+            displayName: 'Spacing',
+            nullable: true,
+            defaultValue: 0.0,
+            category: 'Spacing',
+            description: 'Spacing between children',
+            min: 0,
+          ),
+          PropertyDefinition(
+            name: 'runSpacing',
+            type: PropertyType.double_,
+            displayName: 'Run Spacing',
+            nullable: true,
+            defaultValue: 0.0,
+            category: 'Spacing',
+            description: 'Spacing between runs',
+            min: 0,
+          ),
+          PropertyDefinition(
+            name: 'runAlignment',
+            type: PropertyType.enum_,
+            displayName: 'Run Alignment',
+            nullable: true,
+            category: 'Layout',
+            description: 'How to align runs',
+            enumValues: [
+              'WrapAlignment.start',
+              'WrapAlignment.center',
+              'WrapAlignment.end',
+              'WrapAlignment.spaceBetween',
+              'WrapAlignment.spaceAround',
+              'WrapAlignment.spaceEvenly',
+            ],
           ),
         ],
       ),

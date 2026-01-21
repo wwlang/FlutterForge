@@ -41,14 +41,26 @@ void main() {
       await tester.pumpWidget(buildTestWidget());
       await tester.pumpAndSettle();
 
-      // Layout has 11 widgets (Container, Row, Column, SizedBox, Stack,
-      // Expanded, Flexible, Padding, Center, Align, Spacer)
+      // Get the actual counts from the registry
       final layoutCount = registry.byCategory(WidgetCategory.layout).length;
-      expect(find.text('$layoutCount'), findsOneWidget);
-
-      // Content: Text = 1 widget
       final contentCount = registry.byCategory(WidgetCategory.content).length;
-      expect(find.text('$contentCount'), findsOneWidget);
+      final inputCount = registry.byCategory(WidgetCategory.input).length;
+
+      // Verify counts are positive and match expected Phase 6 totals
+      // Layout: Container, Row, Column, SizedBox, Stack, Expanded, Flexible,
+      //         Padding, Center, Align, Spacer, ListView, GridView,
+      //         SingleChildScrollView, Card, AppBar, Scaffold, Wrap = 18
+      expect(layoutCount, 18);
+      // Content: Text, Icon, Image, Divider, VerticalDivider, Placeholder, ListTile = 7
+      expect(contentCount, 7);
+      // Input: ElevatedButton, TextButton, IconButton, TextField, Checkbox, Switch, Slider = 7
+      expect(inputCount, 7);
+
+      // Since Content and Input both have 7 widgets, the '7' text appears twice
+      // Verify counts appear in the UI (at least once for each unique count)
+      expect(find.text('$layoutCount'), findsOneWidget); // 18 is unique
+      expect(find.text('$contentCount'),
+          findsAtLeastNWidgets(1)); // 7 appears twice
     });
 
     testWidgets('categories are collapsible', (WidgetTester tester) async {
@@ -119,6 +131,46 @@ void main() {
       expect(find.text('Center'), findsOneWidget);
       expect(find.text('Align'), findsOneWidget);
       expect(find.text('Spacer'), findsOneWidget);
+    });
+
+    testWidgets('displays Phase 6 form input widgets', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(buildTestWidget());
+      await tester.pumpAndSettle();
+
+      // Phase 6 form input widgets are in the Input category
+      // Need to scroll to see them all
+      expect(find.text('Text Field'), findsOneWidget);
+      expect(find.text('Checkbox'), findsOneWidget);
+      expect(find.text('Switch'), findsOneWidget);
+      expect(find.text('Slider'), findsOneWidget);
+    });
+
+    testWidgets('displays Phase 6 scrolling widgets', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(buildTestWidget());
+      await tester.pumpAndSettle();
+
+      // Phase 6 scrolling widgets in Layout category
+      expect(find.text('List View'), findsOneWidget);
+      expect(find.text('Grid View'), findsOneWidget);
+      expect(find.text('Scroll View'), findsOneWidget);
+    });
+
+    testWidgets('displays Phase 6 structural widgets', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(buildTestWidget());
+      await tester.pumpAndSettle();
+
+      // Phase 6 structural widgets
+      expect(find.text('Card'), findsOneWidget);
+      expect(find.text('List Tile'), findsOneWidget);
+      expect(find.text('App Bar'), findsOneWidget);
+      expect(find.text('Scaffold'), findsOneWidget);
+      expect(find.text('Wrap'), findsOneWidget);
     });
   });
 
