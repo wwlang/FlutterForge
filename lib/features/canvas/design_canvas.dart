@@ -82,6 +82,8 @@ class DesignCanvas extends StatelessWidget {
         registry: registry,
         selectedWidgetId: selectedWidgetId,
         onWidgetSelected: (id) => onWidgetSelected?.call(id),
+        onWidgetDropped: (type, parentId) =>
+            onWidgetDropped?.call(type, parentId),
       ),
     );
   }
