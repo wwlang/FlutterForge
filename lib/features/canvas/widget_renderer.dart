@@ -816,10 +816,18 @@ class WidgetRenderer extends StatelessWidget {
 
     return Switch(
       value: value,
-      activeThumbColor: activeThumbColor,
-      activeTrackColor: activeTrackColor,
-      inactiveThumbColor: inactiveThumbColor,
-      inactiveTrackColor: inactiveTrackColor,
+      thumbColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return activeThumbColor;
+        }
+        return inactiveThumbColor;
+      }),
+      trackColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return activeTrackColor;
+        }
+        return inactiveTrackColor;
+      }),
       onChanged: (_) {},
     );
   }
