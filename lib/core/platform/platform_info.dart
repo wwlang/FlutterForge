@@ -81,39 +81,39 @@ class PlatformUI {
 
   /// Standard panel padding for the platform.
   static double get panelPadding {
-    if (PlatformInfo.isMacOS) return 16.0;
-    return 12.0;
+    if (PlatformInfo.isMacOS) return 16;
+    return 12;
   }
 
   /// Standard item spacing for the platform.
   static double get itemSpacing {
-    if (PlatformInfo.isMacOS) return 8.0;
-    return 6.0;
+    if (PlatformInfo.isMacOS) return 8;
+    return 6;
   }
 
   /// Standard border radius for the platform.
   static double get borderRadius {
-    if (PlatformInfo.isMacOS) return 8.0;
-    if (PlatformInfo.isWindows) return 4.0;
-    return 6.0;
+    if (PlatformInfo.isMacOS) return 8;
+    if (PlatformInfo.isWindows) return 4;
+    return 6;
   }
 
   /// Standard icon size for the platform.
   static double get iconSize {
-    if (PlatformInfo.isMacOS) return 20.0;
-    return 18.0;
+    if (PlatformInfo.isMacOS) return 20;
+    return 18;
   }
 
   /// Standard font size for labels.
   static double get labelFontSize {
-    if (PlatformInfo.isMacOS) return 13.0;
-    return 12.0;
+    if (PlatformInfo.isMacOS) return 13;
+    return 12;
   }
 
   /// Standard font size for body text.
   static double get bodyFontSize {
-    if (PlatformInfo.isMacOS) return 14.0;
-    return 13.0;
+    if (PlatformInfo.isMacOS) return 14;
+    return 13;
   }
 
   /// Whether to show window controls in custom title bar.
@@ -124,8 +124,8 @@ class PlatformUI {
 
   /// The height of the title bar area.
   static double get titleBarHeight {
-    if (PlatformInfo.isMacOS) return 28.0;
-    if (PlatformInfo.isWindows) return 32.0;
-    return 30.0;
+    if (PlatformInfo.isMacOS) return 28;
+    if (PlatformInfo.isWindows) return 32;
+    return 30;
   }
 }

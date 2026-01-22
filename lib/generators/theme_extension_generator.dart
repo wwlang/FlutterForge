@@ -44,7 +44,7 @@ class ThemeExtensionGenerator {
       (b) => b
         ..directives.addAll([
           Directive.import('package:flutter/material.dart'),
-          Directive.import('dart:ui', show: ['lerpDouble']),
+          Directive.import('dart:ui', show: const ['lerpDouble']),
         ])
         ..body.add(extensionClass),
     );

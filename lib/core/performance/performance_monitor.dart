@@ -172,7 +172,8 @@ class PerformanceMetrics {
 
   @override
   String toString() {
-    return 'PerformanceMetrics(count: $count, avg: ${average.inMilliseconds}ms, '
+    return 'PerformanceMetrics('
+        'count: $count, avg: ${average.inMilliseconds}ms, '
         'min: ${min.inMilliseconds}ms, max: ${max.inMilliseconds}ms)';
   }
 }

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 
-import 'app_exception.dart';
+import 'package:flutter_forge/core/errors/app_exception.dart';
 
 /// Callback type for error reporting.
 typedef ErrorReportCallback = void Function(
@@ -74,8 +74,8 @@ class ErrorHandler {
   /// Handles an error by logging and notifying reporters.
   void handleError(
     Object error, {
-    StackTrace? stackTrace,
     required String operation,
+    StackTrace? stackTrace,
     Map<String, dynamic>? details,
   }) {
     final context = ErrorContext(
@@ -163,8 +163,9 @@ class ErrorHandler {
     }
 
     if (stackTrace != null) {
-      message.writeln('Stack trace:');
-      message.writeln(stackTrace);
+      message
+        ..writeln('Stack trace:')
+        ..writeln(stackTrace);
     }
 
     message.writeln('=============');

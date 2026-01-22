@@ -90,12 +90,12 @@ class CodePreviewPanel extends ConsumerWidget {
       child: Column(
         children: [
           if (themeCode != null)
-            TabBar(
-              tabs: const [
+            const TabBar(
+              tabs: [
                 Tab(text: 'Widget'),
                 Tab(text: 'Theme'),
               ],
-              labelPadding: const EdgeInsets.symmetric(horizontal: 16),
+              labelPadding: EdgeInsets.symmetric(horizontal: 16),
             ),
           Expanded(
             child: themeCode != null
@@ -157,7 +157,7 @@ class SyntaxHighlightedCode extends StatelessWidget {
     final lines = code.split('\n');
     final isDark = theme.brightness == Brightness.dark;
 
-    return Container(
+    return ColoredBox(
       color: isDark
           ? theme.colorScheme.surfaceContainerLowest
           : const Color(0xFFFAFAFA),
@@ -221,7 +221,7 @@ class SyntaxHighlightedCode extends StatelessWidget {
 
   /// Applies syntax highlighting to Dart code.
   TextSpan _highlightSyntax(String code, ThemeData theme, bool isDark) {
-    final List<TextSpan> spans = [];
+    final spans = <TextSpan>[];
     final lines = code.split('\n');
 
     // Color scheme for syntax highlighting
@@ -346,7 +346,7 @@ class SyntaxHighlightedCode extends StatelessWidget {
       'FlexFit',
     };
 
-    for (int lineIndex = 0; lineIndex < lines.length; lineIndex++) {
+    for (var lineIndex = 0; lineIndex < lines.length; lineIndex++) {
       final line = lines[lineIndex];
 
       if (lineIndex > 0) {
@@ -355,10 +355,12 @@ class SyntaxHighlightedCode extends StatelessWidget {
 
       // Check for comment
       if (line.trimLeft().startsWith('//')) {
-        spans.add(TextSpan(
-          text: line,
-          style: TextStyle(color: commentColor),
-        ));
+        spans.add(
+          TextSpan(
+            text: line,
+            style: TextStyle(color: commentColor),
+          ),
+        );
         continue;
       }
 
@@ -380,10 +382,12 @@ class SyntaxHighlightedCode extends StatelessWidget {
           color = defaultColor;
         }
 
-        spans.add(TextSpan(
-          text: token,
-          style: TextStyle(color: color),
-        ));
+        spans.add(
+          TextSpan(
+            text: token,
+            style: TextStyle(color: color),
+          ),
+        );
       }
     }
 
@@ -394,10 +398,10 @@ class SyntaxHighlightedCode extends StatelessWidget {
   List<String> _tokenizeLine(String line) {
     final tokens = <String>[];
     final buffer = StringBuffer();
-    bool inString = false;
+    var inString = false;
     String? stringChar;
 
-    for (int i = 0; i < line.length; i++) {
+    for (var i = 0; i < line.length; i++) {
       final char = line[i];
 
       // Handle strings
@@ -445,7 +449,7 @@ class SyntaxHighlightedCode extends StatelessWidget {
     final tokens = <String>[];
     final buffer = StringBuffer();
 
-    for (int i = 0; i < input.length; i++) {
+    for (var i = 0; i < input.length; i++) {
       final char = input[i];
 
       // Check for @override
@@ -478,6 +482,6 @@ class SyntaxHighlightedCode extends StatelessWidget {
   }
 
   bool _isWordChar(String char) {
-    return RegExp(r'[a-zA-Z0-9_.]').hasMatch(char);
+    return RegExp('[a-zA-Z0-9_.]').hasMatch(char);
   }
 }

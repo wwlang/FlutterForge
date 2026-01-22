@@ -32,7 +32,9 @@ void main() {
         addTearDown(container.dispose);
 
         // High contrast uses the settings notifier
-        container.read(themeSettingsProvider.notifier).setHighContrast(true);
+        container
+            .read(themeSettingsProvider.notifier)
+            .setHighContrast(enabled: true);
         expect(container.read(isHighContrastProvider), true);
       });
 
@@ -166,7 +168,9 @@ void main() {
           ),
         );
 
-        container.read(themeSettingsProvider.notifier).setHighContrast(true);
+        container
+            .read(themeSettingsProvider.notifier)
+            .setHighContrast(enabled: true);
 
         final token = notifier.getTokenById('test-1');
         expect(token?.highContrastLightValue, 0xFF0000FF);
@@ -188,7 +192,9 @@ void main() {
           ),
         );
 
-        container.read(themeSettingsProvider.notifier).setHighContrast(true);
+        container
+            .read(themeSettingsProvider.notifier)
+            .setHighContrast(enabled: true);
 
         final token = notifier.getTokenById('test-1');
         // Should fall back to regular values
@@ -471,7 +477,7 @@ class _ThemeToggleButton extends ConsumerWidget {
                     onChanged: (v) {
                       ref
                           .read(themeSettingsProvider.notifier)
-                          .setHighContrast(v);
+                          .setHighContrast(enabled: v);
                     },
                   ),
                 ),

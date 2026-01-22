@@ -34,6 +34,20 @@ class StylePreset {
     this.description,
   });
 
+  /// Deserializes a preset from JSON.
+  factory StylePreset.fromJson(Map<String, dynamic> json) {
+    return StylePreset(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      category: PresetCategory.values.firstWhere(
+        (c) => c.name == json['category'],
+        orElse: () => PresetCategory.container,
+      ),
+      properties: Map<String, dynamic>.from(json['properties'] as Map),
+      description: json['description'] as String?,
+    );
+  }
+
   /// Unique identifier for the preset.
   final String id;
 
@@ -75,20 +89,6 @@ class StylePreset {
       'properties': properties,
       if (description != null) 'description': description,
     };
-  }
-
-  /// Deserializes a preset from JSON.
-  factory StylePreset.fromJson(Map<String, dynamic> json) {
-    return StylePreset(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      category: PresetCategory.values.firstWhere(
-        (c) => c.name == json['category'],
-        orElse: () => PresetCategory.container,
-      ),
-      properties: Map<String, dynamic>.from(json['properties'] as Map),
-      description: json['description'] as String?,
-    );
   }
 
   @override
@@ -184,7 +184,7 @@ WidgetNode detachPreset(WidgetNode node) {
 List<StylePreset> getBuiltInPresets() {
   return [
     // Button presets
-    StylePreset(
+    const StylePreset(
       id: 'builtin-primary-button',
       name: 'Primary Button',
       category: PresetCategory.button,
@@ -196,7 +196,7 @@ List<StylePreset> getBuiltInPresets() {
         'padding': 16.0,
       },
     ),
-    StylePreset(
+    const StylePreset(
       id: 'builtin-secondary-button',
       name: 'Secondary Button',
       category: PresetCategory.button,
@@ -208,7 +208,7 @@ List<StylePreset> getBuiltInPresets() {
         'padding': 16.0,
       },
     ),
-    StylePreset(
+    const StylePreset(
       id: 'builtin-outline-button',
       name: 'Outline Button',
       category: PresetCategory.button,
@@ -224,7 +224,7 @@ List<StylePreset> getBuiltInPresets() {
     ),
 
     // Container presets
-    StylePreset(
+    const StylePreset(
       id: 'builtin-card',
       name: 'Card',
       category: PresetCategory.container,
@@ -236,7 +236,7 @@ List<StylePreset> getBuiltInPresets() {
         'padding': 16.0,
       },
     ),
-    StylePreset(
+    const StylePreset(
       id: 'builtin-outlined-card',
       name: 'Outlined Card',
       category: PresetCategory.container,
@@ -249,7 +249,7 @@ List<StylePreset> getBuiltInPresets() {
         'padding': 16.0,
       },
     ),
-    StylePreset(
+    const StylePreset(
       id: 'builtin-surface',
       name: 'Surface Container',
       category: PresetCategory.container,
@@ -262,7 +262,7 @@ List<StylePreset> getBuiltInPresets() {
     ),
 
     // Text presets
-    StylePreset(
+    const StylePreset(
       id: 'builtin-heading',
       name: 'Heading',
       category: PresetCategory.text,
@@ -273,7 +273,7 @@ List<StylePreset> getBuiltInPresets() {
         'color': {r'$token': 'onSurface'},
       },
     ),
-    StylePreset(
+    const StylePreset(
       id: 'builtin-body-text',
       name: 'Body Text',
       category: PresetCategory.text,
@@ -285,7 +285,7 @@ List<StylePreset> getBuiltInPresets() {
         'lineHeight': 1.5,
       },
     ),
-    StylePreset(
+    const StylePreset(
       id: 'builtin-caption',
       name: 'Caption',
       category: PresetCategory.text,
@@ -298,7 +298,7 @@ List<StylePreset> getBuiltInPresets() {
     ),
 
     // Input presets
-    StylePreset(
+    const StylePreset(
       id: 'builtin-text-field',
       name: 'Text Field',
       category: PresetCategory.input,

@@ -635,13 +635,15 @@ class DartGenerator {
   // Phase 2 Task 11: Input widgets
 
   Expression _buildElevatedButton(
-      WidgetNode node, Map<String, WidgetNode> nodes) {
+    WidgetNode node,
+    Map<String, WidgetNode> nodes,
+  ) {
     final args = <String, Expression>{};
 
     // onPressed: enabled (true) = () {}, disabled (false) = null
     final enabled = node.properties['onPressed'] as bool? ?? true;
     if (enabled) {
-      args['onPressed'] = CodeExpression(const Code('() {}'));
+      args['onPressed'] = const CodeExpression(Code('() {}'));
     } else {
       args['onPressed'] = literalNull;
     }
@@ -663,7 +665,7 @@ class DartGenerator {
     // onPressed: enabled (true) = () {}, disabled (false) = null
     final enabled = node.properties['onPressed'] as bool? ?? true;
     if (enabled) {
-      args['onPressed'] = CodeExpression(const Code('() {}'));
+      args['onPressed'] = const CodeExpression(Code('() {}'));
     } else {
       args['onPressed'] = literalNull;
     }
@@ -707,7 +709,7 @@ class DartGenerator {
     // onPressed: enabled (true) = () {}, disabled (false) = null
     final enabled = node.properties['onPressed'] as bool? ?? true;
     if (enabled) {
-      args['onPressed'] = CodeExpression(const Code('() {}'));
+      args['onPressed'] = const CodeExpression(Code('() {}'));
     } else {
       args['onPressed'] = literalNull;
     }

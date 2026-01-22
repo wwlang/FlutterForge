@@ -12,6 +12,15 @@ class OnboardingState {
     this.hasCompletedTutorial = false,
   });
 
+  /// Deserializes from JSON.
+  factory OnboardingState.fromJson(Map<String, dynamic> json) {
+    return OnboardingState(
+      isFirstRun: json['isFirstRun'] as bool? ?? true,
+      showWelcomeOnStartup: json['showWelcomeOnStartup'] as bool? ?? true,
+      hasCompletedTutorial: json['hasCompletedTutorial'] as bool? ?? false,
+    );
+  }
+
   /// Whether this is the user's first time running the app.
   final bool isFirstRun;
 
@@ -48,15 +57,6 @@ class OnboardingState {
         'showWelcomeOnStartup': showWelcomeOnStartup,
         'hasCompletedTutorial': hasCompletedTutorial,
       };
-
-  /// Deserializes from JSON.
-  factory OnboardingState.fromJson(Map<String, dynamic> json) {
-    return OnboardingState(
-      isFirstRun: json['isFirstRun'] as bool? ?? true,
-      showWelcomeOnStartup: json['showWelcomeOnStartup'] as bool? ?? true,
-      hasCompletedTutorial: json['hasCompletedTutorial'] as bool? ?? false,
-    );
-  }
 
   @override
   bool operator ==(Object other) =>

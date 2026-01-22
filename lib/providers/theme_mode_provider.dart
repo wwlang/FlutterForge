@@ -59,7 +59,7 @@ class ThemeSettingsNotifier extends StateNotifier<ThemeSettings> {
   }
 
   /// Sets high contrast mode.
-  void setHighContrast(bool enabled) {
+  void setHighContrast({required bool enabled}) {
     state = state.copyWith(isHighContrast: enabled);
   }
 }
@@ -80,8 +80,8 @@ class ThemeModeNotifier extends StateNotifier<ThemeMode> {
     state = _settingsNotifier.state.themeMode;
   }
 
-  void setHighContrast(bool enabled) {
-    _settingsNotifier.setHighContrast(enabled);
+  void setHighContrast({required bool enabled}) {
+    _settingsNotifier.setHighContrast(enabled: enabled);
   }
 }
 

@@ -60,7 +60,7 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
         }
       },
       child: Material(
-        color: colorScheme.surface.withOpacity(0.95),
+        color: colorScheme.surface.withValues(alpha: 0.95),
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(32),
           child: Center(

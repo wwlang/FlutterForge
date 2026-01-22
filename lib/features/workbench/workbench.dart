@@ -78,13 +78,14 @@ class _WorkbenchState extends ConsumerState<Workbench>
 
   @override
   void dispose() {
-    _rightPanelController.removeListener(_onTabChanged);
-    _rightPanelController.dispose();
+    _rightPanelController
+      ..removeListener(_onTabChanged)
+      ..dispose();
     super.dispose();
   }
 
   void _onTabChanged() {
-    final tabs = RightPanelTab.values;
+    const tabs = RightPanelTab.values;
     ref.read(rightPanelTabProvider.notifier).state =
         tabs[_rightPanelController.index];
   }
@@ -154,7 +155,6 @@ class _WorkbenchState extends ConsumerState<Workbench>
     final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['forge'],
-      allowMultiple: false,
       withData: true,
     );
 
@@ -220,7 +220,6 @@ class _WorkbenchState extends ConsumerState<Workbench>
             'Untitled';
     final project = _projectService.createNewProject(
       name: projectName,
-      withDefaultScreen: false,
     );
 
     // Convert WidgetNode map to JSON-serializable map
@@ -321,7 +320,6 @@ class _WorkbenchState extends ConsumerState<Workbench>
     final command = AddWidgetCommand.withNode(
       nodeId: newNode.id,
       node: newNode,
-      parentId: null, // Paste at root level
     );
     ref.read(commandProvider.notifier).execute(command);
     _markUnsaved();
@@ -629,7 +627,8 @@ class _WorkbenchState extends ConsumerState<Workbench>
                 ),
               ),
               const VerticalDivider(width: 1),
-              // Right panel: Tabbed (Properties, Design System, Animation, Code)
+              // Right panel: Tabbed
+              // (Properties, Design System, Animation, Code)
               SizedBox(
                 width: 320,
                 child: Column(
@@ -655,7 +654,6 @@ class _WorkbenchState extends ConsumerState<Workbench>
                         ),
                       ],
                       labelPadding: EdgeInsets.zero,
-                      isScrollable: false,
                     ),
                     Expanded(
                       child: TabBarView(

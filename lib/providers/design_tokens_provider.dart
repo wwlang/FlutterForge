@@ -174,7 +174,8 @@ class DesignTokensNotifier extends StateNotifier<List<DesignToken>> {
     return chain;
   }
 
-  /// Checks if making tokenId alias targetName would create a circular reference.
+  /// Checks if making tokenId alias targetName would create a circular
+  /// reference.
   ///
   /// Returns true if:
   /// - targetName directly or indirectly aliases tokenId

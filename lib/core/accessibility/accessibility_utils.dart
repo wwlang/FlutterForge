@@ -9,37 +9,36 @@ class AccessibilityUtils {
   const AccessibilityUtils._();
 
   /// Minimum touch target size (WCAG 2.5.5 Level AAA).
-  static const double minTouchTargetSize = 44.0;
+  static const double minTouchTargetSize = 44;
 
   /// Minimum text contrast ratio (WCAG 2.1 Level AA).
   static const double minContrastRatioAA = 4.5;
 
   /// Minimum large text contrast ratio (WCAG 2.1 Level AA).
-  static const double minLargeTextContrastRatioAA = 3.0;
+  static const double minLargeTextContrastRatioAA = 3;
 
   /// Enhanced contrast ratio (WCAG 2.1 Level AAA).
-  static const double minContrastRatioAAA = 7.0;
+  static const double minContrastRatioAAA = 7;
 
   /// Large text threshold in logical pixels.
-  static const double largeTextThreshold = 18.0;
+  static const double largeTextThreshold = 18;
 
   /// Bold large text threshold in logical pixels.
-  static const double boldLargeTextThreshold = 14.0;
+  static const double boldLargeTextThreshold = 14;
 
   /// Calculates the relative luminance of a color.
   ///
   /// Based on WCAG 2.1 formula for relative luminance.
   static double relativeLuminance(Color color) {
-    double transformComponent(int component) {
-      final normalized = component / 255.0;
+    double transformComponent(double normalized) {
       return normalized <= 0.03928
           ? normalized / 12.92
           : math.pow((normalized + 0.055) / 1.055, 2.4).toDouble();
     }
 
-    final r = transformComponent(color.red);
-    final g = transformComponent(color.green);
-    final b = transformComponent(color.blue);
+    final r = transformComponent(color.r);
+    final g = transformComponent(color.g);
+    final b = transformComponent(color.b);
 
     return 0.2126 * r + 0.7152 * g + 0.0722 * b;
   }

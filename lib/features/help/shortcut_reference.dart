@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_forge/features/shortcuts/keyboard_shortcuts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../shortcuts/keyboard_shortcuts.dart';
 
 /// Overlay showing all keyboard shortcuts organized by category.
 ///
@@ -46,9 +46,11 @@ class _ShortcutReferenceOverlayState
     if (_searchQuery.isEmpty) return shortcuts;
 
     return shortcuts
-        .where((s) =>
-            s.label.toLowerCase().contains(_searchQuery) ||
-            (s.description?.toLowerCase().contains(_searchQuery) ?? false))
+        .where(
+          (s) =>
+              s.label.toLowerCase().contains(_searchQuery) ||
+              (s.description?.toLowerCase().contains(_searchQuery) ?? false),
+        )
         .toList();
   }
 
@@ -166,8 +168,8 @@ class _CategoryHeader extends StatelessWidget {
 /// A single shortcut item in the reference list.
 class ShortcutItem extends StatelessWidget {
   const ShortcutItem({
-    super.key,
     required this.shortcut,
+    super.key,
     this.platform,
     this.searchQuery = '',
   });
@@ -231,10 +233,10 @@ class ShortcutItem extends StatelessWidget {
 /// Journey: J18 S4 - Contextual Help
 class PropertyHelpTooltip extends StatelessWidget {
   const PropertyHelpTooltip({
-    super.key,
     required this.propertyName,
     required this.description,
     required this.type,
+    super.key,
     this.learnMoreUrl,
   });
 
@@ -270,7 +272,7 @@ class PropertyHelpTooltip extends StatelessWidget {
           Text(
             description,
             style: theme.textTheme.bodySmall?.copyWith(
-              color: colorScheme.onInverseSurface.withOpacity(0.9),
+              color: colorScheme.onInverseSurface.withValues(alpha: 0.9),
             ),
           ),
           const SizedBox(height: 8),
@@ -279,13 +281,13 @@ class PropertyHelpTooltip extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
-                  color: colorScheme.onInverseSurface.withOpacity(0.1),
+                  color: colorScheme.onInverseSurface.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: Text(
                   type,
                   style: theme.textTheme.labelSmall?.copyWith(
-                    color: colorScheme.onInverseSurface.withOpacity(0.8),
+                    color: colorScheme.onInverseSurface.withValues(alpha: 0.8),
                     fontFamily: 'monospace',
                   ),
                 ),
@@ -297,7 +299,7 @@ class PropertyHelpTooltip extends StatelessWidget {
                   style: TextButton.styleFrom(
                     foregroundColor: colorScheme.onInverseSurface,
                     padding: EdgeInsets.zero,
-                    minimumSize: const Size(0, 0),
+                    minimumSize: Size.zero,
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
                   child: const Text(
@@ -322,10 +324,10 @@ class PropertyHelpTooltip extends StatelessWidget {
 /// Journey: J18 S4 - Contextual Help
 class WidgetHelpTooltip extends StatelessWidget {
   const WidgetHelpTooltip({
-    super.key,
     required this.widgetName,
     required this.description,
     required this.category,
+    super.key,
   });
 
   final String widgetName;
@@ -359,20 +361,20 @@ class WidgetHelpTooltip extends StatelessWidget {
           Text(
             description,
             style: theme.textTheme.bodySmall?.copyWith(
-              color: colorScheme.onInverseSurface.withOpacity(0.9),
+              color: colorScheme.onInverseSurface.withValues(alpha: 0.9),
             ),
           ),
           const SizedBox(height: 8),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
             decoration: BoxDecoration(
-              color: colorScheme.onInverseSurface.withOpacity(0.1),
+              color: colorScheme.onInverseSurface.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(4),
             ),
             child: Text(
               category,
               style: theme.textTheme.labelSmall?.copyWith(
-                color: colorScheme.onInverseSurface.withOpacity(0.8),
+                color: colorScheme.onInverseSurface.withValues(alpha: 0.8),
               ),
             ),
           ),

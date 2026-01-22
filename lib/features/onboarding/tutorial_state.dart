@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'tutorial_steps.dart';
+import 'package:flutter_forge/features/onboarding/tutorial_steps.dart';
 
 /// State for managing the interactive tutorial.
 ///
@@ -13,6 +13,20 @@ class TutorialState {
     this.completedSteps = const {},
     this.skippedSteps = const {},
   });
+
+  /// Deserializes from JSON.
+  factory TutorialState.fromJson(Map<String, dynamic> json) {
+    return TutorialState(
+      isActive: json['isActive'] as bool? ?? false,
+      currentStepIndex: json['currentStepIndex'] as int? ?? 0,
+      completedSteps:
+          (json['completedSteps'] as List<dynamic>?)?.cast<int>().toSet() ??
+              const {},
+      skippedSteps:
+          (json['skippedSteps'] as List<dynamic>?)?.cast<int>().toSet() ??
+              const {},
+    );
+  }
 
   /// Whether the tutorial is currently active.
   final bool isActive;
@@ -40,7 +54,7 @@ class TutorialState {
   /// Progress ratio from 0.0 to 1.0.
   double get progress {
     final total = TutorialSteps.allSteps.length;
-    if (total == 0) return 1.0;
+    if (total == 0) return 1;
     return completedSteps.length / total;
   }
 
@@ -80,7 +94,6 @@ class TutorialState {
   /// Exits the tutorial, preserving progress.
   TutorialState exit() {
     return TutorialState(
-      isActive: false,
       currentStepIndex: currentStepIndex,
       completedSteps: completedSteps,
       skippedSteps: skippedSteps,
@@ -114,20 +127,6 @@ class TutorialState {
         'completedSteps': completedSteps.toList(),
         'skippedSteps': skippedSteps.toList(),
       };
-
-  /// Deserializes from JSON.
-  factory TutorialState.fromJson(Map<String, dynamic> json) {
-    return TutorialState(
-      isActive: json['isActive'] as bool? ?? false,
-      currentStepIndex: json['currentStepIndex'] as int? ?? 0,
-      completedSteps:
-          (json['completedSteps'] as List<dynamic>?)?.cast<int>().toSet() ??
-              const {},
-      skippedSteps:
-          (json['skippedSteps'] as List<dynamic>?)?.cast<int>().toSet() ??
-              const {},
-    );
-  }
 
   @override
   bool operator ==(Object other) =>

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_forge/features/onboarding/tutorial_steps.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'tutorial_steps.dart';
 
 /// Overlay widget that displays tutorial step information.
 ///
@@ -10,13 +10,13 @@ import 'tutorial_steps.dart';
 /// Journey: J18 S2 - Interactive Tutorial
 class TutorialOverlay extends ConsumerWidget {
   const TutorialOverlay({
-    super.key,
     required this.step,
     required this.stepIndex,
     required this.totalSteps,
     required this.onComplete,
     required this.onSkip,
     required this.onExit,
+    super.key,
   });
 
   /// The current tutorial step.
@@ -43,7 +43,7 @@ class TutorialOverlay extends ConsumerWidget {
       builder: (context) => const TutorialExitDialog(),
     );
 
-    if (shouldExit == true) {
+    if (shouldExit ?? false) {
       onExit();
     }
   }
@@ -78,7 +78,7 @@ class TutorialOverlay extends ConsumerWidget {
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
+                    color: Colors.black.withValues(alpha: 0.2),
                     blurRadius: 16,
                     offset: const Offset(0, -4),
                   ),
@@ -210,8 +210,8 @@ class TutorialExitDialog extends StatelessWidget {
 /// Congratulates the user and suggests next steps.
 class TutorialCompletionScreen extends StatelessWidget {
   const TutorialCompletionScreen({
-    super.key,
     required this.onContinue,
+    super.key,
   });
 
   /// Called when the user dismisses the completion screen.
