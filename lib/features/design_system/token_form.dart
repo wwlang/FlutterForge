@@ -287,7 +287,7 @@ class _TokenFormState extends ConsumerState<TokenForm> {
                 const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
             errorText: _aliasError,
           ),
-          initialValue: _aliasTarget,
+          value: _aliasTarget,
           hint: const Text('Select token to alias'),
           items: [
             ...availableTokens.map((t) {
@@ -662,7 +662,7 @@ class _TokenFormState extends ConsumerState<TokenForm> {
             DropdownMenuItem(value: '800', child: Text('800')),
             DropdownMenuItem(value: '900', child: Text('900')),
           ],
-          initialValue: _fontWeightController.text.isEmpty
+          value: _fontWeightController.text.isEmpty
               ? '400'
               : _fontWeightController.text,
           onChanged: (value) {
