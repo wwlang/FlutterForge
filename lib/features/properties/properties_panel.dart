@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_forge/core/models/widget_node.dart';
+import 'package:flutter_forge/features/properties/alignment_editor.dart';
+import 'package:flutter_forge/features/properties/edge_insets_editor.dart';
 import 'package:flutter_forge/features/properties/property_editors.dart';
 import 'package:flutter_forge/shared/registry/registry.dart';
 
@@ -247,19 +249,97 @@ class PropertiesPanel extends StatelessWidget {
         );
 
       case PropertyType.edgeInsets:
+        return EdgeInsetsEditor(
+          propertyName: prop.name,
+          displayName: prop.displayName,
+          value: _parseEdgeInsets(value),
+          description: prop.description,
+          onChanged: (v) =>
+              onPropertyChanged(prop.name, _serializeEdgeInsets(v)),
+        );
+
       case PropertyType.alignment:
-        // For Phase 1, show as a simple text indicator
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          child: Text(
-            '${prop.displayName}: Coming soon',
-            style: const TextStyle(
-              fontStyle: FontStyle.italic,
-              color: Colors.grey,
-            ),
-          ),
+        return AlignmentEditor(
+          propertyName: prop.name,
+          displayName: prop.displayName,
+          value: _parseAlignment(value),
+          description: prop.description,
+          onChanged: (v) =>
+              onPropertyChanged(prop.name, _serializeAlignment(v)),
         );
     }
+  }
+
+  /// Parses an EdgeInsets from stored property value.
+  EdgeInsets? _parseEdgeInsets(dynamic value) {
+    if (value == null) return null;
+    if (value is Map) {
+      return EdgeInsets.fromLTRB(
+        (value['left'] as num?)?.toDouble() ?? 0,
+        (value['top'] as num?)?.toDouble() ?? 0,
+        (value['right'] as num?)?.toDouble() ?? 0,
+        (value['bottom'] as num?)?.toDouble() ?? 0,
+      );
+    }
+    if (value is num) {
+      return EdgeInsets.all(value.toDouble());
+    }
+    return null;
+  }
+
+  /// Serializes EdgeInsets for storage.
+  Map<String, double>? _serializeEdgeInsets(EdgeInsets? value) {
+    if (value == null) return null;
+    return {
+      'left': value.left,
+      'top': value.top,
+      'right': value.right,
+      'bottom': value.bottom,
+    };
+  }
+
+  /// Parses an Alignment from stored property value.
+  Alignment? _parseAlignment(dynamic value) {
+    if (value == null) return null;
+    if (value is Map) {
+      return Alignment(
+        (value['x'] as num?)?.toDouble() ?? 0,
+        (value['y'] as num?)?.toDouble() ?? 0,
+      );
+    }
+    if (value is String) {
+      // Handle named alignments
+      switch (value) {
+        case 'topLeft':
+          return Alignment.topLeft;
+        case 'topCenter':
+          return Alignment.topCenter;
+        case 'topRight':
+          return Alignment.topRight;
+        case 'centerLeft':
+          return Alignment.centerLeft;
+        case 'center':
+          return Alignment.center;
+        case 'centerRight':
+          return Alignment.centerRight;
+        case 'bottomLeft':
+          return Alignment.bottomLeft;
+        case 'bottomCenter':
+          return Alignment.bottomCenter;
+        case 'bottomRight':
+          return Alignment.bottomRight;
+      }
+    }
+    return null;
+  }
+
+  /// Serializes Alignment for storage.
+  Map<String, double>? _serializeAlignment(Alignment? value) {
+    if (value == null) return null;
+    return {
+      'x': value.x,
+      'y': value.y,
+    };
   }
 
   IconData _getIconForType(String? iconName) {

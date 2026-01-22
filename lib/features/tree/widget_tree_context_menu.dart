@@ -7,6 +7,7 @@ import 'package:flutter_forge/commands/delete_widget_command.dart';
 import 'package:flutter_forge/commands/wrap_widget_command.dart';
 import 'package:flutter_forge/core/models/project_state.dart';
 import 'package:flutter_forge/core/models/widget_node.dart';
+import 'package:flutter_forge/features/workbench/workbench.dart';
 import 'package:flutter_forge/providers/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
@@ -34,6 +35,8 @@ Future<ContextMenuAction?> showWidgetTreeContextMenu({
   final node = projectState.nodes[nodeId];
   if (node == null) return null;
 
+  final clipboardContent = ref.read(widgetClipboardProvider);
+
   final overlayContext = Overlay.of(context).context;
   final overlayBox = overlayContext.findRenderObject();
   if (overlayBox == null || overlayBox is! RenderBox) return null;
@@ -44,14 +47,20 @@ Future<ContextMenuAction?> showWidgetTreeContextMenu({
       Rect.fromLTWH(position.dx, position.dy, 0, 0),
       Offset.zero & overlayBox.size,
     ),
-    items: _buildMenuItems(context),
+    items: _buildMenuItems(
+      context,
+      hasClipboardContent: clipboardContent != null,
+    ),
   );
 
   return result;
 }
 
 /// Builds the context menu items.
-List<PopupMenuEntry<ContextMenuAction>> _buildMenuItems(BuildContext context) {
+List<PopupMenuEntry<ContextMenuAction>> _buildMenuItems(
+  BuildContext context, {
+  bool hasClipboardContent = false,
+}) {
   final isMacOS = !kIsWeb && Platform.isMacOS;
   final modifierKey = isMacOS ? '\u2318' : 'Ctrl+'; // Cmd symbol or Ctrl
 
@@ -61,21 +70,19 @@ List<PopupMenuEntry<ContextMenuAction>> _buildMenuItems(BuildContext context) {
       action: ContextMenuAction.cut,
       label: 'Cut',
       shortcut: '${modifierKey}X',
-      enabled: false, // Placeholder for Phase 4
     ),
     _buildMenuItem(
       context,
       action: ContextMenuAction.copy,
       label: 'Copy',
       shortcut: '${modifierKey}C',
-      enabled: false, // Placeholder for Phase 4
     ),
     _buildMenuItem(
       context,
       action: ContextMenuAction.paste,
       label: 'Paste',
       shortcut: '${modifierKey}V',
-      enabled: false, // Placeholder for Phase 4
+      enabled: hasClipboardContent, // Enabled when clipboard has content
     ),
     const PopupMenuDivider(),
     _buildMenuItem(
@@ -145,10 +152,11 @@ Future<void> handleContextMenuAction({
 }) async {
   switch (action) {
     case ContextMenuAction.cut:
+      _handleCut(nodeId, ref);
     case ContextMenuAction.copy:
+      _handleCopy(nodeId, ref);
     case ContextMenuAction.paste:
-      // Placeholder for Phase 4
-      break;
+      _handlePaste(nodeId, ref);
     case ContextMenuAction.duplicate:
       _handleDuplicate(nodeId, ref);
     case ContextMenuAction.delete:
@@ -156,6 +164,76 @@ Future<void> handleContextMenuAction({
     case ContextMenuAction.wrapIn:
       await _showWrapInSubmenu(context, nodeId, ref);
   }
+}
+
+/// Handles copy action - copies widget to clipboard.
+void _handleCopy(String nodeId, WidgetRef ref) {
+  final projectState = ref.read(projectProvider);
+  final node = projectState.nodes[nodeId];
+  if (node == null) return;
+
+  // Deep copy the node (including children for full copy)
+  final copiedNode = _deepCopyNode(node, projectState);
+  ref.read(widgetClipboardProvider.notifier).state = copiedNode;
+}
+
+/// Handles cut action - copies to clipboard then deletes.
+void _handleCut(String nodeId, WidgetRef ref) {
+  // First copy
+  _handleCopy(nodeId, ref);
+
+  // Then delete (without confirmation for cut)
+  final command = DeleteWidgetCommand(nodeId: nodeId);
+  ref.read(commandProvider.notifier).execute(command);
+}
+
+/// Handles paste action - pastes from clipboard.
+void _handlePaste(String nodeId, WidgetRef ref) {
+  final clipboardNode = ref.read(widgetClipboardProvider);
+  if (clipboardNode == null) return;
+
+  final projectState = ref.read(projectProvider);
+  final targetNode = projectState.nodes[nodeId];
+
+  // Create a new copy with new ID
+  const uuid = Uuid();
+  final newNode = clipboardNode.copyWith(
+    id: uuid.v4(),
+    parentId: targetNode?.parentId, // Same parent as target
+    childrenIds: [], // Children not deep copied for simple paste
+  );
+
+  // Determine insert index (after target node)
+  final parentId = targetNode?.parentId;
+  int insertIndex;
+
+  if (parentId != null) {
+    final parent = projectState.nodes[parentId];
+    if (parent != null) {
+      insertIndex = parent.childrenIds.indexOf(nodeId) + 1;
+    } else {
+      insertIndex = projectState.rootIds.length;
+    }
+  } else {
+    insertIndex = projectState.rootIds.indexOf(nodeId) + 1;
+  }
+
+  final command = AddWidgetCommand.withNode(
+    nodeId: newNode.id,
+    node: newNode,
+    parentId: parentId,
+    insertIndex: insertIndex,
+  );
+
+  ref.read(commandProvider.notifier).execute(command);
+}
+
+/// Deep copies a node and its structure.
+WidgetNode _deepCopyNode(WidgetNode node, ProjectState state) {
+  // For now, just copy the node itself (children are referenced by ID)
+  return node.copyWith(
+    childrenIds: node.childrenIds,
+  );
 }
 
 /// Handles duplicate action.
