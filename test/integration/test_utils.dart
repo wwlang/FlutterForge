@@ -13,6 +13,55 @@ import 'package:flutter_test/flutter_test.dart';
 /// - Keyboard shortcut simulation
 /// - Panel/tab switching
 
+/// Scrolls the palette to make a widget visible and interactable.
+///
+/// [tester] - The WidgetTester instance.
+/// [widgetName] - The name of the widget to find.
+/// Returns the Finder for the widget item.
+Future<Finder> scrollPaletteToWidget(
+  WidgetTester tester,
+  String widgetName,
+) async {
+  final palette = find.byType(WidgetPalette);
+  expect(palette, findsOneWidget, reason: 'WidgetPalette not found');
+
+  // Find the scrollable within the palette
+  final scrollable = find.descendant(
+    of: palette,
+    matching: find.byType(Scrollable),
+  );
+
+  // The widget item we're looking for
+  final widgetItem = find.descendant(
+    of: palette,
+    matching: find.text(widgetName),
+  );
+
+  // Get palette bounds to check if widget is actually visible (not just found)
+  final paletteRect = tester.getRect(palette);
+
+  // Check if widget exists in tree
+  if (widgetItem.evaluate().isNotEmpty) {
+    final widgetRect = tester.getRect(widgetItem);
+    // If widget is within visible bounds, return it
+    if (widgetRect.top >= paletteRect.top &&
+        widgetRect.bottom <= paletteRect.bottom) {
+      return widgetItem;
+    }
+  }
+
+  // Widget is either not found or outside visible bounds - scroll to it
+  await tester.scrollUntilVisible(
+    widgetItem,
+    200, // scroll increment
+    scrollable: scrollable,
+    maxScrolls: 20,
+  );
+
+  await tester.pumpAndSettle();
+  return widgetItem;
+}
+
 /// Drags a widget from the palette to the canvas.
 ///
 /// [tester] - The WidgetTester instance.
@@ -23,16 +72,15 @@ Future<void> dragWidgetToCanvas(
   String widgetName, {
   Offset? targetOffset,
 }) async {
-  // Find widget specifically within the palette to avoid finding labels elsewhere
+  // Find widget specifically within the palette, scrolling if needed
   final palette = find.byType(WidgetPalette);
   Finder widgetItem;
 
   // Check if there's a WidgetPalette - if so, search within it
   if (palette.evaluate().isNotEmpty) {
-    widgetItem = find.descendant(
-      of: palette,
-      matching: find.text(widgetName),
-    );
+    // Always use scrollPaletteToWidget to ensure widget is visible
+    // (not just existing in the widget tree, but actually in viewport)
+    widgetItem = await scrollPaletteToWidget(tester, widgetName);
   } else {
     // Fallback to the first match
     widgetItem = find.text(widgetName).first;
@@ -40,7 +88,11 @@ Future<void> dragWidgetToCanvas(
 
   final canvas = find.byType(DesignCanvas);
 
-  expect(widgetItem, findsOneWidget, reason: 'Widget "$widgetName" not found');
+  expect(
+    widgetItem,
+    findsOneWidget,
+    reason: 'Widget "$widgetName" not found in palette',
+  );
   expect(canvas, findsOneWidget, reason: 'DesignCanvas not found');
 
   final gesture = await tester.startGesture(tester.getCenter(widgetItem));
@@ -66,20 +118,23 @@ Future<void> dragWidgetToParent(
   String widgetName,
   Finder parentFinder,
 ) async {
-  // Find widget specifically within the palette
+  // Find widget specifically within the palette, scrolling if needed
   final palette = find.byType(WidgetPalette);
   Finder widgetItem;
 
   if (palette.evaluate().isNotEmpty) {
-    widgetItem = find.descendant(
-      of: palette,
-      matching: find.text(widgetName),
-    );
+    // Always use scrollPaletteToWidget to ensure widget is visible
+    // (not just existing in the widget tree, but actually in viewport)
+    widgetItem = await scrollPaletteToWidget(tester, widgetName);
   } else {
     widgetItem = find.text(widgetName).first;
   }
 
-  expect(widgetItem, findsOneWidget);
+  expect(
+    widgetItem,
+    findsOneWidget,
+    reason: 'Widget "$widgetName" not found in palette',
+  );
   expect(parentFinder, findsOneWidget);
 
   final gesture = await tester.startGesture(tester.getCenter(widgetItem));
@@ -130,7 +185,7 @@ Future<void> selectWidgetByLabel(
 ///
 /// [tester] - The WidgetTester instance.
 /// [key] - The main key to press.
-/// [withModifier] - Whether to send with platform modifier (Cmd/Ctrl).
+/// [meta] - Whether to send with platform modifier (Cmd/Ctrl).
 /// [shift] - Whether to hold Shift.
 /// [alt] - Whether to hold Alt/Option.
 Future<void> sendShortcut(

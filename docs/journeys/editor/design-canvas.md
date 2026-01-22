@@ -20,7 +20,7 @@ related_journeys:
   - ../editor/widget-palette.md
   - ../editor/widget-tree.md
   - ../editor/properties-panel.md
-last_updated: 2026-01-21
+last_updated: 2026-01-22
 requirements: [FR2.1, FR2.2, FR2.3, FR2.4, FR2.5, FR2.6, FR2.7, FR2.8]
 ```
 
@@ -145,6 +145,16 @@ Scenario: Drop into single-child container
   Then Text becomes child of Container
   And Container re-renders with Text inside
 
+Scenario: Drop form input into container
+  Given Container is on canvas (empty)
+  And user drags TextField widget from Input category
+  When drag hovers over Container
+  Then nested drop zone appears inside Container (FR2.3)
+  When user drops
+  Then TextField becomes child of Container
+  And TextField renders inside Container
+  And parent-child relationship established in data model
+
 Scenario: Drop into multi-child container (Row/Column)
   Given Row is on canvas with two children
   And user drags Icon widget
@@ -163,11 +173,25 @@ Scenario: Validate parent-child compatibility
   When user hovers over Column instead
   Then nested drop zone appears
 
+Scenario: Flexible/Spacer require Flex parent
+  Given user drags Flexible widget
+  When user hovers over Container
+  Then nested drop zone does NOT appear
+  When user hovers over Row or Column
+  Then nested drop zone appears
+
 Scenario: Stack-specific z-ordering
   Given Stack is on canvas with children
   When user drops widget into Stack
   Then widget appears on top (highest z-index)
   And tree shows widget at end of children list
+
+Scenario: Single-child container rejects second child
+  Given Container already has child widget
+  And user drags another widget
+  When drag hovers over Container
+  Then nested drop zone does NOT appear
+  And tooltip shows "Container already has child"
 ```
 
 **Edge Cases**:
@@ -177,7 +201,8 @@ Scenario: Stack-specific z-ordering
 | Single-child container already has child | Reject drop with explanation | Use Column/Row instead |
 | Drop would create circular reference | Reject with error | Choose different target |
 | Very deep nesting (>10 levels) | Allow with warning | Refactor hierarchy |
-| Container has zero size | Ensure minimum drop target (50x50) | None needed |
+| Container has zero size | Ensure minimum drop target (60x60) | None needed |
+| Drop form input (TextField, Checkbox, etc.) | Accept if parent accepts children | None needed |
 
 **UX Requirements**:
 - Nested zone appearance: <50ms after hover
@@ -494,6 +519,7 @@ Scenario: Disable snapping temporarily
 - Hit testing uses `LayoutRegistry` with `GlobalKey` bounds lookup
 - Normalized state enables O(1) node updates after reorder
 - Command pattern tracks all changes for undo/redo
+- **Bug Fix (2026-01-22)**: `onWidgetDropped` must be passed to `WidgetRenderer` in `design_canvas.dart` for nested drops to work
 
 ---
 
@@ -525,7 +551,7 @@ Scenario: Disable snapping temporarily
 
 **Edge cases added during audit:**
 - Stage 1: Rapid drops, canvas edge drop
-- Stage 2: Circular reference, deep nesting
+- Stage 2: Circular reference, deep nesting, form input widgets, single-child rejection
 - Stage 3: Overlapping widgets, zero hit area
 - Stage 4: Same-position drop, only-child reorder
 - Stage 5: Extreme zoom, selection during pan
@@ -533,3 +559,19 @@ Scenario: Disable snapping temporarily
 **Cross-journey links verified:**
 - Incoming: Widget Palette (drag source), Widget Tree (selection sync)
 - Outgoing: Properties Panel (selection triggers property display)
+
+---
+
+## Test Coverage
+
+| Journey AC | Test File | Test Name |
+|------------|-----------|-----------|
+| Drop into single-child container | `nested_drop_comprehensive_test.dart` | `onWidgetDropped is called when TextField dropped into Container` |
+| Drop form input into container | `nested_drop_comprehensive_test.dart` | `Container with TextField child renders correctly` |
+| Single-child container rejects second child | `nested_drop_comprehensive_test.dart` | `Container with TextField child rejects second child` |
+| Validate parent-child compatibility (Expanded) | `nested_drop_comprehensive_test.dart` | `canAcceptChild returns false for Expanded in Container` |
+| Validate parent-child compatibility (Flexible) | `nested_drop_comprehensive_test.dart` | `canAcceptChild returns false for Flexible in Container` |
+| Validate parent-child compatibility (Spacer) | `nested_drop_comprehensive_test.dart` | `canAcceptChild returns false for Spacer in Container` |
+| Parent-child relationship in data model | `nested_drop_comprehensive_test.dart` | `after nested drop, widget node has correct parentId` |
+| Design-time placeholder | `empty_state_test.dart` | `Container renders visible placeholder when dropped with no properties` |
+| Widget selection | `design_canvas_test.dart` | `click-to-select calls onWidgetSelected (FR2.5)` |

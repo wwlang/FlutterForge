@@ -237,6 +237,14 @@ void main() {
           // Add a Column
           await dragWidgetToCanvas(tester, 'Column');
 
+          // Find the NestedDropZone (for drag target)
+          final dropZone = find.byType(NestedDropZone);
+          expect(dropZone, findsOneWidget);
+
+          // Add child widget to Column
+          await dragWidgetToParent(tester, 'Text', dropZone);
+
+          // Find Column on canvas to select it
           final canvas = find.byType(DesignCanvas);
           final columnOnCanvas = find.descendant(
             of: canvas,
@@ -244,9 +252,6 @@ void main() {
           );
 
           if (columnOnCanvas.evaluate().isNotEmpty) {
-            // Add child widgets
-            await dragWidgetToParent(tester, 'Text', columnOnCanvas.first);
-
             // Select and delete the Column
             await tester.tap(columnOnCanvas.first);
             await tester.pumpAndSettle();

@@ -187,9 +187,10 @@ void main() {
     });
 
     group('Open Project', () {
-      // Tests E2E-J07-008 and E2E-J07-009 are skipped because FilePicker.platform
-      // is not initialized in headless test environments. These features should
-      // be tested manually or via device-based integration tests.
+      // Tests E2E-J07-008 and E2E-J07-009 are skipped because
+      // FilePicker.platform is not initialized in headless test environments.
+      // These features should be tested manually or via device-based
+      // integration tests.
 
       testWidgets(
         'E2E-J07-008: Open project button exists',

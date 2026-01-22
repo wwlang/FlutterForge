@@ -185,7 +185,8 @@ void main() {
         // Verify Row added
         expect(find.text('Row'), findsAtLeastNWidgets(2));
 
-        // TODO(flutter-forge): Drag Text into Row (requires nested drop)
+        // Note: Nested drop into Row is tested in journey_canvas_test.dart
+        // and callback_chain_test.dart with dragWidgetToParent helper
       },
     );
   });
