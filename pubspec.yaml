@@ -9,6 +9,8 @@ environment:
 
 platforms:
   macos:
+  windows:
+  linux:
 
 dependencies:
   flutter:

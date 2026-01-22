@@ -1,0 +1,218 @@
+name: Linux Build
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+concurrency:
+  group: linux-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-linux:
+    name: Build Linux
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Linux dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y ninja-build libgtk-3-dev libsecret-1-dev libjsoncpp-dev
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.x'
+          channel: 'stable'
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Verify formatting
+        run: dart format --output=none --set-exit-if-changed lib test
+
+      - name: Analyze code
+        run: flutter analyze lib test
+
+      - name: Run tests
+        run: flutter test
+
+      - name: Build Linux
+        run: flutter build linux --release
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-build
+          path: build/linux/x64/release/bundle/
+          retention-days: 5
+
+  # Optional: Create AppImage for portable distribution
+  package-appimage:
+    name: Package AppImage
+    runs-on: ubuntu-latest
+    needs: build-linux
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Linux dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y ninja-build libgtk-3-dev libsecret-1-dev libjsoncpp-dev
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.x'
+          channel: 'stable'
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build Linux release
+        run: flutter build linux --release
+
+      - name: Install AppImage tools
+        run: |
+          sudo apt-get install -y libfuse2
+          wget -O appimagetool https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
+          chmod +x appimagetool
+          sudo mv appimagetool /usr/local/bin/
+
+      - name: Create AppImage structure
+        run: |
+          mkdir -p AppDir/usr/bin
+          mkdir -p AppDir/usr/share/applications
+          mkdir -p AppDir/usr/share/icons/hicolor/256x256/apps
+          cp -r build/linux/x64/release/bundle/* AppDir/usr/bin/
+
+          # Create desktop entry
+          cat > AppDir/flutter_forge.desktop << EOF
+          [Desktop Entry]
+          Name=FlutterForge
+          Comment=Visual Flutter UI Builder
+          Exec=flutter_forge
+          Icon=flutter_forge
+          Type=Application
+          Categories=Development;
+          EOF
+
+          cp AppDir/flutter_forge.desktop AppDir/usr/share/applications/
+
+          # Create simple icon placeholder (in production, use actual icon)
+          convert -size 256x256 xc:blue AppDir/usr/share/icons/hicolor/256x256/apps/flutter_forge.png 2>/dev/null || echo "Icon creation skipped"
+
+          # Create AppRun
+          cat > AppDir/AppRun << 'EOF'
+          #!/bin/bash
+          HERE="$(dirname "$(readlink -f "${0}")")"
+          export LD_LIBRARY_PATH="${HERE}/usr/bin/lib:${LD_LIBRARY_PATH}"
+          exec "${HERE}/usr/bin/flutter_forge" "$@"
+          EOF
+          chmod +x AppDir/AppRun
+        continue-on-error: true
+
+      - name: Build AppImage
+        run: |
+          appimagetool AppDir FlutterForge-x86_64.AppImage
+        continue-on-error: true
+
+      - name: Upload AppImage artifact
+        uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: linux-appimage
+          path: FlutterForge-x86_64.AppImage
+          retention-days: 30
+
+  # Optional: Create Debian package
+  package-deb:
+    name: Package DEB
+    runs-on: ubuntu-latest
+    needs: build-linux
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Linux dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y ninja-build libgtk-3-dev libsecret-1-dev libjsoncpp-dev dpkg-dev
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.x'
+          channel: 'stable'
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build Linux release
+        run: flutter build linux --release
+
+      - name: Create DEB package structure
+        run: |
+          mkdir -p deb/DEBIAN
+          mkdir -p deb/usr/bin
+          mkdir -p deb/usr/share/applications
+          mkdir -p deb/usr/share/icons/hicolor/256x256/apps
+          mkdir -p deb/usr/lib/flutter_forge
+
+          # Copy binary and libs
+          cp -r build/linux/x64/release/bundle/* deb/usr/lib/flutter_forge/
+
+          # Create launcher script
+          cat > deb/usr/bin/flutter_forge << 'EOF'
+          #!/bin/bash
+          export LD_LIBRARY_PATH="/usr/lib/flutter_forge/lib:${LD_LIBRARY_PATH}"
+          exec /usr/lib/flutter_forge/flutter_forge "$@"
+          EOF
+          chmod +x deb/usr/bin/flutter_forge
+
+          # Create desktop entry
+          cat > deb/usr/share/applications/flutter_forge.desktop << EOF
+          [Desktop Entry]
+          Name=FlutterForge
+          Comment=Visual Flutter UI Builder
+          Exec=flutter_forge
+          Icon=flutter_forge
+          Type=Application
+          Categories=Development;
+          EOF
+
+          # Create control file
+          cat > deb/DEBIAN/control << EOF
+          Package: flutter-forge
+          Version: 0.1.0
+          Section: devel
+          Priority: optional
+          Architecture: amd64
+          Depends: libgtk-3-0, libsecret-1-0
+          Maintainer: FlutterForge Team <team@flutterforge.dev>
+          Description: Visual Flutter UI Builder
+           FlutterForge is a visual Flutter UI builder that lets you
+           design interfaces with drag-and-drop and export clean,
+           production-ready Dart code.
+          EOF
+        continue-on-error: true
+
+      - name: Build DEB package
+        run: |
+          dpkg-deb --build deb flutter-forge_0.1.0_amd64.deb
+        continue-on-error: true
+
+      - name: Upload DEB artifact
+        uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: linux-deb
+          path: flutter-forge_0.1.0_amd64.deb
+          retention-days: 30

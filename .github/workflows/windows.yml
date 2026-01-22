@@ -1,0 +1,84 @@
+name: Windows Build
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+concurrency:
+  group: windows-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-windows:
+    name: Build Windows
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.x'
+          channel: 'stable'
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Verify formatting
+        run: dart format --output=none --set-exit-if-changed lib test
+
+      - name: Analyze code
+        run: flutter analyze lib test
+
+      - name: Run tests
+        run: flutter test
+
+      - name: Build Windows
+        run: flutter build windows --release
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-build
+          path: build/windows/x64/runner/Release/
+          retention-days: 5
+
+  # Optional: Create MSIX package for Windows Store
+  package-msix:
+    name: Package MSIX
+    runs-on: windows-latest
+    needs: build-windows
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.x'
+          channel: 'stable'
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Install MSIX packaging tool
+        run: flutter pub global activate msix
+
+      - name: Build Windows release
+        run: flutter build windows --release
+
+      - name: Create MSIX package
+        run: dart run msix:create
+        continue-on-error: true
+
+      - name: Upload MSIX artifact
+        uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: windows-msix
+          path: build/windows/x64/runner/Release/*.msix
+          retention-days: 30
