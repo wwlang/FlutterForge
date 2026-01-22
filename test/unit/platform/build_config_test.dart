@@ -103,9 +103,9 @@ void main() {
           File('.github/workflows/linux.yml').readAsStringSync();
 
       // All should use 3.29.x
-      expect(ciWorkflow.contains("flutter-version: '3.29.x'"), isTrue);
-      expect(windowsWorkflow.contains("flutter-version: '3.29.x'"), isTrue);
-      expect(linuxWorkflow.contains("flutter-version: '3.29.x'"), isTrue);
+      expect(ciWorkflow.contains("flutter-version: '3.38.x'"), isTrue);
+      expect(windowsWorkflow.contains("flutter-version: '3.38.x'"), isTrue);
+      expect(linuxWorkflow.contains("flutter-version: '3.38.x'"), isTrue);
     });
 
     test('platform shortcuts adapt correctly for each platform', () {

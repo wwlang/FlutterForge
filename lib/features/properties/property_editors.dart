@@ -417,7 +417,7 @@ class EnumEditor extends StatelessWidget {
       label: displayName,
       description: description,
       child: DropdownButtonFormField<String>(
-        value: value,
+        initialValue: value,
         decoration: const InputDecoration(
           isDense: true,
           border: OutlineInputBorder(),
