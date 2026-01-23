@@ -1,12 +1,12 @@
 # FlutterForge Roadmap
 
-**Last Updated:** 2026-01-22
+**Last Updated:** 2026-01-23
 
 ## Overview
 
 This roadmap tracks implementation tasks for FlutterForge. Each task maps to user journey acceptance criteria for traceability.
 
-**Status:** ALL PHASES COMPLETE (73/73 tasks, 1411 tests)
+**Status:** Phases 1-8 COMPLETE (73/73 tasks, 1411 tests) | Phase 9 PLANNED (10 tasks)
 
 ---
 
@@ -290,6 +290,220 @@ See `.claude/PROGRESS.md` for detailed Phase 4 completion records.
 
 ---
 
+## Phase 9: Flutter 3.38 Enhancements (PLANNED)
+
+**Milestone:** Leverage Flutter 3.38 and Dart 3.10 features for cleaner code generation, enhanced preview capabilities, and new widgets
+
+**Status:** PLANNED | **Tasks:** 0/10 | **Journey References:** J19, J20, J21, J22, J23
+
+**Prerequisites:** Flutter SDK updated to 3.38+, Dart 3.10+
+
+---
+
+### Task 9.1: Dart 3.10 Dot Shorthand - Enum Support
+
+| Field | Value |
+|-------|-------|
+| ID | phase-9-task-01 |
+| Status | PENDING |
+| Priority | P1 |
+| Journey AC | J19 S1, S2 |
+| Location | `lib/generators/dart_generator.dart` |
+
+**Deliverables:**
+- [ ] Shorthand support for MainAxisAlignment, CrossAxisAlignment
+- [ ] Shorthand support for TextAlign, FontWeight, FontStyle
+- [ ] Shorthand support for BoxFit, Alignment, Axis
+- [ ] Unit tests for each shorthand type
+
+---
+
+### Task 9.2: Dart 3.10 Dot Shorthand - Constructor Support
+
+| Field | Value |
+|-------|-------|
+| ID | phase-9-task-02 |
+| Status | PENDING |
+| Priority | P1 |
+| Journey AC | J19 S1, S2 |
+| Location | `lib/generators/dart_generator.dart` |
+
+**Deliverables:**
+- [ ] Shorthand support for EdgeInsets (.all, .symmetric, .only)
+- [ ] Shorthand support for BorderRadius (.circular, .all)
+- [ ] Shorthand support for EdgeInsetsDirectional
+- [ ] Non-shorthand exclusion list (Colors, Icons, Duration)
+- [ ] Unit tests for constructor shorthand
+
+---
+
+### Task 9.3: Dart Version Targeting
+
+| Field | Value |
+|-------|-------|
+| ID | phase-9-task-03 |
+| Status | PENDING |
+| Priority | P2 |
+| Journey AC | J19 S3 |
+| Location | `lib/features/code_preview/`, `lib/generators/` |
+
+**Deliverables:**
+- [ ] Export settings for Dart version target
+- [ ] Dart 3.9 compatibility mode (no shorthand)
+- [ ] Version indicator in code panel
+- [ ] Version setting persistence in project
+- [ ] Unit tests for version toggling
+
+---
+
+### Task 9.4: Monitor Metadata Service
+
+| Field | Value |
+|-------|-------|
+| ID | phase-9-task-04 |
+| Status | PENDING |
+| Priority | P2 |
+| Journey AC | J20 S1, S2 |
+| Location | `lib/services/monitor_service.dart` |
+
+**Deliverables:**
+- [ ] MonitorService with platform abstraction
+- [ ] Monitor info display in preview settings
+- [ ] DPI-aware preview rendering
+- [ ] Multi-monitor detection
+- [ ] Unit tests for monitor metadata
+
+---
+
+### Task 9.5: Preview Window Positioning
+
+| Field | Value |
+|-------|-------|
+| ID | phase-9-task-05 |
+| Status | PENDING |
+| Priority | P3 |
+| Journey AC | J20 S3, S4 |
+| Location | `lib/features/preview/` |
+
+**Deliverables:**
+- [ ] Detachable preview window
+- [ ] Smart positioning on optimal monitor
+- [ ] Position persistence across sessions
+- [ ] Refresh rate awareness for animations
+- [ ] Unit tests for window positioning
+
+---
+
+### Task 9.6: Multi-State Preview Variations
+
+| Field | Value |
+|-------|-------|
+| ID | phase-9-task-06 |
+| Status | PENDING |
+| Priority | P1 |
+| Journey AC | J21 S1, S2 |
+| Location | `lib/features/preview/` |
+
+**Deliverables:**
+- [ ] Preview variation model
+- [ ] Add/remove preview variations UI
+- [ ] Theme matrix toggle (light/dark)
+- [ ] Size matrix toggle (mobile/tablet/desktop)
+- [ ] Unit tests for preview variations
+
+---
+
+### Task 9.7: Preview Groups and Export
+
+| Field | Value |
+|-------|-------|
+| ID | phase-9-task-07 |
+| Status | PENDING |
+| Priority | P2 |
+| Journey AC | J21 S2, S3, S4 |
+| Location | `lib/features/preview/`, `lib/generators/` |
+
+**Deliverables:**
+- [ ] Preview group model and storage
+- [ ] Group organization UI
+- [ ] @Preview annotation export
+- [ ] @MultiPreview annotation export
+- [ ] Group documentation export (Markdown)
+- [ ] Unit tests for annotation generation
+
+---
+
+### Task 9.8: DropdownMenu Enhancements
+
+| Field | Value |
+|-------|-------|
+| ID | phase-9-task-08 |
+| Status | PENDING |
+| Priority | P2 |
+| Journey AC | J22 S1 |
+| Location | `lib/features/palette/`, `lib/features/properties/` |
+
+**Deliverables:**
+- [ ] DropdownMenu widget in registry
+- [ ] cursorHeight property
+- [ ] menuController property
+- [ ] Preview open state toggle
+- [ ] Unit tests for DropdownMenu
+
+---
+
+### Task 9.9: Overlay Preview System
+
+| Field | Value |
+|-------|-------|
+| ID | phase-9-task-09 |
+| Status | PENDING |
+| Priority | P2 |
+| Journey AC | J22 S2, S3 |
+| Location | `lib/features/canvas/`, `lib/features/properties/` |
+
+**Deliverables:**
+- [ ] Overlay layer on canvas
+- [ ] Tooltip preview on hover
+- [ ] PopupMenuButton preview
+- [ ] Context menu configuration UI
+- [ ] Unit tests for overlay preview
+
+---
+
+### Task 9.10: New Flutter 3.38 Widgets
+
+| Field | Value |
+|-------|-------|
+| ID | phase-9-task-10 |
+| Status | PENDING |
+| Priority | P2 |
+| Journey AC | J23 S1, S2, S3, S4 |
+| Location | `lib/features/palette/`, `lib/generators/` |
+
+**Deliverables:**
+- [ ] CupertinoLinearActivityIndicator widget
+- [ ] CupertinoDatePicker selectableDayPredicate UI
+- [ ] HeadingLevel semantics property
+- [ ] Text layout debug visualization
+- [ ] Unit tests for new widgets
+
+---
+
+## Phase 9 Definition of Done
+
+- [ ] Dart 3.10 dot shorthand fully implemented in code generator
+- [ ] Version targeting with Dart 3.9 fallback
+- [ ] Monitor metadata service functional
+- [ ] Multi-state preview variations working
+- [ ] Preview annotation export implemented
+- [ ] DropdownMenu enhancements complete
+- [ ] New Flutter 3.38 widgets added to palette
+- [ ] All tests pass (target: 1500+ tests)
+- [ ] Updated to Flutter 3.38 SDK
+
+---
+
 ## Overall Progress Summary
 
 | Phase | Status | Tasks | Tests |
@@ -302,7 +516,8 @@ See `.claude/PROGRESS.md` for detailed Phase 4 completion records.
 | Phase 6: Widget Completion | COMPLETE | 12/12 | 1047 |
 | Phase 7: Assets & Preview | COMPLETE | 5/5 | 1322 |
 | Phase 8: Platform & Polish | COMPLETE | 6/6 | 1411 |
-| **Total** | **100% COMPLETE** | **73/73** | **1411** |
+| Phase 9: Flutter 3.38 Enhancements | PLANNED | 0/10 | - |
+| **Total** | **88% COMPLETE** | **73/83** | **1411** |
 
 ---
 
@@ -317,6 +532,11 @@ See `.claude/PROGRESS.md` for detailed Phase 4 completion records.
 | J15 | Responsive Preview | 7.4, 7.5 |
 | J17 | Cross-Platform Support | 8.1, 8.2, 8.3 |
 | J18 | Onboarding and Help | 8.4, 8.5, 8.6 |
+| J19 | Dart Shorthand Code Generation | 9.1, 9.2, 9.3 |
+| J20 | Monitor Metadata API | 9.4, 9.5 |
+| J21 | Widget Preview Enhancements | 9.6, 9.7 |
+| J22 | OverlayPortal Improvements | 9.8, 9.9 |
+| J23 | New Flutter 3.38 Widgets | 9.10 |
 
 ---
 
@@ -340,3 +560,13 @@ See `.claude/PROGRESS.md` for detailed Phase 4 completion records.
 - [x] Onboarding flow complete
 - [x] Help system functional
 - [ ] Push version tag (v1.0.0) to trigger release
+
+## Release Checklist (v1.1.0 Flutter 3.38)
+
+- [ ] Phase 9 complete
+- [ ] Dart 3.10 dot shorthand working
+- [ ] Preview enhancements complete
+- [ ] New widgets added
+- [ ] 1500+ tests passing
+- [ ] Flutter 3.38 SDK requirement documented
+- [ ] Push version tag (v1.1.0) to trigger release
