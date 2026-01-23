@@ -56,6 +56,7 @@ _$ProjectMetadataImpl _$$ProjectMetadataImplFromJson(
       forgeVersion: json['forgeVersion'] as String,
       description: json['description'] as String?,
       flutterSdkVersion: json['flutterSdkVersion'] as String? ?? '3.19.0',
+      targetDartVersion: json['targetDartVersion'] as String? ?? 'dart310',
     );
 
 Map<String, dynamic> _$$ProjectMetadataImplToJson(
@@ -66,4 +67,5 @@ Map<String, dynamic> _$$ProjectMetadataImplToJson(
       'forgeVersion': instance.forgeVersion,
       'description': instance.description,
       'flutterSdkVersion': instance.flutterSdkVersion,
+      'targetDartVersion': instance.targetDartVersion,
     };

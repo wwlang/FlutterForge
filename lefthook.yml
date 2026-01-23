@@ -13,6 +13,7 @@ pre-commit:
   commands:
     dart-format:
       glob: "*.dart"
+      exclude: "*.g.dart|*.freezed.dart"
       run: dart format --set-exit-if-changed {staged_files}
       fail_text: |
         Formatting issues found. Run:
@@ -21,6 +22,7 @@ pre-commit:
 
     flutter-analyze:
       glob: "*.dart"
+      exclude: "*.g.dart|*.freezed.dart"
       run: flutter analyze --no-fatal-infos {staged_files}
       fail_text: |
         Analysis issues found. Fix the errors above and try again.

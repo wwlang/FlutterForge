@@ -74,6 +74,13 @@ class ProjectMetadata with _$ProjectMetadata {
 
     /// Target Flutter SDK version for generated code.
     @Default('3.19.0') String flutterSdkVersion,
+
+    /// Target Dart version for code generation (J19 S3).
+    ///
+    /// Controls shorthand syntax usage:
+    /// - 'dart39': No shorthand (legacy compatibility)
+    /// - 'dart310': Dot shorthand enabled (default)
+    @Default('dart310') String targetDartVersion,
   }) = _ProjectMetadata;
 
   factory ProjectMetadata.fromJson(Map<String, dynamic> json) =>

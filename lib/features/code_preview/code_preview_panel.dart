@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_forge/features/code_preview/dart_version_indicator.dart';
 import 'package:flutter_forge/generators/dart_generator.dart';
 import 'package:flutter_forge/generators/theme_extension_generator.dart';
+import 'package:flutter_forge/providers/code_settings_provider.dart';
 import 'package:flutter_forge/providers/design_tokens_provider.dart';
 import 'package:flutter_forge/providers/project_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,6 +15,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 /// - Syntax highlighting for Dart code (J16-S3)
 /// - Copy to clipboard functionality (J16-S4)
 /// - Line numbers (J16-S1)
+/// - Dart version targeting with shorthand support (J19-S3)
 class CodePreviewPanel extends ConsumerWidget {
   /// Creates a code preview panel.
   const CodePreviewPanel({
@@ -31,6 +34,7 @@ class CodePreviewPanel extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final projectState = ref.watch(projectProvider);
     final designTokens = ref.watch(designTokensProvider);
+    final codeSettings = ref.watch(codeSettingsProvider);
     final theme = Theme.of(context);
 
     if (projectState.rootIds.isEmpty) {
@@ -68,6 +72,7 @@ class CodePreviewPanel extends ConsumerWidget {
         nodes: projectState.nodes,
         rootId: projectState.rootIds.first,
         className: 'GeneratedWidget',
+        useDotShorthand: codeSettings.effectiveShorthand,
       );
     } catch (e) {
       widgetCode = '// Error generating code: $e';
@@ -89,14 +94,35 @@ class CodePreviewPanel extends ConsumerWidget {
       length: themeCode != null ? 2 : 1,
       child: Column(
         children: [
-          if (themeCode != null)
-            const TabBar(
-              tabs: [
-                Tab(text: 'Widget'),
-                Tab(text: 'Theme'),
-              ],
-              labelPadding: EdgeInsets.symmetric(horizontal: 16),
+          // Header with tabs and version indicator
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: theme.colorScheme.outlineVariant,
+                ),
+              ),
             ),
+            child: Row(
+              children: [
+                if (themeCode != null) ...[
+                  const Expanded(
+                    child: TabBar(
+                      tabs: [
+                        Tab(text: 'Widget'),
+                        Tab(text: 'Theme'),
+                      ],
+                      labelPadding: EdgeInsets.symmetric(horizontal: 16),
+                    ),
+                  ),
+                ] else
+                  const Spacer(),
+                // Dart version indicator (J19 S3)
+                const DartVersionIndicator(),
+              ],
+            ),
+          ),
           Expanded(
             child: themeCode != null
                 ? TabBarView(

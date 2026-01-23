@@ -578,6 +578,13 @@ mixin _$ProjectMetadata {
   /// Target Flutter SDK version for generated code.
   String get flutterSdkVersion => throw _privateConstructorUsedError;
 
+  /// Target Dart version for code generation (J19 S3).
+  ///
+  /// Controls shorthand syntax usage:
+  /// - 'dart39': No shorthand (legacy compatibility)
+  /// - 'dart310': Dot shorthand enabled (default)
+  String get targetDartVersion => throw _privateConstructorUsedError;
+
   /// Serializes this ProjectMetadata to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
@@ -599,7 +606,8 @@ abstract class $ProjectMetadataCopyWith<$Res> {
       DateTime modifiedAt,
       String forgeVersion,
       String? description,
-      String flutterSdkVersion});
+      String flutterSdkVersion,
+      String targetDartVersion});
 }
 
 /// @nodoc
@@ -622,6 +630,7 @@ class _$ProjectMetadataCopyWithImpl<$Res, $Val extends ProjectMetadata>
     Object? forgeVersion = null,
     Object? description = freezed,
     Object? flutterSdkVersion = null,
+    Object? targetDartVersion = null,
   }) {
     return _then(_value.copyWith(
       createdAt: null == createdAt
@@ -644,6 +653,10 @@ class _$ProjectMetadataCopyWithImpl<$Res, $Val extends ProjectMetadata>
           ? _value.flutterSdkVersion
           : flutterSdkVersion // ignore: cast_nullable_to_non_nullable
               as String,
+      targetDartVersion: null == targetDartVersion
+          ? _value.targetDartVersion
+          : targetDartVersion // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -661,7 +674,8 @@ abstract class _$$ProjectMetadataImplCopyWith<$Res>
       DateTime modifiedAt,
       String forgeVersion,
       String? description,
-      String flutterSdkVersion});
+      String flutterSdkVersion,
+      String targetDartVersion});
 }
 
 /// @nodoc
@@ -682,6 +696,7 @@ class __$$ProjectMetadataImplCopyWithImpl<$Res>
     Object? forgeVersion = null,
     Object? description = freezed,
     Object? flutterSdkVersion = null,
+    Object? targetDartVersion = null,
   }) {
     return _then(_$ProjectMetadataImpl(
       createdAt: null == createdAt
@@ -704,6 +719,10 @@ class __$$ProjectMetadataImplCopyWithImpl<$Res>
           ? _value.flutterSdkVersion
           : flutterSdkVersion // ignore: cast_nullable_to_non_nullable
               as String,
+      targetDartVersion: null == targetDartVersion
+          ? _value.targetDartVersion
+          : targetDartVersion // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -716,7 +735,8 @@ class _$ProjectMetadataImpl implements _ProjectMetadata {
       required this.modifiedAt,
       required this.forgeVersion,
       this.description,
-      this.flutterSdkVersion = '3.19.0'});
+      this.flutterSdkVersion = '3.19.0',
+      this.targetDartVersion = 'dart310'});
 
   factory _$ProjectMetadataImpl.fromJson(Map<String, dynamic> json) =>
       _$$ProjectMetadataImplFromJson(json);
@@ -742,9 +762,18 @@ class _$ProjectMetadataImpl implements _ProjectMetadata {
   @JsonKey()
   final String flutterSdkVersion;
 
+  /// Target Dart version for code generation (J19 S3).
+  ///
+  /// Controls shorthand syntax usage:
+  /// - 'dart39': No shorthand (legacy compatibility)
+  /// - 'dart310': Dot shorthand enabled (default)
+  @override
+  @JsonKey()
+  final String targetDartVersion;
+
   @override
   String toString() {
-    return 'ProjectMetadata(createdAt: $createdAt, modifiedAt: $modifiedAt, forgeVersion: $forgeVersion, description: $description, flutterSdkVersion: $flutterSdkVersion)';
+    return 'ProjectMetadata(createdAt: $createdAt, modifiedAt: $modifiedAt, forgeVersion: $forgeVersion, description: $description, flutterSdkVersion: $flutterSdkVersion, targetDartVersion: $targetDartVersion)';
   }
 
   @override
@@ -761,13 +790,15 @@ class _$ProjectMetadataImpl implements _ProjectMetadata {
             (identical(other.description, description) ||
                 other.description == description) &&
             (identical(other.flutterSdkVersion, flutterSdkVersion) ||
-                other.flutterSdkVersion == flutterSdkVersion));
+                other.flutterSdkVersion == flutterSdkVersion) &&
+            (identical(other.targetDartVersion, targetDartVersion) ||
+                other.targetDartVersion == targetDartVersion));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, createdAt, modifiedAt,
-      forgeVersion, description, flutterSdkVersion);
+      forgeVersion, description, flutterSdkVersion, targetDartVersion);
 
   /// Create a copy of ProjectMetadata
   /// with the given fields replaced by the non-null parameter values.
@@ -792,7 +823,8 @@ abstract class _ProjectMetadata implements ProjectMetadata {
       required final DateTime modifiedAt,
       required final String forgeVersion,
       final String? description,
-      final String flutterSdkVersion}) = _$ProjectMetadataImpl;
+      final String flutterSdkVersion,
+      final String targetDartVersion}) = _$ProjectMetadataImpl;
 
   factory _ProjectMetadata.fromJson(Map<String, dynamic> json) =
       _$ProjectMetadataImpl.fromJson;
@@ -816,6 +848,14 @@ abstract class _ProjectMetadata implements ProjectMetadata {
   /// Target Flutter SDK version for generated code.
   @override
   String get flutterSdkVersion;
+
+  /// Target Dart version for code generation (J19 S3).
+  ///
+  /// Controls shorthand syntax usage:
+  /// - 'dart39': No shorthand (legacy compatibility)
+  /// - 'dart310': Dot shorthand enabled (default)
+  @override
+  String get targetDartVersion;
 
   /// Create a copy of ProjectMetadata
   /// with the given fields replaced by the non-null parameter values.
