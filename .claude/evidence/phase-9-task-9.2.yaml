@@ -1,0 +1,77 @@
+task:
+  id: "phase-9-task-9.2"
+  description: "J24: Preview & Dev Tools (Tasks 9.2.1-9.2.4)"
+  roadmap_ref: "docs/operations/roadmap.md#phase-9"
+  journey_ref: "docs/journeys/flutter-upgrades/J24-preview-dev-tools.md"
+  completed_at: "2026-01-23T08:45:00Z"
+  validated_at: "2026-01-23T08:45:00Z"
+
+deliverables:
+  - path: "lib/generators/preview_annotation_generator.dart"
+    type: "code"
+    description: "PreviewAnnotationGenerator for @Preview annotation export"
+  - path: "lib/services/version_service.dart"
+    type: "code"
+    description: "VersionService for Flutter version runtime info"
+  - path: "lib/generators/generators.dart"
+    type: "code"
+    description: "Updated barrel export"
+  - path: "lib/services/services.dart"
+    type: "code"
+    description: "Updated barrel export"
+
+builds:
+  flutter:
+    command: "flutter analyze"
+    status: "succeeded"
+    timestamp: "2026-01-23T08:45:00Z"
+    notes: "No issues found"
+
+tests:
+  unit:
+    command: "flutter test"
+    passed: 1630
+    failed: 0
+    skipped: 0
+    new_tests_added:
+      - "test/unit/generators/preview/preview_annotation_generator_test.dart (24 tests)"
+      - "test/unit/services/version_service_test.dart (23 tests)"
+    total_new_tests: 47
+
+acceptance_criteria:
+  - id: "J24-S1"
+    criterion: "@Preview annotation export with name, width, height"
+    status: "verified"
+    evidence: "24 unit tests pass for basic preview generation"
+    verified_by: "test/unit/generators/preview/preview_annotation_generator_test.dart"
+  - id: "J24-S2"
+    criterion: "Theme/brightness preview export (Flutter 3.35+)"
+    status: "verified"
+    evidence: "Tests for light/dark theme generation, theme matrix"
+    verified_by: "test/unit/generators/preview/preview_annotation_generator_test.dart"
+  - id: "J24-S3"
+    criterion: "Locale preview export with language/country codes"
+    status: "verified"
+    evidence: "Tests for locale-specific previews, RTL support, locale matrix"
+    verified_by: "test/unit/generators/preview/preview_annotation_generator_test.dart"
+  - id: "J24-S4"
+    criterion: "Flutter version runtime info with feature flags"
+    status: "verified"
+    evidence: "23 unit tests pass for VersionService"
+    verified_by: "test/unit/services/version_service_test.dart"
+  - id: "J24-S5"
+    criterion: "Custom preview configurations"
+    status: "verified"
+    evidence: "Tests for custom preview class generation"
+    verified_by: "test/unit/generators/preview/preview_annotation_generator_test.dart"
+
+issues: []
+
+validation_summary:
+  status: "passed"
+  notes:
+    - "All 47 new tests pass"
+    - "All 1630 total tests pass"
+    - "No analyzer issues"
+    - "Pre-commit hooks pass"
+  blocking_issues: []

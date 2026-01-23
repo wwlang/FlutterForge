@@ -1,12 +1,59 @@
 # FlutterForge Progress
 
-**Last Updated:** 2026-01-22
+**Last Updated:** 2026-01-23
 
 ## Current Status
 
-**ALL PHASES COMPLETE (100%)**
+**Phase 9: Flutter Upgrades IN PROGRESS**
 
-FlutterForge is production-ready with all 73 tasks completed across 8 phases.
+FlutterForge is production-ready with all 73 core tasks completed across 8 phases.
+Now implementing Flutter 3.32+ and 3.35+ features in Phase 9.
+
+---
+
+## Phase 9: Flutter Upgrades (IN PROGRESS - 2026-01-23)
+
+### Summary
+
+- 4 of 35 tasks completed (J24 Preview & Dev Tools)
+- 1630 tests passing (47 new Phase 9 tests added)
+- @Preview annotation export for Flutter 3.32+
+- Theme/brightness preview export for Flutter 3.35+
+- Locale preview export for Flutter 3.35+
+- Version service for feature availability checks
+
+### Task Summary
+
+| Task ID | Description | Status | Tests |
+|---------|-------------|--------|-------|
+| phase-9-task-9.2.1 | @Preview Annotation Export | COMPLETE | 24 |
+| phase-9-task-9.2.2 | Theme/Brightness Preview Export | COMPLETE | - |
+| phase-9-task-9.2.3 | Locale Preview Export | COMPLETE | - |
+| phase-9-task-9.2.4 | Flutter Version Runtime Info | COMPLETE | 23 |
+
+### Key Deliverables
+
+- **PreviewAnnotationGenerator:**
+  - Basic @Preview() generation for any widget
+  - Named previews with custom display names
+  - Sized previews with width/height parameters
+  - Light/dark theme preview support
+  - Theme matrix generation for both brightness values
+  - Locale-specific previews with language/country codes
+  - RTL text direction support
+  - Locale matrix generation for multiple locales
+  - Custom preview class generation extending Preview
+
+- **VersionService:**
+  - Flutter version detection and feature flags
+  - Version-aware feature availability checks
+  - Version comment header generation for exports
+  - Semantic version comparison utilities
+  - Engine ID retrieval for multi-window debugging
+
+### Journey Reference
+
+- J24: Preview & Dev Tools (`docs/journeys/flutter-upgrades/J24-preview-dev-tools.md`)
 
 ---
 
@@ -192,7 +239,8 @@ FlutterForge is production-ready with all 73 tasks completed across 8 phases.
 | Phase 6: Widget Completion | COMPLETE | 12/12 | 1047 |
 | Phase 7: Assets & Preview | COMPLETE | 5/5 | 1322 |
 | Phase 8: Platform & Polish | COMPLETE | 6/6 | 1411 |
-| **Total** | **100% COMPLETE** | **73/73** | **1411** |
+| Phase 9: Flutter Upgrades | IN PROGRESS | 4/35 | 1630 |
+| **Total** | **IN PROGRESS** | **77/108** | **1630** |
 
 ---
 
@@ -229,6 +277,7 @@ FlutterForge is production-ready with all 73 tasks completed across 8 phases.
 | PerformanceMonitor | Performance measurement and metrics |
 | ErrorHandler | Centralized error handling with history |
 | AssetManager | Image asset import and management |
+| **VersionService** | **Flutter version detection and feature flags** |
 
 ---
 
@@ -244,6 +293,7 @@ FlutterForge is production-ready with all 73 tasks completed across 8 phases.
 | J16 | Code Preview Panel | `docs/journeys/preview/J16-code-preview.md` |
 | J17 | Cross-Platform Support | `docs/journeys/platform/J17-cross-platform.md` |
 | J18 | Onboarding and Help | `docs/journeys/platform/J18-onboarding-help.md` |
+| **J24** | **Preview & Dev Tools** | `docs/journeys/flutter-upgrades/J24-preview-dev-tools.md` |
 
 ---
 
@@ -259,3 +309,10 @@ FlutterForge is production-ready with all 73 tasks completed across 8 phases.
 - [x] Onboarding flow complete
 - [x] Help system functional
 - [ ] Push version tag (v1.0.0) to trigger release
+
+## Phase 9 Checklist (v1.1.0 - Flutter Upgrades)
+
+- [x] J24: Preview & Dev Tools (Tasks 9.2.1-9.2.4)
+- [ ] J19: Dart Shorthand Syntax (remaining tasks)
+- [ ] J20-J23: Additional Flutter upgrade features
+- [ ] Integration with code preview panel
