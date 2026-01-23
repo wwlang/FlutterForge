@@ -6,7 +6,7 @@
 
 This roadmap tracks implementation tasks for FlutterForge. Each task maps to user journey acceptance criteria for traceability.
 
-**Status:** Phases 1-8 COMPLETE (73/73 tasks, 1411 tests) | Phase 9 PLANNED (10 tasks)
+**Status:** Phases 1-8 COMPLETE (73/73 tasks, 1411 tests) | Phase 9 PLANNED (35 tasks)
 
 ---
 
@@ -290,17 +290,19 @@ See `.claude/PROGRESS.md` for detailed Phase 4 completion records.
 
 ---
 
-## Phase 9: Flutter 3.38 Enhancements (PLANNED)
+## Phase 9: Flutter 3.32-3.38 Enhancements (PLANNED)
 
-**Milestone:** Leverage Flutter 3.38 and Dart 3.10 features for cleaner code generation, enhanced preview capabilities, and new widgets
+**Milestone:** Leverage Flutter 3.32, 3.35, and 3.38 features for cleaner code generation, enhanced preview capabilities, new widgets, and improved accessibility
 
-**Status:** PLANNED | **Tasks:** 0/10 | **Journey References:** J19, J20, J21, J22, J23
+**Status:** PLANNED | **Tasks:** 0/35 | **Journey References:** J19-J31
 
 **Prerequisites:** Flutter SDK updated to 3.38+, Dart 3.10+
 
 ---
 
-### Task 9.1: Dart 3.10 Dot Shorthand - Enum Support
+### 9.1: Code Generation - Dart 3.10 Shorthand
+
+#### Task 9.1.1: Enum Dot Shorthand Support
 
 | Field | Value |
 |-------|-------|
@@ -318,7 +320,7 @@ See `.claude/PROGRESS.md` for detailed Phase 4 completion records.
 
 ---
 
-### Task 9.2: Dart 3.10 Dot Shorthand - Constructor Support
+#### Task 9.1.2: Constructor Dot Shorthand Support
 
 | Field | Value |
 |-------|-------|
@@ -337,7 +339,7 @@ See `.claude/PROGRESS.md` for detailed Phase 4 completion records.
 
 ---
 
-### Task 9.3: Dart Version Targeting
+#### Task 9.1.3: Dart Version Targeting
 
 | Field | Value |
 |-------|-------|
@@ -356,137 +358,618 @@ See `.claude/PROGRESS.md` for detailed Phase 4 completion records.
 
 ---
 
-### Task 9.4: Monitor Metadata Service
+### 9.2: Preview & Development Tools
+
+#### Task 9.2.1: @Preview Annotation Export (3.32)
 
 | Field | Value |
 |-------|-------|
 | ID | phase-9-task-04 |
 | Status | PENDING |
-| Priority | P2 |
-| Journey AC | J20 S1, S2 |
-| Location | `lib/services/monitor_service.dart` |
+| Priority | P1 |
+| Journey AC | J24 S1 |
+| Location | `lib/generators/preview_annotation_generator.dart` |
 
 **Deliverables:**
-- [ ] MonitorService with platform abstraction
-- [ ] Monitor info display in preview settings
-- [ ] DPI-aware preview rendering
-- [ ] Multi-monitor detection
-- [ ] Unit tests for monitor metadata
+- [ ] Basic @Preview annotation generation
+- [ ] Named preview support
+- [ ] Sized preview with width/height
+- [ ] Unit tests for annotation generation
 
 ---
 
-### Task 9.5: Preview Window Positioning
+#### Task 9.2.2: Theme/Brightness Preview Export (3.35)
 
 | Field | Value |
 |-------|-------|
 | ID | phase-9-task-05 |
 | Status | PENDING |
-| Priority | P3 |
-| Journey AC | J20 S3, S4 |
-| Location | `lib/features/preview/` |
+| Priority | P1 |
+| Journey AC | J24 S2 |
+| Location | `lib/generators/preview_annotation_generator.dart` |
 
 **Deliverables:**
-- [ ] Detachable preview window
-- [ ] Smart positioning on optimal monitor
-- [ ] Position persistence across sessions
-- [ ] Refresh rate awareness for animations
-- [ ] Unit tests for window positioning
+- [ ] Light/dark theme preview annotations
+- [ ] Theme matrix export option
+- [ ] Brightness parameter in @Preview
+- [ ] Unit tests for theme previews
 
 ---
 
-### Task 9.6: Multi-State Preview Variations
+#### Task 9.2.3: Localization Preview Export (3.35)
 
 | Field | Value |
 |-------|-------|
 | ID | phase-9-task-06 |
 | Status | PENDING |
-| Priority | P1 |
-| Journey AC | J21 S1, S2 |
-| Location | `lib/features/preview/` |
+| Priority | P2 |
+| Journey AC | J24 S3 |
+| Location | `lib/generators/preview_annotation_generator.dart` |
 
 **Deliverables:**
-- [ ] Preview variation model
-- [ ] Add/remove preview variations UI
-- [ ] Theme matrix toggle (light/dark)
-- [ ] Size matrix toggle (mobile/tablet/desktop)
-- [ ] Unit tests for preview variations
+- [ ] Locale parameter in @Preview
+- [ ] Locale matrix export option
+- [ ] RTL locale support
+- [ ] Unit tests for localized previews
 
 ---
 
-### Task 9.7: Preview Groups and Export
+#### Task 9.2.4: Flutter Version Runtime Info (3.32)
 
 | Field | Value |
 |-------|-------|
 | ID | phase-9-task-07 |
 | Status | PENDING |
 | Priority | P2 |
-| Journey AC | J21 S2, S3, S4 |
-| Location | `lib/features/preview/`, `lib/generators/` |
+| Journey AC | J24 S4 |
+| Location | `lib/services/version_service.dart` |
 
 **Deliverables:**
-- [ ] Preview group model and storage
-- [ ] Group organization UI
-- [ ] @Preview annotation export
-- [ ] @MultiPreview annotation export
-- [ ] Group documentation export (Markdown)
-- [ ] Unit tests for annotation generation
+- [ ] Flutter/Dart version display in About dialog
+- [ ] Version-aware feature flags
+- [ ] Export version comments in generated code
+- [ ] Unit tests for version detection
 
 ---
 
-### Task 9.8: DropdownMenu Enhancements
+### 9.3: Enhanced Menu System
+
+#### Task 9.3.1: RawMenuAnchor Widget (3.32)
 
 | Field | Value |
 |-------|-------|
 | ID | phase-9-task-08 |
 | Status | PENDING |
-| Priority | P2 |
-| Journey AC | J22 S1 |
-| Location | `lib/features/palette/`, `lib/features/properties/` |
+| Priority | P1 |
+| Journey AC | J25 S1 |
+| Location | `lib/features/palette/widgets/menu/` |
 
 **Deliverables:**
-- [ ] DropdownMenu widget in registry
-- [ ] cursorHeight property
-- [ ] menuController property
-- [ ] Preview open state toggle
-- [ ] Unit tests for DropdownMenu
+- [ ] RawMenuAnchor widget registration
+- [ ] Menu item builder UI in properties
+- [ ] Preview menu open state
+- [ ] Code generation for RawMenuAnchor
+- [ ] Unit tests for menu configuration
 
 ---
 
-### Task 9.9: Overlay Preview System
+#### Task 9.3.2: SearchAnchor Lifecycle Callbacks (3.32)
 
 | Field | Value |
 |-------|-------|
 | ID | phase-9-task-09 |
 | Status | PENDING |
 | Priority | P2 |
-| Journey AC | J22 S2, S3 |
-| Location | `lib/features/canvas/`, `lib/features/properties/` |
+| Journey AC | J25 S2, S3 |
+| Location | `lib/features/palette/widgets/search/` |
 
 **Deliverables:**
-- [ ] Overlay layer on canvas
-- [ ] Tooltip preview on hover
-- [ ] PopupMenuButton preview
-- [ ] Context menu configuration UI
-- [ ] Unit tests for overlay preview
+- [ ] viewOnOpen callback property
+- [ ] viewOnClose callback property
+- [ ] Keyboard navigation configuration
+- [ ] Code generation with callbacks
+- [ ] Unit tests for lifecycle callbacks
 
 ---
 
-### Task 9.10: New Flutter 3.38 Widgets
+### 9.4: Form Field Enhancements
+
+#### Task 9.4.1: FormField.errorBuilder (3.32)
 
 | Field | Value |
 |-------|-------|
 | ID | phase-9-task-10 |
 | Status | PENDING |
-| Priority | P2 |
-| Journey AC | J23 S1, S2, S3, S4 |
-| Location | `lib/features/palette/`, `lib/generators/` |
+| Priority | P1 |
+| Journey AC | J26 S1 |
+| Location | `lib/features/properties/form/` |
 
 **Deliverables:**
-- [ ] CupertinoLinearActivityIndicator widget
-- [ ] CupertinoDatePicker selectableDayPredicate UI
-- [ ] HeadingLevel semantics property
-- [ ] Text layout debug visualization
-- [ ] Unit tests for new widgets
+- [ ] Custom error widget builder UI
+- [ ] Error display presets (icon+text, tooltip, etc.)
+- [ ] Preview error state toggle
+- [ ] Code generation with errorBuilder
+- [ ] Unit tests for error configuration
+
+---
+
+#### Task 9.4.2: InputDecoration.hint Widget (3.32)
+
+| Field | Value |
+|-------|-------|
+| ID | phase-9-task-11 |
+| Status | PENDING |
+| Priority | P1 |
+| Journey AC | J26 S2 |
+| Location | `lib/features/properties/input/` |
+
+**Deliverables:**
+- [ ] Widget-based hint configuration
+- [ ] Hint builder UI (icon + text)
+- [ ] Preview hint widget
+- [ ] Code generation with hint widget
+- [ ] Unit tests for hint configuration
+
+---
+
+#### Task 9.4.3: DropdownMenuFormField (3.35)
+
+| Field | Value |
+|-------|-------|
+| ID | phase-9-task-12 |
+| Status | PENDING |
+| Priority | P1 |
+| Journey AC | J26 S4 |
+| Location | `lib/features/palette/widgets/form/` |
+
+**Deliverables:**
+- [ ] DropdownMenuFormField widget registration
+- [ ] Form field properties (validator, onSaved, restorationId)
+- [ ] Dropdown items editor
+- [ ] Code generation for form field
+- [ ] Unit tests for form integration
+
+---
+
+#### Task 9.4.4: InputDecoration.visualDensity (3.32)
+
+| Field | Value |
+|-------|-------|
+| ID | phase-9-task-13 |
+| Status | PENDING |
+| Priority | P2 |
+| Journey AC | J26 S3 |
+| Location | `lib/features/properties/input/` |
+
+**Deliverables:**
+- [ ] Visual density property control
+- [ ] Density presets (compact, standard, comfortable)
+- [ ] Custom density values
+- [ ] Unit tests for density settings
+
+---
+
+### 9.5: Accessibility Roles
+
+#### Task 9.5.1: Radio Group and Dialog Semantics (3.32)
+
+| Field | Value |
+|-------|-------|
+| ID | phase-9-task-14 |
+| Status | PENDING |
+| Priority | P1 |
+| Journey AC | J27 S1, S2 |
+| Location | `lib/features/properties/accessibility/` |
+
+**Deliverables:**
+- [ ] Radio group semantic role configuration
+- [ ] Dialog semantic role configuration
+- [ ] Group label property
+- [ ] Code generation with Semantics wrapper
+- [ ] Unit tests for role assignment
+
+---
+
+#### Task 9.5.2: List and Table Semantics (3.32)
+
+| Field | Value |
+|-------|-------|
+| ID | phase-9-task-15 |
+| Status | PENDING |
+| Priority | P1 |
+| Journey AC | J27 S3 |
+| Location | `lib/features/properties/accessibility/` |
+
+**Deliverables:**
+- [ ] List semantic role for ListView
+- [ ] Table semantic role for DataTable/GridView
+- [ ] Item indexing for list items
+- [ ] Code generation with list semantics
+- [ ] Unit tests for list/table roles
+
+---
+
+#### Task 9.5.3: Status and Alert Semantics (3.32)
+
+| Field | Value |
+|-------|-------|
+| ID | phase-9-task-16 |
+| Status | PENDING |
+| Priority | P1 |
+| Journey AC | J27 S4 |
+| Location | `lib/features/properties/accessibility/` |
+
+**Deliverables:**
+- [ ] Status live region configuration
+- [ ] Alert role configuration
+- [ ] Live region mode (polite, assertive)
+- [ ] Code generation with live regions
+- [ ] Unit tests for status/alert roles
+
+---
+
+#### Task 9.5.4: Landmark Roles (3.35)
+
+| Field | Value |
+|-------|-------|
+| ID | phase-9-task-17 |
+| Status | PENDING |
+| Priority | P2 |
+| Journey AC | J27 S5 |
+| Location | `lib/features/properties/accessibility/` |
+
+**Deliverables:**
+- [ ] Navigation landmark role
+- [ ] Main content landmark role
+- [ ] Complementary landmark role
+- [ ] Landmark overlay visualization
+- [ ] Unit tests for landmark roles
+
+---
+
+#### Task 9.5.5: Heading Levels (3.35/3.38)
+
+| Field | Value |
+|-------|-------|
+| ID | phase-9-task-18 |
+| Status | PENDING |
+| Priority | P1 |
+| Journey AC | J27 S6, J23 S3 |
+| Location | `lib/features/properties/accessibility/` |
+
+**Deliverables:**
+- [ ] Heading level dropdown (H1-H6)
+- [ ] Heading hierarchy validation
+- [ ] Heading structure visualization
+- [ ] Code generation with headingLevel
+- [ ] Unit tests for heading levels
+
+---
+
+### 9.6: Calendar and Date Systems
+
+#### Task 9.6.1: Custom Calendar Systems (3.32)
+
+| Field | Value |
+|-------|-------|
+| ID | phase-9-task-19 |
+| Status | PENDING |
+| Priority | P2 |
+| Journey AC | J28 S1, S2 |
+| Location | `lib/features/palette/widgets/date/` |
+
+**Deliverables:**
+- [ ] Calendar system selector (Gregorian, Islamic, Persian, Hebrew)
+- [ ] Calendar delegate configuration
+- [ ] Week start day configuration
+- [ ] Code generation with calendarDelegate
+- [ ] Unit tests for calendar systems
+
+---
+
+#### Task 9.6.2: Year Picker Customization (3.32)
+
+| Field | Value |
+|-------|-------|
+| ID | phase-9-task-20 |
+| Status | PENDING |
+| Priority | P3 |
+| Journey AC | J28 S3 |
+| Location | `lib/features/properties/date/` |
+
+**Deliverables:**
+- [ ] Year shape configuration
+- [ ] Year picker styling in DatePickerThemeData
+- [ ] Preview year selector
+- [ ] Unit tests for year shape
+
+---
+
+#### Task 9.6.3: Tooltip Constraints (3.32)
+
+| Field | Value |
+|-------|-------|
+| ID | phase-9-task-21 |
+| Status | PENDING |
+| Priority | P3 |
+| Journey AC | J28 S4 |
+| Location | `lib/features/properties/tooltip/` |
+
+**Deliverables:**
+- [ ] Tooltip constraints property (replacing height)
+- [ ] Constraint presets
+- [ ] Preview tooltip sizing
+- [ ] Unit tests for tooltip constraints
+
+---
+
+#### Task 9.6.4: Carousel animateToItem (3.32)
+
+| Field | Value |
+|-------|-------|
+| ID | phase-9-task-22 |
+| Status | PENDING |
+| Priority | P3 |
+| Journey AC | J28 S5 |
+| Location | `lib/features/palette/widgets/carousel/` |
+
+**Deliverables:**
+- [ ] CarouselController exposure option
+- [ ] Navigation button configuration
+- [ ] Animation duration/curve settings
+- [ ] Code generation with animateToItem
+- [ ] Unit tests for carousel navigation
+
+---
+
+### 9.7: Navigation Enhancements
+
+#### Task 9.7.1: NavigationDrawer Header/Footer (3.35)
+
+| Field | Value |
+|-------|-------|
+| ID | phase-9-task-23 |
+| Status | PENDING |
+| Priority | P2 |
+| Journey AC | J29 S1 |
+| Location | `lib/features/palette/widgets/navigation/` |
+
+**Deliverables:**
+- [ ] Header slot configuration (user account, brand, custom)
+- [ ] Footer slot configuration (settings, logout, version)
+- [ ] Preview drawer with header/footer
+- [ ] Code generation with header/footer
+- [ ] Unit tests for drawer slots
+
+---
+
+#### Task 9.7.2: NavigationRail Scrollable (3.35)
+
+| Field | Value |
+|-------|-------|
+| ID | phase-9-task-24 |
+| Status | PENDING |
+| Priority | P2 |
+| Journey AC | J29 S2 |
+| Location | `lib/features/palette/widgets/navigation/` |
+
+**Deliverables:**
+- [ ] Scrollable property for NavigationRail
+- [ ] Scroll behavior configuration
+- [ ] Preview with many destinations
+- [ ] Code generation with scrollable
+- [ ] Unit tests for scrollable rail
+
+---
+
+#### Task 9.7.3: Route Transition Duration (3.35)
+
+| Field | Value |
+|-------|-------|
+| ID | phase-9-task-25 |
+| Status | PENDING |
+| Priority | P2 |
+| Journey AC | J29 S3 |
+| Location | `lib/features/navigation/` |
+
+**Deliverables:**
+- [ ] Forward/reverse duration configuration
+- [ ] Transition curve selection
+- [ ] Transition presets
+- [ ] Preview transition timing
+- [ ] Unit tests for transition duration
+
+---
+
+### 9.8: Animation and Physics
+
+#### Task 9.8.1: SpringDescription.withDurationAndBounce (3.32)
+
+| Field | Value |
+|-------|-------|
+| ID | phase-9-task-26 |
+| Status | PENDING |
+| Priority | P2 |
+| Journey AC | J30 S1, S2 |
+| Location | `lib/features/animation/spring/` |
+
+**Deliverables:**
+- [ ] Intuitive spring configuration UI (duration + bounce)
+- [ ] Spring presets (snappy, gentle, bouncy)
+- [ ] Spring curve visualization
+- [ ] Code generation with new API
+- [ ] Unit tests for spring configuration
+
+---
+
+#### Task 9.8.2: Gesture Input Type Detection (3.32)
+
+| Field | Value |
+|-------|-------|
+| ID | phase-9-task-27 |
+| Status | PENDING |
+| Priority | P3 |
+| Journey AC | J30 S3 |
+| Location | `lib/features/properties/gesture/` |
+
+**Deliverables:**
+- [ ] PointerDeviceKind configuration
+- [ ] Per-input behavior settings
+- [ ] Code generation with input detection
+- [ ] Unit tests for gesture input types
+
+---
+
+#### Task 9.8.3: Divider borderRadius (3.32)
+
+| Field | Value |
+|-------|-------|
+| ID | phase-9-task-28 |
+| Status | PENDING |
+| Priority | P3 |
+| Journey AC | J30 S4 |
+| Location | `lib/features/palette/widgets/divider/` |
+
+**Deliverables:**
+- [ ] Border radius property for Divider
+- [ ] Preview rounded divider
+- [ ] Code generation with borderRadius
+- [ ] Unit tests for divider radius
+
+---
+
+### 9.9: Cupertino Polish
+
+#### Task 9.9.1: RoundedSuperellipseBorder (Squircle) (3.32)
+
+| Field | Value |
+|-------|-------|
+| ID | phase-9-task-29 |
+| Status | PENDING |
+| Priority | P1 |
+| Journey AC | J31 S1 |
+| Location | `lib/features/properties/shape/` |
+
+**Deliverables:**
+- [ ] Superellipse shape option for widgets
+- [ ] Squircle vs rounded rect comparison
+- [ ] Default squircle for Cupertino widgets
+- [ ] Code generation with RoundedSuperellipseBorder
+- [ ] Unit tests for squircle shape
+
+---
+
+#### Task 9.9.2: CupertinoButton Sizing (3.32)
+
+| Field | Value |
+|-------|-------|
+| ID | phase-9-task-30 |
+| Status | PENDING |
+| Priority | P2 |
+| Journey AC | J31 S2 |
+| Location | `lib/features/palette/widgets/cupertino/` |
+
+**Deliverables:**
+- [ ] minWidth/minHeight properties
+- [ ] Touch target compliance warnings
+- [ ] Preview size constraints
+- [ ] Code generation with size properties
+- [ ] Unit tests for button sizing
+
+---
+
+#### Task 9.9.3: CupertinoCollapsible (3.35)
+
+| Field | Value |
+|-------|-------|
+| ID | phase-9-task-31 |
+| Status | PENDING |
+| Priority | P2 |
+| Journey AC | J31 S3 |
+| Location | `lib/features/palette/widgets/cupertino/` |
+
+**Deliverables:**
+- [ ] CupertinoCollapsible widget registration
+- [ ] Header/child configuration
+- [ ] iOS-style collapse animation
+- [ ] Code generation for collapsible
+- [ ] Unit tests for collapse state
+
+---
+
+#### Task 9.9.4: CupertinoSlider Haptic Feedback (3.35)
+
+| Field | Value |
+|-------|-------|
+| ID | phase-9-task-32 |
+| Status | PENDING |
+| Priority | P3 |
+| Journey AC | J31 S4 |
+| Location | `lib/features/palette/widgets/cupertino/` |
+
+**Deliverables:**
+- [ ] Haptic feedback toggle for CupertinoSlider
+- [ ] Haptic intensity configuration
+- [ ] Code generation with haptic feedback
+- [ ] Unit tests for haptic configuration
+
+---
+
+#### Task 9.9.5: CupertinoPicker Ticking Sound (3.35)
+
+| Field | Value |
+|-------|-------|
+| ID | phase-9-task-33 |
+| Status | PENDING |
+| Priority | P3 |
+| Journey AC | J31 S5 |
+| Location | `lib/features/palette/widgets/cupertino/` |
+
+**Deliverables:**
+- [ ] Ticking sound toggle for CupertinoPicker
+- [ ] Sound behavior configuration
+- [ ] Code generation with sound settings
+- [ ] Unit tests for sound configuration
+
+---
+
+### 9.10: New Widgets and Enhancements
+
+#### Task 9.10.1: CupertinoLinearActivityIndicator (3.38)
+
+| Field | Value |
+|-------|-------|
+| ID | phase-9-task-34 |
+| Status | PENDING |
+| Priority | P2 |
+| Journey AC | J23 S1 |
+| Location | `lib/features/palette/widgets/cupertino/` |
+
+**Deliverables:**
+- [ ] CupertinoLinearActivityIndicator widget registration
+- [ ] Value/color/backgroundColor properties
+- [ ] Indeterminate vs determinate mode
+- [ ] Code generation for indicator
+- [ ] Unit tests for indicator
+
+---
+
+#### Task 9.10.2: Monitor Metadata Service (3.38)
+
+| Field | Value |
+|-------|-------|
+| ID | phase-9-task-35 |
+| Status | PENDING |
+| Priority | P2 |
+| Journey AC | J20 S1, S2, S3 |
+| Location | `lib/services/monitor_service.dart` |
+
+**Deliverables:**
+- [ ] MonitorService with platform abstraction
+- [ ] Monitor info display in preview settings
+- [ ] DPI-aware preview rendering
+- [ ] Detachable preview window positioning
+- [ ] Unit tests for monitor metadata
 
 ---
 
@@ -494,12 +977,16 @@ See `.claude/PROGRESS.md` for detailed Phase 4 completion records.
 
 - [ ] Dart 3.10 dot shorthand fully implemented in code generator
 - [ ] Version targeting with Dart 3.9 fallback
-- [ ] Monitor metadata service functional
-- [ ] Multi-state preview variations working
-- [ ] Preview annotation export implemented
-- [ ] DropdownMenu enhancements complete
+- [ ] @Preview annotation export with theme/locale support
+- [ ] RawMenuAnchor and SearchAnchor enhancements
+- [ ] Form field enhancements (errorBuilder, hint widget, DropdownMenuFormField)
+- [ ] Comprehensive accessibility roles (radio group, dialog, list, table, status, alert, landmarks, headings)
+- [ ] Custom calendar systems support
+- [ ] Navigation drawer header/footer, scrollable rail
+- [ ] Spring physics with duration/bounce API
+- [ ] Cupertino polish (squircle, collapsible, haptics, sounds)
 - [ ] New Flutter 3.38 widgets added to palette
-- [ ] All tests pass (target: 1500+ tests)
+- [ ] All tests pass (target: 1800+ tests)
 - [ ] Updated to Flutter 3.38 SDK
 
 ---
@@ -516,8 +1003,8 @@ See `.claude/PROGRESS.md` for detailed Phase 4 completion records.
 | Phase 6: Widget Completion | COMPLETE | 12/12 | 1047 |
 | Phase 7: Assets & Preview | COMPLETE | 5/5 | 1322 |
 | Phase 8: Platform & Polish | COMPLETE | 6/6 | 1411 |
-| Phase 9: Flutter 3.38 Enhancements | PLANNED | 0/10 | - |
-| **Total** | **88% COMPLETE** | **73/83** | **1411** |
+| Phase 9: Flutter 3.32-3.38 Enhancements | PLANNED | 0/35 | - |
+| **Total** | **68% COMPLETE** | **73/108** | **1411** |
 
 ---
 
@@ -532,11 +1019,29 @@ See `.claude/PROGRESS.md` for detailed Phase 4 completion records.
 | J15 | Responsive Preview | 7.4, 7.5 |
 | J17 | Cross-Platform Support | 8.1, 8.2, 8.3 |
 | J18 | Onboarding and Help | 8.4, 8.5, 8.6 |
-| J19 | Dart Shorthand Code Generation | 9.1, 9.2, 9.3 |
-| J20 | Monitor Metadata API | 9.4, 9.5 |
-| J21 | Widget Preview Enhancements | 9.6, 9.7 |
-| J22 | OverlayPortal Improvements | 9.8, 9.9 |
-| J23 | New Flutter 3.38 Widgets | 9.10 |
+| J19 | Dart Shorthand Code Generation | 9.1.1, 9.1.2, 9.1.3 |
+| J20 | Monitor Metadata API | 9.10.2 |
+| J21 | Widget Preview Enhancements | 9.2.1, 9.2.2 |
+| J22 | OverlayPortal Improvements | 9.3.1, 9.3.2 |
+| J23 | New Flutter 3.38 Widgets | 9.5.5, 9.10.1 |
+| J24 | Preview and Development Tools | 9.2.1, 9.2.2, 9.2.3, 9.2.4 |
+| J25 | Enhanced Menu System | 9.3.1, 9.3.2 |
+| J26 | Form Field Enhancements | 9.4.1, 9.4.2, 9.4.3, 9.4.4 |
+| J27 | Accessibility Roles | 9.5.1, 9.5.2, 9.5.3, 9.5.4, 9.5.5 |
+| J28 | Calendar and Date Systems | 9.6.1, 9.6.2, 9.6.3, 9.6.4 |
+| J29 | Navigation Enhancements | 9.7.1, 9.7.2, 9.7.3 |
+| J30 | Animation and Physics | 9.8.1, 9.8.2, 9.8.3 |
+| J31 | Cupertino Polish | 9.9.1, 9.9.2, 9.9.3, 9.9.4, 9.9.5 |
+
+---
+
+## Priority Summary
+
+| Priority | Description | Task Count |
+|----------|-------------|------------|
+| P1 | Directly improve FlutterForge UX or generated code quality | 14 |
+| P2 | Add new widget properties/capabilities | 14 |
+| P3 | Nice-to-have enhancements | 7 |
 
 ---
 
@@ -563,10 +1068,11 @@ See `.claude/PROGRESS.md` for detailed Phase 4 completion records.
 
 ## Release Checklist (v1.1.0 Flutter 3.38)
 
-- [ ] Phase 9 complete
+- [ ] Phase 9 complete (35 tasks)
 - [ ] Dart 3.10 dot shorthand working
 - [ ] Preview enhancements complete
+- [ ] Accessibility roles complete
 - [ ] New widgets added
-- [ ] 1500+ tests passing
+- [ ] 1800+ tests passing
 - [ ] Flutter 3.38 SDK requirement documented
 - [ ] Push version tag (v1.1.0) to trigger release
