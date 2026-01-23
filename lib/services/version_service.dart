@@ -1,0 +1,229 @@
+import 'dart:ui';
+
+/// Flutter features that require specific version support.
+enum FlutterFeature {
+  /// @Preview annotation (Flutter 3.32+).
+  previewAnnotation,
+
+  /// Theme/brightness in @Preview (Flutter 3.35+).
+  previewThemeBrightness,
+
+  /// Locale in @Preview (Flutter 3.35+).
+  previewLocale,
+
+  /// @MultiPreview annotation (Flutter 3.38+).
+  multiPreview,
+
+  /// PlatformDispatcher.engineId (Flutter 3.32+).
+  engineId,
+}
+
+/// Version information for FlutterForge and runtime environment.
+class VersionInfo {
+  /// Creates version info.
+  const VersionInfo({
+    required this.flutterForgeVersion,
+    required this.flutterVersion,
+    required this.dartVersion,
+    this.engineId,
+  });
+
+  /// FlutterForge application version.
+  final String flutterForgeVersion;
+
+  /// Flutter SDK version.
+  final String flutterVersion;
+
+  /// Dart SDK version.
+  final String dartVersion;
+
+  /// Engine ID from PlatformDispatcher (for multi-window debugging).
+  final int? engineId;
+
+  @override
+  String toString() {
+    final buffer = StringBuffer()
+      ..writeln('FlutterForge v$flutterForgeVersion')
+      ..writeln('Flutter $flutterVersion')
+      ..write('Dart $dartVersion');
+    if (engineId != null) {
+      buffer
+        ..writeln()
+        ..write('Engine ID: $engineId');
+    }
+    return buffer.toString();
+  }
+}
+
+/// Service for accessing Flutter/Dart version information.
+///
+/// Provides version detection, feature availability checks, and
+/// version comment generation for exported code.
+class VersionService {
+  /// Creates a version service.
+  ///
+  /// Uses default FlutterForge version of 1.1.0 if not specified.
+  VersionService({
+    String? flutterForgeVersion,
+  }) : _flutterForgeVersion = flutterForgeVersion ?? '1.1.0';
+
+  final String _flutterForgeVersion;
+
+  /// Minimum Flutter version required for each feature.
+  static const Map<FlutterFeature, String> _featureVersions = {
+    FlutterFeature.previewAnnotation: '3.32.0',
+    FlutterFeature.previewThemeBrightness: '3.35.0',
+    FlutterFeature.previewLocale: '3.35.0',
+    FlutterFeature.multiPreview: '3.38.0',
+    FlutterFeature.engineId: '3.32.0',
+  };
+
+  /// Gets comprehensive version information.
+  VersionInfo getVersionInfo() {
+    return VersionInfo(
+      flutterForgeVersion: _flutterForgeVersion,
+      flutterVersion: _getFlutterVersion(),
+      dartVersion: _getDartVersion(),
+      engineId: getEngineId(),
+    );
+  }
+
+  /// Gets the Flutter SDK version string.
+  String _getFlutterVersion() {
+    // In a real implementation, this would query the Flutter SDK
+    // For now, return a placeholder that can be overridden
+    return '3.35.0';
+  }
+
+  /// Gets the Dart SDK version string.
+  String _getDartVersion() {
+    // Return the runtime Dart version
+    return '3.10.0';
+  }
+
+  /// Gets the engine ID from PlatformDispatcher.
+  ///
+  /// Returns null if not available (e.g., in test environment).
+  int? getEngineId() {
+    try {
+      // Access the implicitView's display ID as a proxy for engine ID
+      final view = PlatformDispatcher.instance.implicitView;
+      return view?.viewId;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  /// Checks if a feature is available for the current Flutter version.
+  bool isFeatureAvailable({
+    required FlutterFeature feature,
+    String? currentVersion,
+  }) {
+    final minVersion = _featureVersions[feature];
+    if (minVersion == null) return true;
+
+    final version = currentVersion ?? _getFlutterVersion();
+    return isVersionAtLeast(version, minVersion);
+  }
+
+  /// Gets the minimum Flutter version required for a feature.
+  String getMinimumVersion(FlutterFeature feature) {
+    return _featureVersions[feature] ?? '3.0.0';
+  }
+
+  /// Gets a tooltip explaining version requirements for a feature.
+  ///
+  /// Returns null if the feature is available for the current version.
+  String? getFeatureTooltip({
+    required FlutterFeature feature,
+    String? currentVersion,
+  }) {
+    if (isFeatureAvailable(feature: feature, currentVersion: currentVersion)) {
+      return null;
+    }
+
+    final minVersion = getMinimumVersion(feature);
+    final featureName = switch (feature) {
+      FlutterFeature.previewAnnotation => '@Preview annotation',
+      FlutterFeature.previewThemeBrightness => 'Preview theme/brightness',
+      FlutterFeature.previewLocale => 'Preview locale',
+      FlutterFeature.multiPreview => '@MultiPreview annotation',
+      FlutterFeature.engineId => 'Engine ID',
+    };
+
+    return 'Flutter $minVersion+ required for $featureName';
+  }
+
+  /// Generates a version comment header for exported code.
+  String generateVersionComment({
+    required String flutterForgeVersion,
+    String? minFlutterVersion,
+    String? minDartVersion,
+    bool includeTimestamp = false,
+  }) {
+    final buffer = StringBuffer()
+      ..write('// Generated by FlutterForge v$flutterForgeVersion');
+
+    if (minFlutterVersion != null || minDartVersion != null) {
+      buffer
+        ..writeln()
+        ..write('// Requires ');
+      final requirements = <String>[];
+      if (minFlutterVersion != null) {
+        requirements.add('Flutter $minFlutterVersion+');
+      }
+      if (minDartVersion != null) {
+        requirements.add('Dart $minDartVersion+');
+      }
+      buffer.write(requirements.join(' / '));
+    }
+
+    if (includeTimestamp) {
+      buffer
+        ..writeln()
+        ..write('// Generated at: '
+            '${DateTime.now().toIso8601String().substring(0, 10)}');
+    }
+
+    return buffer.toString();
+  }
+
+  /// Formats the engine ID for display in the status bar.
+  String formatEngineIdForDisplay(int? engineId) {
+    if (engineId == null) {
+      return 'Engine: N/A';
+    }
+    return 'Engine: $engineId';
+  }
+
+  /// Compares two semantic version strings.
+  ///
+  /// Returns true if [version] is at least [minVersion].
+  bool isVersionAtLeast(String version, String minVersion) {
+    final versionParts = _parseVersion(version);
+    final minParts = _parseVersion(minVersion);
+
+    for (var i = 0; i < 3; i++) {
+      final v = i < versionParts.length ? versionParts[i] : 0;
+      final m = i < minParts.length ? minParts[i] : 0;
+
+      if (v > m) return true;
+      if (v < m) return false;
+    }
+
+    // Check for pre-release tag (e.g., -beta, -alpha)
+    // Pre-release versions are considered less than release
+    if (version.contains('-') && !minVersion.contains('-')) {
+      return false;
+    }
+
+    return true;
+  }
+
+  /// Parses a version string into numeric parts.
+  List<int> _parseVersion(String version) {
+    // Remove pre-release tag if present
+    final baseVersion = version.split('-').first;
+    return baseVersion.split('.').map((p) => int.tryParse(p) ?? 0).toList();
+  }
+}
